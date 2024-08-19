@@ -1,0 +1,23 @@
+/* src/components/EmployeeList.css */
+.employee-table {
+  width: 100%;
+  border-collapse: collapse; /* Single-line borders */
+  margin-top: 20px; /* Spacing above the table */
+  background-color: #f9f9f9; /* Light gray background */
+}
+
+.employee-table th,
+.employee-table td {
+  border: 1px solid #cccccc; /* Light gray borders */
+  padding: 8px; /* Padding inside cells */
+  text-align: left; /* Align text to the left */
+}
+
+.employee-table th {
+  background-color: #e9e9e9; /* Slightly darker shade for header */
+  color: #333; /* Dark text for better readability */
+}
+
+.employee-table tbody tr:nth-child(odd) {
+  background-color: #fff; /* Alternate row color for better readability */
+}
