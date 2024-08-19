@@ -2,51 +2,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './EmployeeList.css';
+import { useNavigate } from 'react-router-dom';
 
 function EmployeeList() {
   const [employees, setEmployees] = useState([]);
   const [editEmployeeId, setEditEmployeeId] = useState(null);
-
-  useEffect(() => {
-    fetchEmployees();
-  }, []);
-
-  const fetchEmployees = () => {
-    axios.get('http://localhost:3000/employees')
-      .then(response => {
-        setEmployees(response.data);
-      })
-      .catch(error => console.error('Error fetching employees:', error));
-  };
-
-  const handleEditChange = (e, id, field) => {
-    const newEmployees = employees.map((employee) => {
-      if (employee.id === id) {
-        return { ...employee, [field]: e.target.value };
-      }
-      return employee;
-    });
-    setEmployees(newEmployees);
-  };
-  
-  const saveEdit = (id) => {
-    const employee = employees.find(emp => emp.id === id);
-    axios.put(`http://localhost:3000/employees/${id}`, employee)
-      .then(() => {
-        setEditEmployeeId(null);
-        fetchEmployees();  // Refresh the list
-      })
-      .catch(error => console.error('Failed to save employee:', error));
-  };
-  
-  const deleteEmployee = (id) => {
-    axios.delete(`http://localhost:3000/employees/${id}`)
-      .then(() => {
-        fetchEmployees();  // Refresh the list
-      })
-      .catch(error => console.error('Failed to delete employee:', error));
-  };
-
   const [newEmployee, setNewEmployee] = useState({
     name: '',
     position: '',
@@ -54,19 +14,64 @@ function EmployeeList() {
     filing_status: 'single'
   });
   const [showAddRow, setShowAddRow] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
+
+  const fetchEmployees = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/employees');
+      setEmployees(response.data);
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+  };
 
   const handleInputChange = (e) => {
     setNewEmployee({ ...newEmployee, [e.target.name]: e.target.value });
   };
 
-  const addEmployee = () => {
-    axios.post('http://localhost:3000/employees', newEmployee)
-      .then(() => {
-        fetchEmployees();  // Refresh the list
-        setShowAddRow(false);  // Hide the input row
-        setNewEmployee({ name: '', position: '', pay_rate: '', filing_status: 'single' });  // Reset form
-      })
-      .catch(error => console.error('Failed to add employee:', error));
+  const handleEditChange = (e, id, field) => {
+    const newEmployees = employees.map(employee => {
+      if (employee.id === id) {
+        return { ...employee, [field]: e.target.value };
+      }
+      return employee;
+    });
+    setEmployees(newEmployees);
+  };
+
+  const saveEdit = async (id) => {
+    const employee = employees.find(emp => emp.id === id);
+    try {
+      await axios.put(`http://localhost:3000/employees/${id}`, employee);
+      setEditEmployeeId(null);
+      fetchEmployees();  // Refresh the list
+    } catch (error) {
+      console.error('Failed to save employee:', error);
+    }
+  };
+
+  const addEmployee = async () => {
+    try {
+      await axios.post('http://localhost:3000/employees', newEmployee);
+      fetchEmployees();  // Refresh the list
+      setShowAddRow(false);  // Hide the input row
+      setNewEmployee({ name: '', position: '', pay_rate: '', filing_status: 'single' });  // Reset form
+    } catch (error) {
+      console.error('Failed to add employee:', error);
+    }
+  };
+
+  const deleteEmployee = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3000/employees/${id}`);
+      fetchEmployees();  // Refresh the list
+    } catch (error) {
+      console.error('Failed to delete employee:', error);
+    }
   };
 
   return (
@@ -109,7 +114,6 @@ function EmployeeList() {
           {employees.map((employee) => (
             <tr key={employee.id}>
               {editEmployeeId === employee.id ? (
-                // Editable inputs
                 <>
                   <td><input type="text" value={employee.name} onChange={(e) => handleEditChange(e, employee.id, 'name')} /></td>
                   <td>
@@ -123,16 +127,18 @@ function EmployeeList() {
                   <td>
                     <button onClick={() => saveEdit(employee.id)}>Save</button>
                     <button onClick={() => setEditEmployeeId(null)}>Cancel</button>
+                    <button onClick={() => navigate(`/employees/${employee.id}`)}>Show</button>
+                    <button onClick={() => deleteEmployee(employee.id)}>Delete</button>
                   </td>
                 </>
               ) : (
-                // Static display
                 <>
                   <td>{employee.name}</td>
                   <td>{employee.position}</td>
                   <td>${Number(employee.pay_rate).toFixed(2)}</td>
                   <td>{employee.filing_status}</td>
                   <td>
+                    <button onClick={() => navigate(`/employees/${employee.id}`)}>Show</button>
                     <button onClick={() => setEditEmployeeId(employee.id)}>Edit</button>
                     <button onClick={() => deleteEmployee(employee.id)}>Delete</button>
                   </td>
