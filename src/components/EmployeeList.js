@@ -9,8 +9,9 @@ function EmployeeList() {
   const [editEmployeeId, setEditEmployeeId] = useState(null);
   const [newEmployee, setNewEmployee] = useState({
     name: '',
-    position: '',
+    position: 'front_of_house',
     pay_rate: '',
+    retirement_rate: '',
     filing_status: 'single'
   });
   const [showAddRow, setShowAddRow] = useState(false);
@@ -30,7 +31,11 @@ function EmployeeList() {
   };
 
   const handleInputChange = (e) => {
-    setNewEmployee({ ...newEmployee, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setNewEmployee({ 
+      ...newEmployee, 
+      [name]: value === null ? '' : value  // Convert null to an empty string
+    });
   };
 
   const handleEditChange = (e, id, field) => {
@@ -59,7 +64,7 @@ function EmployeeList() {
       await axios.post('http://localhost:3000/employees', newEmployee);
       fetchEmployees();  // Refresh the list
       setShowAddRow(false);  // Hide the input row
-      setNewEmployee({ name: '', position: '', pay_rate: '', filing_status: 'single' });  // Reset form
+      setNewEmployee({ name: '', position: 'front_of_house', pay_rate: '', retirement_rate: '', filing_status: 'single' });  // Reset form
     } catch (error) {
       console.error('Failed to add employee:', error);
     }
@@ -83,6 +88,7 @@ function EmployeeList() {
             <th>Name</th>
             <th>Position</th>
             <th>Pay Rate</th>
+            <th>401K Rate</th>
             <th>Filing Status</th>
             <th>Actions</th>
           </tr>
@@ -98,6 +104,7 @@ function EmployeeList() {
                 </select>
               </td>
               <td><input type="number" name="pay_rate" value={Number(newEmployee.pay_rate)} onChange={handleInputChange} /></td>
+              <td><input type="number" name="retirement_rate" value={newEmployee.retirement_rate} onChange={handleInputChange} /></td>
               <td>
                 <select name="filing_status" value={newEmployee.filing_status} onChange={handleInputChange}>
                   <option value="single">Single</option>
@@ -123,6 +130,7 @@ function EmployeeList() {
                     </select>
                   </td>
                   <td><input type="number" value={Number(employee.pay_rate)} onChange={(e) => handleEditChange(e, employee.id, 'pay_rate')} /></td>
+                  <td><input type="number" value={employee.retirement_rate} onChange={(e) => handleEditChange(e, employee.id, 'retirement_rate')} /></td>
                   <td>{employee.filing_status}</td>
                   <td>
                     <button onClick={() => saveEdit(employee.id)}>Save</button>
@@ -136,6 +144,7 @@ function EmployeeList() {
                   <td>{employee.name}</td>
                   <td>{employee.position}</td>
                   <td>${Number(employee.pay_rate).toFixed(2)}</td>
+                  <td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
                   <td>{employee.filing_status}</td>
                   <td>
                     <button onClick={() => navigate(`/employees/${employee.id}`)}>Show</button>
