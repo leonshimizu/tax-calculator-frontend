@@ -38,17 +38,33 @@
   margin-right: 0; /* No margin on the right for the last button */
 }
 
-/* Styles for different button types */
+/* Button general styles */
+.button {
+  padding: 5px 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Specific styles for Save button */
 .button-save {
-  background-color: #28a745; /* Green for save */
+  background-color: #4CAF50; /* Green */
+  color: white;
 }
 
+.button-save:hover {
+  background-color: #45a049; /* Darker green */
+}
+
+/* Specific styles for Cancel button */
 .button-cancel {
-  background-color: #dc3545; /* Red for cancel */
+  background-color: #f44336; /* Red */
+  color: white;
 }
 
-.button-add {
-  background-color: #ffc107; /* Yellow for add new */
+.button-cancel:hover {
+  background-color: #da190b; /* Darker red */
 }
 
 /* Responsive adjustments */

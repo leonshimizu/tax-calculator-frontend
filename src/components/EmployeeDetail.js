@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './EmployeeDetail.css'; // Make sure the path is correct
 
 const EmployeeDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [employee, setEmployee] = useState(null);
   const [payrollRecords, setPayrollRecords] = useState([]);
 
@@ -35,6 +36,7 @@ const EmployeeDetail = () => {
 
   return (
     <div className="employee-detail">
+      <button className="button-back" onClick={() => navigate(-1)}>Back</button>
       <h1>{employee.name}'s Details</h1>
       <p>Position: {employee.position}</p>
       <p>Pay Rate: ${Number(employee.pay_rate).toFixed(2)}</p>

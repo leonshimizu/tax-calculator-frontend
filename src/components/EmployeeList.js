@@ -113,8 +113,8 @@ function EmployeeList() {
                 </select>
               </td>
               <td>
-                <button onClick={addEmployee}>Save</button>
-                <button onClick={() => setShowAddRow(false)}>Cancel</button>
+                <button className="button button-save" onClick={addEmployee}>Save</button>
+                <button className="button button-cancel" onClick={() => setShowAddRow(false)}>Cancel</button>
               </td>
             </tr>
           )}

@@ -39,3 +39,17 @@
     font-size: 14px;
   }
 }
+
+.button-back {
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  background-color: #ccc;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button-back:hover {
+  background-color: #bbb;
+}
