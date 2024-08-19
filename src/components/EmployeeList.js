@@ -80,7 +80,7 @@ function EmployeeList() {
   };
 
   return (
-    <div>
+    <div className="employee-list">
       <h1>Employees</h1>
       <table className="employee-table">
         <thead>
@@ -147,9 +147,9 @@ function EmployeeList() {
                   <td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
                   <td>{employee.filing_status}</td>
                   <td>
-                    <button onClick={() => navigate(`/employees/${employee.id}`)}>Show</button>
-                    <button onClick={() => setEditEmployeeId(employee.id)}>Edit</button>
-                    <button onClick={() => deleteEmployee(employee.id)}>Delete</button>
+                    <button className="button-action button-show" onClick={() => navigate(`/employees/${employee.id}`)}>Show</button>
+                    <button className="button-action button-edit" onClick={() => setEditEmployeeId(employee.id)}>Edit</button>
+                    <button className="button-action button-delete" onClick={() => deleteEmployee(employee.id)}>Delete</button>
                   </td>
                 </>
               )}
@@ -158,7 +158,9 @@ function EmployeeList() {
         </tbody>
       </table>
       <br />
-      <button onClick={() => setShowAddRow(true)}>Add New Employee</button>
+      <div className="button-group">
+        <button className="button-add" onClick={() => setShowAddRow(true)}>Add New Employee</button>
+      </div>
     </div>
   );
 }

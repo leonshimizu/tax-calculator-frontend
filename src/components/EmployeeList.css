@@ -1,23 +1,97 @@
-/* src/components/EmployeeList.css */
+.employee-list {
+  padding: 20px;
+  max-width: 1000px;
+  margin: auto;
+  background-color: #fff; /* White background for clarity */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
 .employee-table {
-  width: 100%;
-  border-collapse: collapse; /* Single-line borders */
-  margin-top: 20px; /* Spacing above the table */
-  background-color: #f9f9f9; /* Light gray background */
+  width: 100%; /* Full width of the container */
+  border-collapse: collapse; /* Ensures borders between cells are merged */
 }
 
 .employee-table th,
 .employee-table td {
-  border: 1px solid #cccccc; /* Light gray borders */
-  padding: 8px; /* Padding inside cells */
+  border: 1px solid #ccc; /* Light gray border for cells */
+  padding: 8px 16px; /* Ample padding for content */
   text-align: left; /* Align text to the left */
 }
 
 .employee-table th {
-  background-color: #e9e9e9; /* Slightly darker shade for header */
-  color: #333; /* Dark text for better readability */
+  background-color: #f0f0f0; /* Light gray background for header */
+  font-weight: bold; /* Bold font for headers */
 }
 
-.employee-table tbody tr:nth-child(odd) {
-  background-color: #fff; /* Alternate row color for better readability */
+.button-group button {
+  margin-right: 8px; /* Space between buttons */
+  padding: 5px 10px; /* Padding inside buttons */
+  border: none; /* No borders for a cleaner look */
+  border-radius: 4px; /* Rounded corners for buttons */
+  cursor: pointer; /* Pointer cursor on hover */
+  background-color: #007bff; /* Bootstrap primary blue */
+  color: white; /* White text for contrast */
+}
+
+.button-group button:last-child {
+  margin-right: 0; /* No margin on the right for the last button */
+}
+
+/* Styles for different button types */
+.button-save {
+  background-color: #28a745; /* Green for save */
+}
+
+.button-cancel {
+  background-color: #dc3545; /* Red for cancel */
+}
+
+.button-add {
+  background-color: #ffc107; /* Yellow for add new */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .employee-list {
+    padding: 10px;
+  }
+
+  .employee-table th,
+  .employee-table td {
+    padding: 4px 8px; /* Smaller padding for smaller screens */
+  }
+}
+
+/* Enhanced button styles */
+.button-action {
+  margin-right: 4px;
+  padding: 5px 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-show {
+  background-color: #17a2b8; /* Bootstrap info blue */
+  color: white;
+}
+
+.button-edit {
+  background-color: #ffc107; /* Bootstrap warning yellow */
+  color: black;
+}
+
+.button-delete {
+  background-color: #dc3545; /* Bootstrap danger red */
+  color: white;
+}
+
+.button-action:hover {
+  opacity: 0.8;
+}
+
+.button-action:last-child {
+  margin-right: 0;
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import './EmployeeDetail.css'; // Make sure the path is correct
 
 const EmployeeDetail = () => {
   const { id } = useParams();
@@ -33,7 +34,7 @@ const EmployeeDetail = () => {
   if (!employee) return <div>Loading...</div>;
 
   return (
-    <div>
+    <div className="employee-detail">
       <h1>{employee.name}'s Details</h1>
       <p>Position: {employee.position}</p>
       <p>Pay Rate: ${Number(employee.pay_rate).toFixed(2)}</p>
@@ -41,7 +42,7 @@ const EmployeeDetail = () => {
       <p>Filing Status: {employee.filing_status}</p>
 
       <h2>Payroll Records</h2>
-      <ul>
+      <ul className="details-list">
         {payrollRecords.map(record => (
           <li key={record.id}>
             Date: {record.date}, Hours Worked: {record.hours_worked}, Gross Pay: ${Number(record.gross_pay).toFixed(2)}

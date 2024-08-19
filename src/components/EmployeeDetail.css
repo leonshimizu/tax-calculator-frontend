@@ -1,0 +1,41 @@
+.employee-detail {
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.employee-detail h1,
+.employee-detail h2 {
+  color: #333;
+}
+
+.employee-detail p,
+.employee-detail li {
+  color: #666;
+  font-size: 16px;
+}
+
+.details-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.details-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.details-list li:last-child {
+  border-bottom: none;
+}
+
+/* Responsive design adjustments */
+@media (max-width: 600px) {
+  .employee-detail {
+    padding: 10px;
+    font-size: 14px;
+  }
+}
