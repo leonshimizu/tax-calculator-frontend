@@ -37,6 +37,7 @@ const EmployeeDetail = () => {
       <h1>{employee.name}'s Details</h1>
       <p>Position: {employee.position}</p>
       <p>Pay Rate: ${Number(employee.pay_rate).toFixed(2)}</p>
+      <p>Retirement Rate: {employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</p>
       <p>Filing Status: {employee.filing_status}</p>
 
       <h2>Payroll Records</h2>
