@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import EmployeeList from './components/EmployeeList';
 import EmployeeDetail from './components/EmployeeDetail';
 import PayrollRecordDetails from './components/PayrollRecordDetails';
+import CreatePayrollRecord from './components/CreatePayrollRecord';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <Route path="/employees" element={<EmployeeList />} />
           <Route path="/employees/:id" element={<EmployeeDetail />} />
           <Route path="/employees/:employeeId/payroll_records/:recordId" element={<PayrollRecordDetails />} />
+          <Route path="/employees/:employeeId/payroll_records/new" element={<CreatePayrollRecord />} />
         </Routes>
       </div>
     </Router>

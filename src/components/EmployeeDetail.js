@@ -44,6 +44,7 @@ const EmployeeDetail = () => {
       <p>Filing Status: {employee.filing_status}</p>
 
       <h2>Payroll Records</h2>
+      <button onClick={() => navigate(`/employees/${employee.id}/payroll_records/new`)}>Create New Payroll Record</button>
       <ul className="details-list">
         {payrollRecords.map(record => (
           <li key={record.id}>
