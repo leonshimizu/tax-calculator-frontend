@@ -23,6 +23,8 @@ function EmployeeList() {
 
   const fetchEmployees = async () => {
     try {
+      console.log('API URL:', process.env.REACT_APP_API_URL);
+      console.log(`Requesting URL: ${process.env.REACT_APP_API_URL}/employees`);
       const response = await axios.get('/employees');
       setEmployees(response.data);
     } catch (error) {
