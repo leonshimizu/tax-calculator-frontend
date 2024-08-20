@@ -16,7 +16,7 @@ const EmployeeDetail = () => {
 
   const fetchEmployee = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/employees/${id}`);
+      const response = await axios.get(`/employees/${id}`);
       setEmployee(response.data);
     } catch (error) {
       console.error('Error fetching employee details:', error);
@@ -25,7 +25,7 @@ const EmployeeDetail = () => {
 
   const fetchPayrollRecords = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/employees/${id}/payroll_records`);
+      const response = await axios.get(`/employees/${id}/payroll_records`);
       setPayrollRecords(response.data);
     } catch (error) {
       console.error('Error fetching payroll records:', error);

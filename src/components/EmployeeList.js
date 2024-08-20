@@ -1,8 +1,9 @@
 // src/components/EmployeeList.js
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import './EmployeeList.css';
 import { useNavigate } from 'react-router-dom';
+import axios from '../api/axios';
 
 function EmployeeList() {
   const [employees, setEmployees] = useState([]);
@@ -23,7 +24,7 @@ function EmployeeList() {
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/employees');
+      const response = await axios.get('/employees');
       setEmployees(response.data);
     } catch (error) {
       console.error('Error fetching employees:', error);
@@ -51,7 +52,7 @@ function EmployeeList() {
   const saveEdit = async (id) => {
     const employee = employees.find(emp => emp.id === id);
     try {
-      await axios.put(`http://localhost:3000/employees/${id}`, employee);
+      await axios.put(`/employees/${id}`, employee);
       setEditEmployeeId(null);
       fetchEmployees();  // Refresh the list
     } catch (error) {
@@ -61,7 +62,7 @@ function EmployeeList() {
 
   const addEmployee = async () => {
     try {
-      await axios.post('http://localhost:3000/employees', newEmployee);
+      await axios.post('/employees', newEmployee);
       fetchEmployees();  // Refresh the list
       setShowAddRow(false);  // Hide the input row
       setNewEmployee({ name: '', position: 'front_of_house', pay_rate: '', retirement_rate: '', filing_status: 'single' });  // Reset form
@@ -72,7 +73,7 @@ function EmployeeList() {
 
   const deleteEmployee = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/employees/${id}`);
+      await axios.delete(`/employees/${id}`);
       fetchEmployees();  // Refresh the list
     } catch (error) {
       console.error('Failed to delete employee:', error);

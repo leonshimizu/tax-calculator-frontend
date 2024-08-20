@@ -24,7 +24,7 @@ const CreatePayrollRecord = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post(`http://localhost:3000/employees/${employeeId}/payroll_records`, formData);
+      await axios.post(`/employees/${employeeId}/payroll_records`, formData);
       navigate(`/employees/${employeeId}`); // Redirect to employee details or another relevant page
     } catch (error) {
       console.error('Error creating payroll record:', error);

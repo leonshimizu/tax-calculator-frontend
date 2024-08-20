@@ -15,7 +15,7 @@ const PayrollRecordDetails = () => {
 
     const fetchPayrollRecord = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/employees/${employeeId}/payroll_records/${recordId}`);
+            const response = await axios.get(`/employees/${employeeId}/payroll_records/${recordId}`);
             setRecord(response.data.payroll_record);  // Make sure to access the nested payroll_record object
         } catch (error) {
             console.error('Error fetching payroll record details:', error);
