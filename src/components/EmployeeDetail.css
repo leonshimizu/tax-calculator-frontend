@@ -53,3 +53,18 @@
 .button-back:hover {
   background-color: #bbb;
 }
+
+/* Assuming your CSS is defined in a separate file like EmployeeDetail.css */
+.button-payroll {
+  padding: 5px 10px;
+  background-color: #4CAF50; /* Soft green */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-payroll:hover {
+  background-color: #367c39; /* Darker green for hover effect */
+}

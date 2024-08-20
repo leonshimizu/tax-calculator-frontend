@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './EmployeeDetail.css'; // Make sure the path is correct
+import './EmployeeDetail.css';
 
 const EmployeeDetail = () => {
   const { id } = useParams();
@@ -48,6 +48,9 @@ const EmployeeDetail = () => {
         {payrollRecords.map(record => (
           <li key={record.id}>
             Date: {record.date}, Hours Worked: {record.hours_worked}, Gross Pay: ${Number(record.gross_pay).toFixed(2)}
+            <button className="button-payroll" onClick={() => navigate(`/employees/${employee.id}/payroll_records/${record.id}`)}>
+                View Payroll Record
+            </button>
           </li>
         ))}
       </ul>
