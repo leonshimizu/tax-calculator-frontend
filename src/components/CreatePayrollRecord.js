@@ -33,6 +33,9 @@ const CreatePayrollRecord = () => {
 
   return (
     <div className="container">
+      <button onClick={() => navigate(`/employees/${employeeId}`)} className="button-back">
+        Back to Employee Details
+      </button>
       <h1 className="form-header">Create Payroll Record for Employee ID: {employeeId}</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">

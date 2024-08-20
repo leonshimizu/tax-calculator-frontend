@@ -49,6 +49,20 @@
   background-color: #45a049;
 }
 
+.button-back {
+  margin-top: 20px;
+  padding: 8px 16px;
+  background-color: #ccc;
+  color: #333;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button-back:hover {
+  background-color: #bbb;
+}
+
 /* Add responsiveness */
 @media (max-width: 768px) {
   .container {
