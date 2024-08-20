@@ -44,17 +44,33 @@ const EmployeeDetail = () => {
       <p>Filing Status: {employee.filing_status}</p>
 
       <h2>Payroll Records</h2>
-      <button onClick={() => navigate(`/employees/${employee.id}/payroll_records/new`)}>Create New Payroll Record</button>
-      <ul className="details-list">
-        {payrollRecords.map(record => (
-          <li key={record.id}>
-            Date: {record.date}, Hours Worked: {record.hours_worked}, Gross Pay: ${Number(record.gross_pay).toFixed(2)}
-            <button className="button-payroll" onClick={() => navigate(`/employees/${employee.id}/payroll_records/${record.id}`)}>
-                View Payroll Record
-            </button>
-          </li>
-        ))}
-      </ul>
+      <button className="button button-create" onClick={() => navigate(`/employees/${employee.id}/payroll_records/new`)}>
+        Create New Payroll Record
+      </button>
+      <table className="details-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Hours Worked</th>
+            <th>Gross Pay</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {payrollRecords.map(record => (
+            <tr key={record.id}>
+              <td>{record.date}</td>
+              <td>{record.hours_worked}</td>
+              <td>${Number(record.gross_pay).toFixed(2)}</td>
+              <td>
+                <button className="button-payroll" onClick={() => navigate(`/employees/${employee.id}/payroll_records/${record.id}`)}>
+                  View Details
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

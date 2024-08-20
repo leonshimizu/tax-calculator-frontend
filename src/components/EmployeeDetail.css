@@ -32,6 +32,38 @@
   border-bottom: none;
 }
 
+.details-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #f9f9f9; /* Light grey background for clarity */
+}
+
+.details-table th, .details-table td {
+  border: 1px solid #ccc; /* Light gray border for cells */
+  padding: 8px 16px; /* Ample padding for content */
+  text-align: left; /* Align text to the left */
+}
+
+.details-table th {
+  background-color: #f0f0f0; /* Light gray background for header */
+  font-weight: bold; /* Bold font for headers */
+}
+
+.button-payroll, .button-create {
+  padding: 5px 10px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #4CAF50; /* Soft green */
+  color: white;
+}
+
+.button-payroll:hover, .button-create:hover {
+  background-color: #45a049; /* A darker shade of green */
+}
+
 /* Responsive design adjustments */
 @media (max-width: 600px) {
   .employee-detail {
@@ -67,4 +99,29 @@
 
 .button-payroll:hover {
   background-color: #367c39; /* Darker green for hover effect */
+}
+
+/* Assuming you have a general button style */
+.button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4CAF50; /* Soft green */
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #45a049; /* Slightly darker green on hover */
+}
+
+/* Specific style for creating new records, if needed */
+.button-create {
+  background-color: #5cb85c; /* Slightly lighter green */
+}
+
+.button-create:hover {
+  background-color: #4cae4c;
 }
