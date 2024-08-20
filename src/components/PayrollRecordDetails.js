@@ -1,8 +1,8 @@
 // src/components/PayrollRecordDetails.js
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import './PayrollRecordDetails.css';
+import axios from '../api/axios';
 
 const PayrollRecordDetails = () => {
     const { employeeId, recordId } = useParams();

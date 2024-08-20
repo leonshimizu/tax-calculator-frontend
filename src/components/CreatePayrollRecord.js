@@ -1,8 +1,8 @@
 // src/components/CreatePayrollRecord.js
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import './CreatePayrollRecord.css';
+import axios from '../api/axios';
 
 const CreatePayrollRecord = () => {
   const { employeeId } = useParams(); // Assuming you're passing employeeId in the route
