@@ -1,0 +1,48 @@
+/* BatchPayrollEntry.css */
+
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.table-header {
+  background-color: #f0f0f0;
+  color: #333;
+  text-align: left;
+  padding: 8px 16px;
+  font-weight: bold;
+}
+
+.table-row {
+  border-bottom: 1px solid #ccc;
+}
+
+.input-field {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* Makes sure padding does not affect width */
+}
+
+.button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.form-control {
+  margin: 10px 0;
+}

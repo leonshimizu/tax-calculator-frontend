@@ -82,6 +82,7 @@ function EmployeeList() {
   return (
     <div className="employee-list">
       <h1>Employees</h1>
+      <button onClick={() => navigate('/employees/batch')} className="button button-batch-entry">Batch Payroll Entry</button>
       <table className="employee-table">
         <thead>
           <tr>
