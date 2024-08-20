@@ -36,7 +36,7 @@ const EmployeeDetail = () => {
 
   return (
     <div className="employee-detail">
-      <button className="button-back" onClick={() => navigate(-1)}>Back</button>
+      <button className="button-back" onClick={() => navigate(`/employees`)}>Back</button>
       <h1>{employee.name}'s Details</h1>
       <p>Position: {employee.position}</p>
       <p>Pay Rate: ${Number(employee.pay_rate).toFixed(2)}</p>
