@@ -1,11 +1,13 @@
 // src/components/EmployeeList.js
 import React, { useEffect, useState } from 'react';
 import './EmployeeList.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../api/axios';
 
 function EmployeeList() {
+  const { companyId } = useParams(); // Get companyId from the URL params
   const [employees, setEmployees] = useState([]);
+  const [company, setCompany] = useState(null); // State to hold the company details
   const [editEmployeeId, setEditEmployeeId] = useState(null);
   const [newEmployee, setNewEmployee] = useState({
     first_name: '',
@@ -13,19 +15,30 @@ function EmployeeList() {
     department: 'front_of_house',
     pay_rate: '',
     retirement_rate: '',
-    filing_status: 'single'
+    filing_status: 'single',
+    company_id: companyId // Associate new employees with the selected company
   });
   const [showAddRow, setShowAddRow] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
+    fetchCompany();
     fetchEmployees();
-  }, []);
+  }, [companyId]);
+
+  const fetchCompany = async () => {
+    try {
+      const response = await axios.get(`/companies/${companyId}`);
+      setCompany(response.data);
+    } catch (error) {
+      console.error('Error fetching company details:', error);
+    }
+  };
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get('/employees');
-      const sortedEmployees = response.data.sort((a, b) => a.first_name.localeCompare(b.first_name));
+      const response = await axios.get(`/companies/${companyId}/employees`);
+      const sortedEmployees = response.data.sort((a, b) => a.last_name.localeCompare(b.last_name));
       setEmployees(sortedEmployees);
     } catch (error) {
       console.error('Error fetching employees:', error);
@@ -66,7 +79,15 @@ function EmployeeList() {
       await axios.post('/employees', newEmployee);
       fetchEmployees();
       setShowAddRow(false);
-      setNewEmployee({ first_name: '', last_name: '', department: 'front_of_house', pay_rate: '', retirement_rate: '', filing_status: 'single' });
+      setNewEmployee({
+        first_name: '',
+        last_name: '',
+        department: 'front_of_house',
+        pay_rate: '',
+        retirement_rate: '',
+        filing_status: 'single',
+        company_id: companyId
+      });
     } catch (error) {
       console.error('Failed to add employee:', error);
     }
@@ -83,7 +104,7 @@ function EmployeeList() {
 
   return (
     <div className="employee-list">
-      <h1>Employees</h1>
+      <h1>{company?.name}'s Employees</h1>
       <button onClick={() => navigate('/employees/batch')} className="button button-batch-entry">Batch Payroll Entry</button>
       <button onClick={() => navigate('/batch-payroll-records-display')} className="button button-view-records">
         View Payroll Records by Date

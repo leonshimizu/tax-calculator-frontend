@@ -5,7 +5,7 @@ import './CreatePayrollRecord.css';
 import axios from '../api/axios';
 
 const CreatePayrollRecord = () => {
-  const { employeeId } = useParams(); // Assuming you're passing employeeId in the route
+  const { companyId, employeeId } = useParams(); // Assuming you're passing companyId and employeeId in the route
   const [formData, setFormData] = useState({
     hours_worked: '',
     overtime_hours_worked: '',
@@ -23,7 +23,7 @@ const CreatePayrollRecord = () => {
 
   const fetchEmployee = async () => {
     try {
-      const response = await axios.get(`/employees/${employeeId}`);
+      const response = await axios.get(`/companies/${companyId}/employees/${employeeId}`);
       setEmployee(response.data);
     } catch (error) {
       console.error('Error fetching employee details:', error);
@@ -38,8 +38,8 @@ const CreatePayrollRecord = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post(`/employees/${employeeId}/payroll_records`, formData);
-      navigate(`/employees/${employeeId}`); // Redirect to employee details or another relevant page
+      await axios.post(`/companies/${companyId}/employees/${employeeId}/payroll_records`, formData);
+      navigate(`/companies/${companyId}/employees/${employeeId}`); // Redirect to employee details page
     } catch (error) {
       console.error('Error creating payroll record:', error);
     }
@@ -47,7 +47,7 @@ const CreatePayrollRecord = () => {
 
   return (
     <div className="container">
-      <button onClick={() => navigate(`/employees/${employeeId}`)} className="button-back">
+      <button onClick={() => navigate(`/companies/${companyId}/employees/${employeeId}`)} className="button-back">
         Back to Employee Details
       </button>
       <h1 className="form-header">Create Payroll Record for {employee?.first_name} {employee?.last_name}</h1>

@@ -5,7 +5,7 @@ import './EmployeeDetail.css';
 import axios from '../api/axios';
 
 const EmployeeDetail = () => {
-  const { id } = useParams();
+  const { companyId, employeeId } = useParams();
   const navigate = useNavigate();
   const [employee, setEmployee] = useState(null);
   const [payrollRecords, setPayrollRecords] = useState([]);
@@ -17,7 +17,7 @@ const EmployeeDetail = () => {
 
   const fetchEmployee = async () => {
     try {
-      const response = await axios.get(`/employees/${id}`);
+      const response = await axios.get(`/companies/${companyId}/employees/${employeeId}`);
       setEmployee(response.data);
     } catch (error) {
       console.error('Error fetching employee details:', error);
@@ -26,7 +26,7 @@ const EmployeeDetail = () => {
 
   const fetchPayrollRecords = async () => {
     try {
-      const response = await axios.get(`/employees/${id}/payroll_records`);
+      const response = await axios.get(`/companies/${companyId}/employees/${employeeId}/payroll_records`);
       setPayrollRecords(response.data);
     } catch (error) {
       console.error('Error fetching payroll records:', error);
@@ -37,7 +37,7 @@ const EmployeeDetail = () => {
 
   return (
     <div className="employee-detail">
-      <button className="button-back" onClick={() => navigate(`/employees`)}>Back</button>
+      <button className="button-back" onClick={() => navigate(`/companies/${companyId}/employees`)}>Back</button>
       <h1>{employee.first_name} {employee.last_name}'s Details</h1>
       <p>Department: {employee.department}</p>
       <p>Pay Rate: ${Number(employee.pay_rate).toFixed(2)}</p>
@@ -45,7 +45,7 @@ const EmployeeDetail = () => {
       <p>Filing Status: {employee.filing_status}</p>
 
       <h2>Payroll Records</h2>
-      <button className="button button-create" onClick={() => navigate(`/employees/${employee.id}/payroll_records/new`)}>
+      <button className="button button-create" onClick={() => navigate(`/companies/${companyId}/employees/${employeeId}/payroll_records/new`)}>
         Create New Payroll Record
       </button>
       <table className="details-table">
@@ -64,7 +64,7 @@ const EmployeeDetail = () => {
               <td>{record.hours_worked}</td>
               <td>${Number(record.gross_pay).toFixed(2)}</td>
               <td>
-                <button className="button-payroll" onClick={() => navigate(`/employees/${employee.id}/payroll_records/${record.id}`)}>
+                <button className="button-payroll" onClick={() => navigate(`/companies/${companyId}/employees/${employeeId}/payroll_records/${record.id}`)}>
                   View Details
                 </button>
               </td>

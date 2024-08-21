@@ -1,10 +1,11 @@
 // src/components/BatchPayrollEntry.js
 import React, { useState, useEffect } from 'react';
 import axios from '../api/axios';
-import { useNavigate } from 'react-router-dom';
-import './BatchPayrollEntry.css'; // Make sure this import path is correct
+import { useNavigate, useParams } from 'react-router-dom';
+import './BatchPayrollEntry.css';
 
 function BatchPayrollEntry() {
+  const { companyId } = useParams();
   const [employees, setEmployees] = useState([]);
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ function BatchPayrollEntry() {
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get('/employees');
+      const response = await axios.get(`/companies/${companyId}/employees`);
       const employeesWithPayroll = response.data.map(emp => ({
         ...emp,
         hours_worked: '',
@@ -49,9 +50,9 @@ function BatchPayrollEntry() {
         insurance_payment: emp.insurance_payment
       }));
   
-      const response = await axios.post(`/employees/batch/payroll_records`, { payroll_records: payload });
+      const response = await axios.post(`/companies/${companyId}/employees/batch/payroll_records`, { payroll_records: payload });
   
-      navigate('/batch-payroll-records-display', { state: { records: response.data } });
+      navigate(`/companies/${companyId}/batch-payroll-records-display`, { state: { records: response.data } });
     } catch (error) {
       console.error('Error creating batch payroll records:', error);
     }
@@ -59,7 +60,7 @@ function BatchPayrollEntry() {
 
   return (
     <div className="container">
-      <button className="button-back" onClick={() => navigate(`/employees`)}>Back</button>
+      <button className="button-back" onClick={() => navigate(`/companies/${companyId}/employees`)}>Back</button>
       <h1>Batch Payroll Entry</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-control">

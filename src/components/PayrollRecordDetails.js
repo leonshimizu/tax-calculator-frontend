@@ -5,7 +5,7 @@ import './PayrollRecordDetails.css';
 import axios from '../api/axios';
 
 const PayrollRecordDetails = () => {
-    const { employeeId, recordId } = useParams();
+    const { companyId, employeeId, recordId } = useParams();
     const navigate = useNavigate();
     const [record, setRecord] = useState(null);
     const [employee, setEmployee] = useState(null);
@@ -13,11 +13,11 @@ const PayrollRecordDetails = () => {
     useEffect(() => {
         fetchPayrollRecord();
         fetchEmployee();
-    }, [employeeId, recordId]);
+    }, [companyId, employeeId, recordId]);
 
     const fetchPayrollRecord = async () => {
         try {
-            const response = await axios.get(`/employees/${employeeId}/payroll_records/${recordId}`);
+            const response = await axios.get(`/companies/${companyId}/employees/${employeeId}/payroll_records/${recordId}`);
             setRecord(response.data.payroll_record);  // Make sure to access the nested payroll_record object
         } catch (error) {
             console.error('Error fetching payroll record details:', error);
@@ -26,7 +26,7 @@ const PayrollRecordDetails = () => {
 
     const fetchEmployee = async () => {
         try {
-            const response = await axios.get(`/employees/${employeeId}`);
+            const response = await axios.get(`/companies/${companyId}/employees/${employeeId}`);
             setEmployee(response.data);
         } catch (error) {
             console.error('Error fetching employee details:', error);
@@ -94,8 +94,8 @@ const PayrollRecordDetails = () => {
                     </tr>
                 </tbody>
             </table>
-            <button onClick={() => navigate(`/employees/${employeeId}/payroll_records/${recordId}/edit`)}>Edit</button>
-            <button onClick={() => navigate(`/employees/${employeeId}`)}>Back to Payroll Records</button>
+            <button onClick={() => navigate(`/companies/${companyId}/employees/${employeeId}/payroll_records/${recordId}/edit`)}>Edit</button>
+            <button onClick={() => navigate(`/companies/${companyId}/employees/${employeeId}`)}>Back to Payroll Records</button>
         </div>
     );
 };

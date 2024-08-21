@@ -1,10 +1,11 @@
 // src/components/BatchPayrollRecordsDisplay.js
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from '../api/axios';
 import './BatchPayrollRecordsDisplay.css';
 
 function BatchPayrollRecordsDisplay() {
+  const { companyId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const [records, setRecords] = useState(location.state?.records || []);
@@ -15,7 +16,7 @@ function BatchPayrollRecordsDisplay() {
     if (searchDate) {
       setLoading(true);
       try {
-        const response = await axios.get(`/payroll_records?date=${searchDate}`);
+        const response = await axios.get(`/companies/${companyId}/payroll_records?date=${searchDate}`);
         setRecords(response.data);
       } catch (error) {
         console.error('Error fetching records:', error);
@@ -107,7 +108,7 @@ function BatchPayrollRecordsDisplay() {
         <p>No records available for the selected date.</p>
       )}
 
-      <button className="button-back" onClick={() => navigate(`/employees`)}>Back</button>
+      <button className="button-back" onClick={() => navigate(`/companies/${companyId}/employees`)}>Back</button>
     </div>
   );
 }
