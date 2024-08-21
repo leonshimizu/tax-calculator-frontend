@@ -1,64 +1,51 @@
 // src/components/BatchPayrollRecordsDisplay.js
-import React, { useState, useEffect } from 'react';
-import axios from '../api/axios';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
 
 function BatchPayrollRecordsDisplay() {
-  const [records, setRecords] = useState([]);
-  const [searchDate, setSearchDate] = useState('');
-  const navigate = useNavigate();
+  // Use the useLocation hook to access the passed state
+  const location = useLocation();
+  const records = location.state?.records || [];
 
-  useEffect(() => {
-    fetchRecords();
-  }, []);
+  // Debugging: Log the records to the console to ensure they are being received
+  console.log('Received records:', records);
 
-  const fetchRecords = async () => {
-    try {
-      const response = await axios.get(`/payroll_records?date=${searchDate}`);
-      setRecords(response.data);
-    } catch (error) {
-      console.error('Error fetching payroll records:', error);
-    }
-  };
-
-  const handleDateChange = (event) => {
-    setSearchDate(event.target.value);
-  };
-
-  const handleSearch = () => {
-    fetchRecords();
-  };
+  if (records.length === 0) {
+    return <div>No records available</div>;
+  }
 
   return (
     <div>
-      <input
-        type="date"
-        value={searchDate}
-        onChange={handleDateChange}
-      />
-      <button onClick={handleSearch}>Search</button>
+      <h1>Batch Payroll Records</h1>
       <table>
         <thead>
           <tr>
-            <th>Employee</th>
+            <th>Employee Name</th>
             <th>Date</th>
             <th>Hours Worked</th>
             <th>Overtime Hours</th>
             <th>Reported Tips</th>
             <th>Gross Pay</th>
+            <th>Net Pay</th>
           </tr>
         </thead>
         <tbody>
-          {records.map(record => (
-            <tr key={record.id}>
-              <td>{record.employee.name}</td>
-              <td>{record.date}</td>
-              <td>{record.hours_worked}</td>
-              <td>{record.overtime_hours}</td>
-              <td>{record.reported_tips}</td>
-              <td>{record.gross_pay}</td>
-            </tr>
-          ))}
+          {records.map((record, index) => {
+            // Ensure each record has an employee object and a name property
+            const employeeName = record?.employee?.name || 'Unknown Employee';
+
+            return (
+              <tr key={index}>
+                <td>{employeeName}</td>
+                <td>{record.date || 'N/A'}</td>
+                <td>{record.hours_worked || 'N/A'}</td>
+                <td>{record.overtime_hours_worked || 'N/A'}</td>
+                <td>{record.reported_tips || 'N/A'}</td>
+                <td>{record.gross_pay || 'N/A'}</td>
+                <td>{record.net_pay || 'N/A'}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

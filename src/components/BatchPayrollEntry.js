@@ -1,4 +1,3 @@
-// src/components/BatchPayrollEntry.js
 import React, { useState, useEffect } from 'react';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
@@ -38,22 +37,23 @@ function BatchPayrollEntry() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const responses = await Promise.all(
-      employees.map(emp => {
-        const payload = {
-          date: date,
-          hours_worked: emp.hours_worked,
-          overtime_hours_worked: emp.overtime_hours_worked,
-          reported_tips: emp.reported_tips,
-          loan_payment: emp.loan_payment,
-          insurance_payment: emp.insurance_payment
-        };
-        return axios.post(`/employees/${emp.id}/payroll_records`, payload);
-      })
-    );
+    try {
+      const payload = employees.map(emp => ({
+        employee_id: emp.id,
+        date: date,
+        hours_worked: emp.hours_worked,
+        overtime_hours_worked: emp.overtime_hours_worked,
+        reported_tips: emp.reported_tips,
+        loan_payment: emp.loan_payment,
+        insurance_payment: emp.insurance_payment
+      }));
   
-    // Assuming 'responses' contains the data of the newly created payroll records
-    navigate('/batch-payroll-records-display', { state: { records: responses.map(res => res.data) } });
+      const response = await axios.post(`/employees/batch/payroll_records`, { payroll_records: payload });
+  
+      navigate('/batch-payroll-records-display', { state: { records: response.data } });
+    } catch (error) {
+      console.error('Error creating batch payroll records:', error);
+    }
   };
 
   return (
