@@ -1,23 +1,15 @@
+/* src/components/BatchPayrollRecordsDisplay.css */
 /* Container Styling */
 .container {
-  max-width: 1200px;
-  margin: auto;
   padding: 20px;
+  max-width: 100%; /* Allow the container to expand fully */
+  margin: auto;
   background-color: #f8f9fa;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: 'Arial', sans-serif;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow-x: auto; /* Add horizontal scrolling if needed */
 }
 
-/* Header Styling */
-h1 {
-  text-align: center;
-  color: #333;
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-/* Table Styling */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -47,18 +39,15 @@ tr:nth-child(even) {
   background-color: #f2f2f2; /* Light grey for alternate rows */
 }
 
-/* Excel-like Borders */
 td, th {
   border-right: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
 }
 
-/* Remove Last Cell Borders */
 tr th:last-child, tr td:last-child {
   border-right: none;
 }
 
-/* Hover Effect */
 tr:hover {
   background-color: #f1f1f1;
 }
