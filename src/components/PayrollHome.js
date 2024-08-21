@@ -6,6 +6,7 @@ import './PayrollHome.css';
 
 const PayrollHome = () => {
   const [companies, setCompanies] = useState([]);
+  const [newCompanyName, setNewCompanyName] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,6 +26,17 @@ const PayrollHome = () => {
     navigate(`/companies/${companyId}/employees`);
   };
 
+  const handleCreateCompany = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post('/companies', { name: newCompanyName });
+      setCompanies([...companies, response.data]); // Add the new company to the list
+      setNewCompanyName(''); // Clear the input field
+    } catch (error) {
+      console.error('Error creating company:', error);
+    }
+  };
+
   return (
     <div className="payroll-home-container">
       <h1>Select a Company</h1>
@@ -35,6 +47,18 @@ const PayrollHome = () => {
           </div>
         ))}
       </div>
+      <br />
+      <form onSubmit={handleCreateCompany} className="create-company-form">
+        <input
+          type="text"
+          placeholder="Enter new company name"
+          value={newCompanyName}
+          onChange={(e) => setNewCompanyName(e.target.value)}
+          required
+          className="create-company-input"
+        />
+        <button type="submit" className="create-company-button">Create Company</button>
+      </form>
     </div>
   );
 };

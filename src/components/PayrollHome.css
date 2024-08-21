@@ -43,3 +43,32 @@ h1 {
 .company-card:hover {
   transform: scale(1.05);
 }
+
+.create-company-form {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.create-company-input {
+  padding: 10px;
+  font-size: 16px;
+  margin-right: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  flex-grow: 1;
+}
+
+.create-company-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.create-company-button:hover {
+  background-color: #45a049;
+}
