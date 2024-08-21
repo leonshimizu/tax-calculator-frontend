@@ -55,9 +55,10 @@ function BatchPayrollRecordsDisplay() {
         <table>
           <thead>
             <tr>
-              <th>Employee Name</th>
+              <th>First Name</th>
+              <th>Last Name</th>
               <th>Filing Status</th>
-              <th>Position</th>
+              <th>Department</th>
               <th>Pay Rate</th>
               <th>Retirement Rate</th>
               <th>Date</th>
@@ -79,9 +80,10 @@ function BatchPayrollRecordsDisplay() {
               const employee = record.employee || {};
               return (
                 <tr key={index}>
-                  <td>{employee.name || 'Unknown Employee'}</td>
+                  <td>{employee.first_name || 'Unknown'}</td>
+                  <td>{employee.last_name || 'Unknown'}</td>
                   <td>{employee.filing_status || 'N/A'}</td>
-                  <td>{employee.position || 'N/A'}</td>
+                  <td>{employee.department || 'N/A'}</td>
                   <td>{parseFloat(employee.pay_rate).toFixed(2) || 'N/A'}</td>
                   <td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
                   <td>{record.date || 'N/A'}</td>

@@ -8,8 +8,9 @@ function EmployeeList() {
   const [employees, setEmployees] = useState([]);
   const [editEmployeeId, setEditEmployeeId] = useState(null);
   const [newEmployee, setNewEmployee] = useState({
-    name: '',
-    position: 'front_of_house',
+    first_name: '',
+    last_name: '',
+    department: 'front_of_house',
     pay_rate: '',
     retirement_rate: '',
     filing_status: 'single'
@@ -24,7 +25,7 @@ function EmployeeList() {
   const fetchEmployees = async () => {
     try {
       const response = await axios.get('/employees');
-      const sortedEmployees = response.data.sort((a, b) => a.name.localeCompare(b.name));
+      const sortedEmployees = response.data.sort((a, b) => a.first_name.localeCompare(b.first_name));
       setEmployees(sortedEmployees);
     } catch (error) {
       console.error('Error fetching employees:', error);
@@ -65,7 +66,7 @@ function EmployeeList() {
       await axios.post('/employees', newEmployee);
       fetchEmployees();
       setShowAddRow(false);
-      setNewEmployee({ name: '', position: 'front_of_house', pay_rate: '', retirement_rate: '', filing_status: 'single' });
+      setNewEmployee({ first_name: '', last_name: '', department: 'front_of_house', pay_rate: '', retirement_rate: '', filing_status: 'single' });
     } catch (error) {
       console.error('Failed to add employee:', error);
     }
@@ -90,8 +91,9 @@ function EmployeeList() {
       <table className="employee-table">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Position</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Department</th>
             <th>Pay Rate</th>
             <th>401K Rate</th>
             <th>Filing Status</th>
@@ -101,9 +103,10 @@ function EmployeeList() {
         <tbody>
           {showAddRow && (
             <tr>
-              <td><input type="text" name="name" value={newEmployee.name} onChange={handleInputChange} /></td>
+              <td><input type="text" name="first_name" value={newEmployee.first_name} onChange={handleInputChange} /></td>
+              <td><input type="text" name="last_name" value={newEmployee.last_name} onChange={handleInputChange} /></td>
               <td>
-                <select name="position" value={newEmployee.position} onChange={handleInputChange}>
+                <select name="department" value={newEmployee.department} onChange={handleInputChange}>
                   <option value="front_of_house">Front of House</option>
                   <option value="back_of_house">Back of House</option>
                 </select>
@@ -127,9 +130,10 @@ function EmployeeList() {
             <tr key={employee.id}>
               {editEmployeeId === employee.id ? (
                 <>
-                  <td><input type="text" value={employee.name} onChange={(e) => handleEditChange(e, employee.id, 'name')} /></td>
+                  <td><input type="text" value={employee.first_name} onChange={(e) => handleEditChange(e, employee.id, 'first_name')} /></td>
+                  <td><input type="text" value={employee.last_name} onChange={(e) => handleEditChange(e, employee.id, 'last_name')} /></td>
                   <td>
-                    <select value={employee.position} onChange={(e) => handleEditChange(e, employee.id, 'position')}>
+                    <select value={employee.department} onChange={(e) => handleEditChange(e, employee.id, 'department')}>
                       <option value="front_of_house">Front of House</option>
                       <option value="back_of_house">Back of House</option>
                     </select>
@@ -152,8 +156,9 @@ function EmployeeList() {
                 </>
               ) : (
                 <>
-                  <td>{employee.name}</td>
-                  <td>{employee.position}</td>
+                  <td>{employee.first_name}</td>
+                  <td>{employee.last_name}</td>
+                  <td>{employee.department}</td>
                   <td>${Number(employee.pay_rate).toFixed(2)}</td>
                   <td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
                   <td>{employee.filing_status}</td>

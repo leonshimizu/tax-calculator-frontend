@@ -1,5 +1,5 @@
 // src/components/CreatePayrollRecord.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './CreatePayrollRecord.css';
 import axios from '../api/axios';
@@ -14,7 +14,21 @@ const CreatePayrollRecord = () => {
     insurance_payment: '',
     date: ''
   });
+  const [employee, setEmployee] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchEmployee();
+  }, []);
+
+  const fetchEmployee = async () => {
+    try {
+      const response = await axios.get(`/employees/${employeeId}`);
+      setEmployee(response.data);
+    } catch (error) {
+      console.error('Error fetching employee details:', error);
+    }
+  };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -36,7 +50,7 @@ const CreatePayrollRecord = () => {
       <button onClick={() => navigate(`/employees/${employeeId}`)} className="button-back">
         Back to Employee Details
       </button>
-      <h1 className="form-header">Create Payroll Record for Employee ID: {employeeId}</h1>
+      <h1 className="form-header">Create Payroll Record for {employee?.first_name} {employee?.last_name}</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Date</label>

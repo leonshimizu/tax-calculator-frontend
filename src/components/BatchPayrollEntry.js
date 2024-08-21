@@ -1,3 +1,4 @@
+// src/components/BatchPayrollEntry.js
 import React, { useState, useEffect } from 'react';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
@@ -68,7 +69,8 @@ function BatchPayrollEntry() {
         <table>
           <thead>
             <tr className="table-header">
-              <th>Employee</th>
+              <th>First Name</th>
+              <th>Last Name</th>
               <th>Hours Worked</th>
               <th>Overtime Hours</th>
               <th>Reported Tips</th>
@@ -79,7 +81,8 @@ function BatchPayrollEntry() {
           <tbody>
             {employees.map((emp, index) => (
               <tr key={emp.id} className="table-row">
-                <td>{emp.name}</td>
+                <td>{emp.first_name}</td>
+                <td>{emp.last_name}</td>
                 <td><input type="number" value={emp.hours_worked} onChange={(e) => handleChange(index, 'hours_worked', e.target.value)} className="input-field" /></td>
                 <td><input type="number" value={emp.overtime_hours_worked} onChange={(e) => handleChange(index, 'overtime_hours_worked', e.target.value)} className="input-field" /></td>
                 <td><input type="number" value={emp.reported_tips} onChange={(e) => handleChange(index, 'reported_tips', e.target.value)} className="input-field" /></td>

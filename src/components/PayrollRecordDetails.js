@@ -8,9 +8,11 @@ const PayrollRecordDetails = () => {
     const { employeeId, recordId } = useParams();
     const navigate = useNavigate();
     const [record, setRecord] = useState(null);
+    const [employee, setEmployee] = useState(null);
 
     useEffect(() => {
         fetchPayrollRecord();
+        fetchEmployee();
     }, [employeeId, recordId]);
 
     const fetchPayrollRecord = async () => {
@@ -22,17 +24,26 @@ const PayrollRecordDetails = () => {
         }
     };
 
-    if (!record) return <div>Loading...</div>;
+    const fetchEmployee = async () => {
+        try {
+            const response = await axios.get(`/employees/${employeeId}`);
+            setEmployee(response.data);
+        } catch (error) {
+            console.error('Error fetching employee details:', error);
+        }
+    };
+
+    if (!record || !employee) return <div>Loading...</div>;
 
     return (
         <div className="payroll-record-details">
             <h1>Payroll Record Details</h1>
+            <h2>{employee.first_name} {employee.last_name}</h2>
+            <p>Department: {employee.department}</p>
+            <p>Filing Status: {employee.filing_status}</p>
+
             <table>
                 <tbody>
-                    <tr>
-                        <th>Employee ID:</th>
-                        <td>{record.employee_id}</td>
-                    </tr>
                     <tr>
                         <th>Date:</th>
                         <td>{record.date}</td>
