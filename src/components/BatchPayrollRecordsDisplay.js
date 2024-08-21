@@ -1,9 +1,10 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './BatchPayrollRecordsDisplay.css';  // Import the CSS file
 
 function BatchPayrollRecordsDisplay() {
   const location = useLocation();
+  const navigate = useNavigate();
   const records = location.state?.records || [];
 
   if (records.length === 0) {
@@ -42,7 +43,7 @@ function BatchPayrollRecordsDisplay() {
           })}
         </tbody>
       </table>
-      <a href="/previous-page" className="button-back">Back</a>
+      <button className="button-back" onClick={() => navigate(`/employees`)}>Back</button>
     </div>
   );
 }
