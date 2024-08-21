@@ -58,6 +58,7 @@ function BatchPayrollEntry() {
 
   return (
     <div className="container">
+      <button className="button-back" onClick={() => navigate(`/employees`)}>Back</button>
       <h1>Batch Payroll Entry</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-control">
