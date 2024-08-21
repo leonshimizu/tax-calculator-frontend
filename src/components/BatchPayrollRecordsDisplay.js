@@ -12,6 +12,12 @@ function BatchPayrollRecordsDisplay() {
   const [searchDate, setSearchDate] = useState('');
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (searchDate) {
+      handleSearch();
+    }
+  }, [searchDate]);
+
   const handleSearch = async () => {
     if (searchDate) {
       setLoading(true);
@@ -27,11 +33,39 @@ function BatchPayrollRecordsDisplay() {
     }
   };
 
-  useEffect(() => {
-    if (searchDate) {
-      handleSearch();
-    }
-  }, [searchDate]);
+  const calculateYtdTotals = () => {
+    const totals = {
+      hours_worked: 0,
+      overtime_hours_worked: 0,
+      reported_tips: 0,
+      loan_payment: 0,
+      insurance_payment: 0,
+      gross_pay: 0,
+      net_pay: 0,
+      withholding_tax: 0,
+      social_security_tax: 0,
+      medicare_tax: 0,
+      retirement_payment: 0,
+    };
+
+    records.forEach(record => {
+      totals.hours_worked += parseFloat(record.hours_worked) || 0;
+      totals.overtime_hours_worked += parseFloat(record.overtime_hours_worked) || 0;
+      totals.reported_tips += parseFloat(record.reported_tips) || 0;
+      totals.loan_payment += parseFloat(record.loan_payment) || 0;
+      totals.insurance_payment += parseFloat(record.insurance_payment) || 0;
+      totals.gross_pay += parseFloat(record.gross_pay) || 0;
+      totals.net_pay += parseFloat(record.net_pay) || 0;
+      totals.withholding_tax += parseFloat(record.withholding_tax) || 0;
+      totals.social_security_tax += parseFloat(record.social_security_tax) || 0;
+      totals.medicare_tax += parseFloat(record.medicare_tax) || 0;
+      totals.retirement_payment += parseFloat(record.retirement_payment) || 0;
+    });
+
+    return totals;
+  };
+
+  const ytdTotals = calculateYtdTotals();
 
   return (
     <div className="container">
@@ -102,6 +136,21 @@ function BatchPayrollRecordsDisplay() {
                 </tr>
               );
             })}
+            {/* YTD Totals Row */}
+            <tr className="ytd-totals">
+              <td colSpan="7" className="ytd-label">Year-to-Date Totals:</td>
+              <td>{ytdTotals.hours_worked.toFixed(2)}</td>
+              <td>{ytdTotals.overtime_hours_worked.toFixed(2)}</td>
+              <td>{ytdTotals.reported_tips.toFixed(2)}</td>
+              <td>{ytdTotals.loan_payment.toFixed(2)}</td>
+              <td>{ytdTotals.insurance_payment.toFixed(2)}</td>
+              <td>{ytdTotals.gross_pay.toFixed(2)}</td>
+              <td>{ytdTotals.net_pay.toFixed(2)}</td>
+              <td>{ytdTotals.withholding_tax.toFixed(2)}</td>
+              <td>{ytdTotals.social_security_tax.toFixed(2)}</td>
+              <td>{ytdTotals.medicare_tax.toFixed(2)}</td>
+              <td>{ytdTotals.retirement_payment.toFixed(2)}</td>
+            </tr>
           </tbody>
         </table>
       ) : (

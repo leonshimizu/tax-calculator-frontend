@@ -105,8 +105,8 @@ function EmployeeList() {
   return (
     <div className="employee-list">
       <h1>{company?.name}'s Employees</h1>
-      <button onClick={() => navigate('/employees/batch')} className="button button-batch-entry">Batch Payroll Entry</button>
-      <button onClick={() => navigate('/batch-payroll-records-display')} className="button button-view-records">
+      <button onClick={() => navigate(`/companies/${companyId}/employees/batch`)} className="button button-batch-entry">Batch Payroll Entry</button>
+      <button onClick={() => navigate(`/companies/${companyId}/batch-payroll-records-display`)} className="button button-view-records">
         View Payroll Records by Date
       </button>
       <table className="employee-table">
@@ -184,7 +184,7 @@ function EmployeeList() {
                   <td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
                   <td>{employee.filing_status}</td>
                   <td>
-                    <button className="button-action button-show" onClick={() => navigate(`/employees/${employee.id}`)}>Show</button>
+                    <button className="button-action button-show" onClick={() => navigate(`/companies/${companyId}/employees/${employee.id}`)}>Show</button>
                     <button className="button-action button-edit" onClick={() => setEditEmployeeId(employee.id)}>Edit</button>
                     <button className="button-action button-delete" onClick={() => deleteEmployee(employee.id)}>Delete</button>
                   </td>

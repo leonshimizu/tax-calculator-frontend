@@ -5,7 +5,7 @@ import './CreatePayrollRecord.css';
 import axios from '../api/axios';
 
 const CreatePayrollRecord = () => {
-  const { companyId, employeeId } = useParams(); // Assuming you're passing companyId and employeeId in the route
+  const { companyId, employeeId } = useParams(); // Get companyId and employeeId from the URL params
   const [formData, setFormData] = useState({
     hours_worked: '',
     overtime_hours_worked: '',

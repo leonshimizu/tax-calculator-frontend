@@ -13,7 +13,7 @@ const EmployeeDetail = () => {
   useEffect(() => {
     fetchEmployee();
     fetchPayrollRecords();
-  }, []);
+  }, [companyId, employeeId]);
 
   const fetchEmployee = async () => {
     try {

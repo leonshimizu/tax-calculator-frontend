@@ -16,7 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<PayrollHome />} />
           <Route path="/companies/:companyId/employees" element={<EmployeeList />} />
-          <Route path="/companies/:companyId/employees/:id" element={<EmployeeDetail />} />
+          <Route path="/companies/:companyId/employees/:employeeId" element={<EmployeeDetail />} />
           <Route path="/companies/:companyId/employees/batch" element={<BatchPayrollEntry />} />
           <Route path="/companies/:companyId/batch-payroll-records-display" element={<BatchPayrollRecordsDisplay />} />
           <Route path="/companies/:companyId/employees/:employeeId/payroll_records/:recordId" element={<PayrollRecordDetails />} />

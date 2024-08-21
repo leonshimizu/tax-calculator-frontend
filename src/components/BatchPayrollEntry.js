@@ -12,7 +12,7 @@ function BatchPayrollEntry() {
 
   useEffect(() => {
     fetchEmployees();
-  }, []);
+  }, [companyId]); // Fetch employees when companyId changes
 
   const fetchEmployees = async () => {
     try {
@@ -52,7 +52,7 @@ function BatchPayrollEntry() {
   
       const response = await axios.post(`/companies/${companyId}/employees/batch/payroll_records`, { payroll_records: payload });
   
-      navigate(`/companies/${companyId}/batch-payroll-records-display`, { state: { records: response.data } });
+      navigate(`/companies/${companyId}/employees/batch-payroll-records-display`, { state: { records: response.data } });
     } catch (error) {
       console.error('Error creating batch payroll records:', error);
     }
