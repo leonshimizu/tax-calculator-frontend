@@ -138,7 +138,7 @@ function BatchPayrollRecordsDisplay() {
             })}
             {/* YTD Totals Row */}
             <tr className="ytd-totals">
-              <td colSpan="7" className="ytd-label">Year-to-Date Totals:</td>
+              <td colSpan="7" className="ytd-label">Totals:</td>
               <td>{ytdTotals.hours_worked.toFixed(2)}</td>
               <td>{ytdTotals.overtime_hours_worked.toFixed(2)}</td>
               <td>{ytdTotals.reported_tips.toFixed(2)}</td>
