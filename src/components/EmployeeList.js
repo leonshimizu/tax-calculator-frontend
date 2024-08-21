@@ -24,7 +24,6 @@ function EmployeeList() {
   const fetchEmployees = async () => {
     try {
       const response = await axios.get('/employees');
-      // Sort employees by name alphabetically
       const sortedEmployees = response.data.sort((a, b) => a.name.localeCompare(b.name));
       setEmployees(sortedEmployees);
     } catch (error) {
@@ -55,7 +54,7 @@ function EmployeeList() {
     try {
       await axios.put(`/employees/${id}`, employee);
       setEditEmployeeId(null);
-      fetchEmployees();  // Refresh the list
+      fetchEmployees();
     } catch (error) {
       console.error('Failed to save employee:', error);
     }
@@ -64,9 +63,9 @@ function EmployeeList() {
   const addEmployee = async () => {
     try {
       await axios.post('/employees', newEmployee);
-      fetchEmployees();  // Refresh the list
-      setShowAddRow(false);  // Hide the input row
-      setNewEmployee({ name: '', position: 'front_of_house', pay_rate: '', retirement_rate: '', filing_status: 'single' });  // Reset form
+      fetchEmployees();
+      setShowAddRow(false);
+      setNewEmployee({ name: '', position: 'front_of_house', pay_rate: '', retirement_rate: '', filing_status: 'single' });
     } catch (error) {
       console.error('Failed to add employee:', error);
     }
@@ -75,7 +74,7 @@ function EmployeeList() {
   const deleteEmployee = async (id) => {
     try {
       await axios.delete(`/employees/${id}`);
-      fetchEmployees();  // Refresh the list
+      fetchEmployees();
     } catch (error) {
       console.error('Failed to delete employee:', error);
     }
@@ -85,6 +84,9 @@ function EmployeeList() {
     <div className="employee-list">
       <h1>Employees</h1>
       <button onClick={() => navigate('/employees/batch')} className="button button-batch-entry">Batch Payroll Entry</button>
+      <button onClick={() => navigate('/batch-payroll-records-display')} className="button button-view-records">
+        View Payroll Records by Date
+      </button>
       <table className="employee-table">
         <thead>
           <tr>
