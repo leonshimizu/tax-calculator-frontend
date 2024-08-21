@@ -132,7 +132,13 @@ function EmployeeList() {
                   </td>
                   <td><input type="number" value={Number(employee.pay_rate)} onChange={(e) => handleEditChange(e, employee.id, 'pay_rate')} /></td>
                   <td><input type="number" value={employee.retirement_rate} onChange={(e) => handleEditChange(e, employee.id, 'retirement_rate')} /></td>
-                  <td>{employee.filing_status}</td>
+                  <td>
+                    <select value={employee.filing_status} onChange={(e) => handleEditChange(e, employee.id, 'filing_status')}>
+                      <option value="single">single</option>
+                      <option value="married">married</option>
+                      <option value="head_of_household">head of household</option>
+                    </select>
+                  </td>
                   <td>
                     <button onClick={() => saveEdit(employee.id)}>Save</button>
                     <button onClick={() => setEditEmployeeId(null)}>Cancel</button>
