@@ -1,11 +1,11 @@
-/* src/components/EmployeeDetail.css */
 .employee-detail {
   padding: 20px;
-  max-width: 800px;
+  max-width: 1000px; /* Increased max-width to give more space */
   margin: auto;
   background-color: #f8f9fa;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow-x: auto; /* Enable horizontal scrolling if needed */
 }
 
 .employee-detail h1,
@@ -33,20 +33,25 @@
   border-bottom: none;
 }
 
-.details-table {
+.details-table, .ytd-totals-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
   background-color: #f9f9f9; /* Light grey background for clarity */
+  table-layout: auto; /* Allow the table to resize based on content */
 }
 
-.details-table th, .details-table td {
+.details-table th, .details-table td,
+.ytd-totals-table th, .ytd-totals-table td {
   border: 1px solid #ccc; /* Light gray border for cells */
-  padding: 8px 16px; /* Ample padding for content */
+  padding: 8px 12px; /* Reduced padding to give more room for content */
   text-align: left; /* Align text to the left */
+  white-space: nowrap; /* Prevent text from wrapping within cells */
+  overflow: hidden; /* Hide overflow content */
+  text-overflow: ellipsis; /* Show ellipsis for overflowing text */
 }
 
-.details-table th {
+.details-table th, .ytd-totals-table th {
   background-color: #f0f0f0; /* Light gray background for header */
   font-weight: bold; /* Bold font for headers */
 }
@@ -71,6 +76,10 @@
     padding: 10px;
     font-size: 14px;
   }
+
+  .details-table, .ytd-totals-table th, .ytd-totals-table td {
+    font-size: 14px; /* Adjust font size for smaller screens */
+  }
 }
 
 .button-back {
@@ -87,7 +96,6 @@
   background-color: #bbb;
 }
 
-/* Assuming your CSS is defined in a separate file like EmployeeDetail.css */
 .button-payroll {
   padding: 5px 10px;
   background-color: #4CAF50; /* Soft green */
@@ -102,7 +110,6 @@
   background-color: #367c39; /* Darker green for hover effect */
 }
 
-/* Assuming you have a general button style */
 .button {
   padding: 10px 15px;
   border: none;
@@ -118,7 +125,6 @@
   background-color: #45a049; /* Slightly darker green on hover */
 }
 
-/* Specific style for creating new records, if needed */
 .button-create {
   background-color: #5cb85c; /* Slightly lighter green */
 }

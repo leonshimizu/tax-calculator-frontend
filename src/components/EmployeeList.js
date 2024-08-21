@@ -1,4 +1,3 @@
-// src/components/EmployeeList.js
 import React, { useEffect, useState } from 'react';
 import './EmployeeList.css';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -8,6 +7,19 @@ function EmployeeList() {
   const { companyId } = useParams(); // Get companyId from the URL params
   const [employees, setEmployees] = useState([]);
   const [company, setCompany] = useState(null); // State to hold the company details
+  const [ytdTotals, setYtdTotals] = useState({
+    hours_worked: 0,
+    overtime_hours_worked: 0,
+    reported_tips: 0,
+    loan_payment: 0,
+    insurance_payment: 0,
+    gross_pay: 0,
+    net_pay: 0,
+    withholding_tax: 0,
+    social_security_tax: 0,
+    medicare_tax: 0,
+    retirement_payment: 0,
+  });
   const [editEmployeeId, setEditEmployeeId] = useState(null);
   const [newEmployee, setNewEmployee] = useState({
     first_name: '',
@@ -24,6 +36,7 @@ function EmployeeList() {
   useEffect(() => {
     fetchCompany();
     fetchEmployees();
+    fetchYtdTotals();
   }, [companyId]);
 
   const fetchCompany = async () => {
@@ -43,6 +56,47 @@ function EmployeeList() {
     } catch (error) {
       console.error('Error fetching employees:', error);
     }
+  };
+
+  const fetchYtdTotals = async () => {
+    try {
+      const response = await axios.get(`/companies/${companyId}/payroll_records`);
+      calculateYtdTotals(response.data);
+    } catch (error) {
+      console.error('Error fetching payroll records:', error);
+    }
+  };
+
+  const calculateYtdTotals = (records) => {
+    const totals = records.reduce((acc, record) => {
+      return {
+        hours_worked: acc.hours_worked + parseFloat(record.hours_worked || 0),
+        overtime_hours_worked: acc.overtime_hours_worked + parseFloat(record.overtime_hours_worked || 0),
+        reported_tips: acc.reported_tips + parseFloat(record.reported_tips || 0),
+        loan_payment: acc.loan_payment + parseFloat(record.loan_payment || 0),
+        insurance_payment: acc.insurance_payment + parseFloat(record.insurance_payment || 0),
+        gross_pay: acc.gross_pay + parseFloat(record.gross_pay || 0),
+        net_pay: acc.net_pay + parseFloat(record.net_pay || 0),
+        withholding_tax: acc.withholding_tax + parseFloat(record.withholding_tax || 0),
+        social_security_tax: acc.social_security_tax + parseFloat(record.social_security_tax || 0),
+        medicare_tax: acc.medicare_tax + parseFloat(record.medicare_tax || 0),
+        retirement_payment: acc.retirement_payment + parseFloat(record.retirement_payment || 0),
+      };
+    }, {
+      hours_worked: 0,
+      overtime_hours_worked: 0,
+      reported_tips: 0,
+      loan_payment: 0,
+      insurance_payment: 0,
+      gross_pay: 0,
+      net_pay: 0,
+      withholding_tax: 0,
+      social_security_tax: 0,
+      medicare_tax: 0,
+      retirement_payment: 0,
+    });
+
+    setYtdTotals(totals);
   };
 
   const handleInputChange = (e) => {
@@ -162,17 +216,15 @@ function EmployeeList() {
                   <td><input type="number" value={Number(employee.pay_rate)} onChange={(e) => handleEditChange(e, employee.id, 'pay_rate')} /></td>
                   <td><input type="number" value={employee.retirement_rate} onChange={(e) => handleEditChange(e, employee.id, 'retirement_rate')} /></td>
                   <td>
-                    <select value={employee.filing_status} onChange={(e) => handleEditChange(e, employee.id, 'filing_status')}>
-                      <option value="single">Single</option>
-                      <option value="married">Married</option>
-                      <option value="head_of_household">Head of Household</option>
-                    </select>
+                  <select value={employee.filing_status} onChange={(e) => handleEditChange(e, employee.id, 'filing_status')}>
+                    <option value="single">Single</option>
+                    <option value="married">Married</option>
+                    <option value="head_of_household">Head of Household</option>
+                  </select>
                   </td>
                   <td>
                     <button onClick={() => saveEdit(employee.id)}>Save</button>
                     <button onClick={() => setEditEmployeeId(null)}>Cancel</button>
-                    <button onClick={() => navigate(`/employees/${employee.id}`)}>Show</button>
-                    <button onClick={() => deleteEmployee(employee.id)}>Delete</button>
                   </td>
                 </>
               ) : (
@@ -198,6 +250,40 @@ function EmployeeList() {
       <div className="button-group">
         <button className="button-add" onClick={() => setShowAddRow(true)}>Add New Employee</button>
       </div>
+
+      <h2>Company Year-to-Date Totals</h2>
+      <table className="ytd-totals-table">
+        <thead>
+          <tr>
+            <th>Hours Worked</th>
+            <th>Overtime Hours</th>
+            <th>Reported Tips</th>
+            <th>Loan Payment</th>
+            <th>Insurance Payment</th>
+            <th>Gross Pay</th>
+            <th>Net Pay</th>
+            <th>Withholding Tax</th>
+            <th>Social Security Tax</th>
+            <th>Medicare Tax</th>
+            <th>Retirement Payment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{ytdTotals.hours_worked.toFixed(2)}</td>
+            <td>{ytdTotals.overtime_hours_worked.toFixed(2)}</td>
+            <td>${ytdTotals.reported_tips.toFixed(2)}</td>
+            <td>${ytdTotals.loan_payment.toFixed(2)}</td>
+            <td>${ytdTotals.insurance_payment.toFixed(2)}</td>
+            <td>${ytdTotals.gross_pay.toFixed(2)}</td>
+            <td>${ytdTotals.net_pay.toFixed(2)}</td>
+            <td>${ytdTotals.withholding_tax.toFixed(2)}</td>
+            <td>${ytdTotals.social_security_tax.toFixed(2)}</td>
+            <td>${ytdTotals.medicare_tax.toFixed(2)}</td>
+            <td>${ytdTotals.retirement_payment.toFixed(2)}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 }
