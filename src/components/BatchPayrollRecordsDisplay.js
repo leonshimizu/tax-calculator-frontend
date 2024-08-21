@@ -1,13 +1,21 @@
+// src/components/BatchPayrollRecordsDisplay.js
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import './BatchPayrollRecordsDisplay.css';  // Import the CSS file
+import './BatchPayrollRecordsDisplay.css';
 
 function BatchPayrollRecordsDisplay() {
   const location = useLocation();
   const navigate = useNavigate();
   const records = location.state?.records || [];
 
-  if (records.length === 0) {
+  // Sort the records alphabetically by employee name
+  const sortedRecords = records.sort((a, b) => {
+    const nameA = a?.employee?.name?.toLowerCase() || '';
+    const nameB = b?.employee?.name?.toLowerCase() || '';
+    return nameA.localeCompare(nameB);
+  });
+
+  if (sortedRecords.length === 0) {
     return <div className="container">No records available</div>;
   }
 
@@ -27,7 +35,7 @@ function BatchPayrollRecordsDisplay() {
           </tr>
         </thead>
         <tbody>
-          {records.map((record, index) => {
+          {sortedRecords.map((record, index) => {
             const employeeName = record?.employee?.name || 'Unknown Employee';
             return (
               <tr key={index}>

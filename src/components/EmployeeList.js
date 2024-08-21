@@ -24,7 +24,9 @@ function EmployeeList() {
   const fetchEmployees = async () => {
     try {
       const response = await axios.get('/employees');
-      setEmployees(response.data);
+      // Sort employees by name alphabetically
+      const sortedEmployees = response.data.sort((a, b) => a.name.localeCompare(b.name));
+      setEmployees(sortedEmployees);
     } catch (error) {
       console.error('Error fetching employees:', error);
     }
@@ -134,9 +136,9 @@ function EmployeeList() {
                   <td><input type="number" value={employee.retirement_rate} onChange={(e) => handleEditChange(e, employee.id, 'retirement_rate')} /></td>
                   <td>
                     <select value={employee.filing_status} onChange={(e) => handleEditChange(e, employee.id, 'filing_status')}>
-                      <option value="single">single</option>
-                      <option value="married">married</option>
-                      <option value="head_of_household">head of household</option>
+                      <option value="single">Single</option>
+                      <option value="married">Married</option>
+                      <option value="head_of_household">Head of Household</option>
                     </select>
                   </td>
                   <td>
