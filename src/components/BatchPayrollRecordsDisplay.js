@@ -1,21 +1,17 @@
-// src/components/BatchPayrollRecordsDisplay.js
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import './BatchPayrollRecordsDisplay.css';  // Import the CSS file
 
 function BatchPayrollRecordsDisplay() {
-  // Use the useLocation hook to access the passed state
   const location = useLocation();
   const records = location.state?.records || [];
 
-  // Debugging: Log the records to the console to ensure they are being received
-  console.log('Received records:', records);
-
   if (records.length === 0) {
-    return <div>No records available</div>;
+    return <div className="container">No records available</div>;
   }
 
   return (
-    <div>
+    <div className="container">
       <h1>Batch Payroll Records</h1>
       <table>
         <thead>
@@ -31,9 +27,7 @@ function BatchPayrollRecordsDisplay() {
         </thead>
         <tbody>
           {records.map((record, index) => {
-            // Ensure each record has an employee object and a name property
             const employeeName = record?.employee?.name || 'Unknown Employee';
-
             return (
               <tr key={index}>
                 <td>{employeeName}</td>
@@ -48,6 +42,7 @@ function BatchPayrollRecordsDisplay() {
           })}
         </tbody>
       </table>
+      <a href="/previous-page" className="button-back">Back</a>
     </div>
   );
 }

@@ -1,42 +1,82 @@
-/* src/components/BatchPayrollRecordsDisplay.css */
-
+/* Container Styling */
 .container {
-  padding: 20px;
   max-width: 1200px;
   margin: auto;
-  background-color: #fff;
+  padding: 20px;
+  background-color: #f8f9fa;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
 }
 
-.records-table {
+/* Header Styling */
+h1 {
+  text-align: center;
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Table Styling */
+table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
 }
 
-.records-table th,
-.records-table td {
+table, th, td {
   border: 1px solid #ccc;
+}
+
+th, td {
   padding: 10px;
   text-align: left;
 }
 
-.records-table th {
-  background-color: #f0f0f0;
+th {
+  background-color: #f0f0f0; /* Grayish background for header */
   color: #333;
   font-weight: bold;
 }
 
-.button-detail {
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+td {
+  background-color: #ffffff;
 }
 
-.button-detail:hover {
-  background-color: #0056b3;
+tr:nth-child(even) {
+  background-color: #f2f2f2; /* Light grey for alternate rows */
+}
+
+/* Excel-like Borders */
+td, th {
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Remove Last Cell Borders */
+tr th:last-child, tr td:last-child {
+  border-right: none;
+}
+
+/* Hover Effect */
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Button Styling */
+.button-back {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #6c757d;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-back:hover {
+  background-color: #5a6268;
 }
