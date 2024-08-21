@@ -1,46 +1,62 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
-import './BatchPayrollRecordsDisplay.css'; // Make sure you have this CSS file
+// src/components/BatchPayrollRecordsDisplay.js
+import React, { useState, useEffect } from 'react';
+import axios from '../api/axios';
+import { useNavigate } from 'react-router-dom';
 
 function BatchPayrollRecordsDisplay() {
-  const location = useLocation();
-  const { records } = location.state || {};
+  const [records, setRecords] = useState([]);
+  const [searchDate, setSearchDate] = useState('');
+  const navigate = useNavigate();
 
-  if (!records) {
-    return <div>No records to display</div>;
-  }
+  useEffect(() => {
+    fetchRecords();
+  }, []);
+
+  const fetchRecords = async () => {
+    try {
+      const response = await axios.get(`/payroll_records?date=${searchDate}`);
+      setRecords(response.data);
+    } catch (error) {
+      console.error('Error fetching payroll records:', error);
+    }
+  };
+
+  const handleDateChange = (event) => {
+    setSearchDate(event.target.value);
+  };
+
+  const handleSearch = () => {
+    fetchRecords();
+  };
 
   return (
-    <div className="container">
-      <h1>Batch Payroll Records</h1>
-      <table className="records-table">
+    <div>
+      <input
+        type="date"
+        value={searchDate}
+        onChange={handleDateChange}
+      />
+      <button onClick={handleSearch}>Search</button>
+      <table>
         <thead>
           <tr>
-            <th>Employee ID</th>
-            <th>Employee Name</th>
+            <th>Employee</th>
             <th>Date</th>
             <th>Hours Worked</th>
             <th>Overtime Hours</th>
             <th>Reported Tips</th>
             <th>Gross Pay</th>
-            <th>Net Pay</th>
-            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {records.map((record, index) => (
-            <tr key={index}>
-              <td>{record.employeeId}</td>
-              <td>{record.employeeName}</td>
+          {records.map(record => (
+            <tr key={record.id}>
+              <td>{record.employee.name}</td>
               <td>{record.date}</td>
-              <td>{record.hoursWorked}</td>
-              <td>{record.overtimeHours}</td>
-              <td>${Number(record.reportedTips).toFixed(2)}</td>
-              <td>${Number(record.grossPay).toFixed(2)}</td>
-              <td>${Number(record.netPay).toFixed(2)}</td>
-              <td>
-                <button className="button-detail">View Details</button>
-              </td>
+              <td>{record.hours_worked}</td>
+              <td>{record.overtime_hours}</td>
+              <td>{record.reported_tips}</td>
+              <td>{record.gross_pay}</td>
             </tr>
           ))}
         </tbody>
