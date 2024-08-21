@@ -56,26 +56,46 @@ function BatchPayrollRecordsDisplay() {
           <thead>
             <tr>
               <th>Employee Name</th>
+              <th>Filing Status</th>
+              <th>Position</th>
+              <th>Pay Rate</th>
+              <th>Retirement Rate</th>
               <th>Date</th>
               <th>Hours Worked</th>
               <th>Overtime Hours</th>
               <th>Reported Tips</th>
+              <th>Loan Payment</th>
+              <th>Insurance Payment</th>
               <th>Gross Pay</th>
               <th>Net Pay</th>
+              <th>Withholding Tax</th>
+              <th>Social Security Tax</th>
+              <th>Medicare Tax</th>
+              <th>Retirement Payment</th>
             </tr>
           </thead>
           <tbody>
             {records.map((record, index) => {
-              const employeeName = record?.employee?.name || 'Unknown Employee';
+              const employee = record.employee || {};
               return (
                 <tr key={index}>
-                  <td>{employeeName}</td>
+                  <td>{employee.name || 'Unknown Employee'}</td>
+                  <td>{employee.filing_status || 'N/A'}</td>
+                  <td>{employee.position || 'N/A'}</td>
+                  <td>{parseFloat(employee.pay_rate).toFixed(2) || 'N/A'}</td>
+                  <td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
                   <td>{record.date || 'N/A'}</td>
-                  <td>{record.hours_worked || 'N/A'}</td>
-                  <td>{record.overtime_hours_worked || 'N/A'}</td>
-                  <td>{record.reported_tips || 'N/A'}</td>
-                  <td>{record.gross_pay || 'N/A'}</td>
-                  <td>{record.net_pay || 'N/A'}</td>
+                  <td>{parseFloat(record.hours_worked).toFixed(2) || 'N/A'}</td>
+                  <td>{parseFloat(record.overtime_hours_worked).toFixed(2) || 'N/A'}</td>
+                  <td>{parseFloat(record.reported_tips).toFixed(2) || 'N/A'}</td>
+                  <td>{parseFloat(record.loan_payment).toFixed(2) || 'N/A'}</td>
+                  <td>{parseFloat(record.insurance_payment).toFixed(2) || 'N/A'}</td>
+                  <td>{parseFloat(record.gross_pay).toFixed(2) || 'N/A'}</td>
+                  <td>{parseFloat(record.net_pay).toFixed(2) || 'N/A'}</td>
+                  <td>{parseFloat(record.withholding_tax).toFixed(2) || 'N/A'}</td>
+                  <td>{parseFloat(record.social_security_tax).toFixed(2) || 'N/A'}</td>
+                  <td>{parseFloat(record.medicare_tax).toFixed(2) || 'N/A'}</td>
+                  <td>{parseFloat(record.retirement_payment).toFixed(2) || 'N/A'}</td>
                 </tr>
               );
             })}
