@@ -158,6 +158,7 @@ function EmployeeList() {
 
   return (
     <div className="employee-list">
+      <button className="button-back" onClick={() => navigate(`/`)}>Back</button>
       <h1>{company?.name}'s Employees</h1>
       <button onClick={() => navigate(`/companies/${companyId}/employees/batch`)} className="button button-batch-entry">Batch Payroll Entry</button>
       <button onClick={() => navigate(`/companies/${companyId}/batch-payroll-records-display`)} className="button button-view-records">
