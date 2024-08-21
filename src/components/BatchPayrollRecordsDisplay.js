@@ -4,7 +4,7 @@ import './BatchPayrollRecordsDisplay.css'; // Make sure you have this CSS file
 
 function BatchPayrollRecordsDisplay() {
   const location = useLocation();
-  const { records } = location.state || {};  // Provide a fallback if state is null
+  const { records } = location.state || {};
 
   if (!records) {
     return <div>No records to display</div>;
