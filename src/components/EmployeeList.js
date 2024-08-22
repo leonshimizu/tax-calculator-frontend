@@ -1,3 +1,4 @@
+// src/componenets/EmployeeList.js
 import React, { useEffect, useState } from 'react';
 import './EmployeeList.css';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -24,7 +25,8 @@ function EmployeeList() {
   const [newEmployee, setNewEmployee] = useState({
     first_name: '',
     last_name: '',
-    department: 'front_of_house',
+    payroll_type: 'hourly', // Default to hourly
+    department: '', // Add department field
     pay_rate: '',
     retirement_rate: '',
     filing_status: 'single',
@@ -136,7 +138,8 @@ function EmployeeList() {
       setNewEmployee({
         first_name: '',
         last_name: '',
-        department: 'front_of_house',
+        payroll_type: 'hourly', // Reset to default
+        department: '', // Reset department field
         pay_rate: '',
         retirement_rate: '',
         filing_status: 'single',
@@ -169,6 +172,7 @@ function EmployeeList() {
           <tr>
             <th>First Name</th>
             <th>Last Name</th>
+            <th>Payroll Type</th>
             <th>Department</th>
             <th>Pay Rate</th>
             <th>401K Rate</th>
@@ -182,9 +186,17 @@ function EmployeeList() {
               <td><input type="text" name="first_name" value={newEmployee.first_name} onChange={handleInputChange} /></td>
               <td><input type="text" name="last_name" value={newEmployee.last_name} onChange={handleInputChange} /></td>
               <td>
+                <select name="payroll_type" value={newEmployee.payroll_type} onChange={handleInputChange}>
+                  <option value="hourly">Hourly</option>
+                  <option value="salaried">Salaried</option>
+                </select>
+              </td>
+              <td>
                 <select name="department" value={newEmployee.department} onChange={handleInputChange}>
                   <option value="front_of_house">Front of House</option>
                   <option value="back_of_house">Back of House</option>
+                  <option value="administration">Administration</option>
+                  <option value="salary">Salary</option>
                 </select>
               </td>
               <td><input type="number" name="pay_rate" value={Number(newEmployee.pay_rate)} onChange={handleInputChange} /></td>
@@ -209,6 +221,12 @@ function EmployeeList() {
                   <td><input type="text" value={employee.first_name} onChange={(e) => handleEditChange(e, employee.id, 'first_name')} /></td>
                   <td><input type="text" value={employee.last_name} onChange={(e) => handleEditChange(e, employee.id, 'last_name')} /></td>
                   <td>
+                    <select value={employee.payroll_type} onChange={(e) => handleEditChange(e, employee.id, 'payroll_type')}>
+                      <option value="hourly">Hourly</option>
+                      <option value="salaried">Salaried</option>
+                    </select>
+                  </td>
+                  <td>
                     <select value={employee.department} onChange={(e) => handleEditChange(e, employee.id, 'department')}>
                       <option value="front_of_house">Front of House</option>
                       <option value="back_of_house">Back of House</option>
@@ -217,21 +235,22 @@ function EmployeeList() {
                   <td><input type="number" value={Number(employee.pay_rate)} onChange={(e) => handleEditChange(e, employee.id, 'pay_rate')} /></td>
                   <td><input type="number" value={employee.retirement_rate} onChange={(e) => handleEditChange(e, employee.id, 'retirement_rate')} /></td>
                   <td>
-                  <select value={employee.filing_status} onChange={(e) => handleEditChange(e, employee.id, 'filing_status')}>
-                    <option value="single">Single</option>
-                    <option value="married">Married</option>
-                    <option value="head_of_household">Head of Household</option>
-                  </select>
+                    <select value={employee.filing_status} onChange={(e) => handleEditChange(e, employee.id, 'filing_status')}>
+                      <option value="single">Single</option>
+                      <option value="married">Married</option>
+                      <option value="head_of_household">Head of Household</option>
+                    </select>
                   </td>
                   <td>
-                    <button onClick={() => saveEdit(employee.id)}>Save</button>
-                    <button onClick={() => setEditEmployeeId(null)}>Cancel</button>
+                    <button className="button button-save" onClick={() => saveEdit(employee.id)}>Save</button>
+                    <button className="button button-cancel" onClick={() => setEditEmployeeId(null)}>Cancel</button>
                   </td>
                 </>
               ) : (
                 <>
                   <td>{employee.first_name}</td>
                   <td>{employee.last_name}</td>
+                  <td>{employee.payroll_type}</td>
                   <td>{employee.department}</td>
                   <td>${Number(employee.pay_rate).toFixed(2)}</td>
                   <td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
