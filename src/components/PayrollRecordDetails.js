@@ -39,6 +39,7 @@ const PayrollRecordDetails = () => {
         <div className="payroll-record-details">
             <h1>Payroll Record Details</h1>
             <h2>{employee.first_name} {employee.last_name}</h2>
+            <p>Payroll Type: {employee.payroll_type}</p>
             <p>Department: {employee.department}</p>
             <p>Filing Status: {employee.filing_status}</p>
 
@@ -48,21 +49,29 @@ const PayrollRecordDetails = () => {
                         <th>Date:</th>
                         <td>{record.payroll_record.date}</td>
                     </tr>
-                    <tr>
-                        <th>Hours Worked:</th>
-                        <td>{record.payroll_record.hours_worked}</td>
-                    </tr>
-                    <tr>
-                        <th>Overtime Hours:</th>
-                        <td>{record.payroll_record.overtime_hours_worked || "N/A"}</td>
-                    </tr>
-                    <tr>
-                        <th>Reported Tips:</th>
-                        <td>${parseFloat(record.payroll_record.reported_tips).toFixed(2)}</td>
-                    </tr>
+                    {employee.payroll_type === 'hourly' && (
+                        <>
+                            <tr>
+                                <th>Hours Worked:</th>
+                                <td>{record.payroll_record.hours_worked}</td>
+                            </tr>
+                            <tr>
+                                <th>Overtime Hours:</th>
+                                <td>{record.payroll_record.overtime_hours_worked || "N/A"}</td>
+                            </tr>
+                            <tr>
+                                <th>Reported Tips:</th>
+                                <td>${parseFloat(record.payroll_record.reported_tips).toFixed(2)}</td>
+                            </tr>
+                        </>
+                    )}
                     <tr>
                         <th>Gross Income:</th>
                         <td>${parseFloat(record.gross_pay).toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                        <th>Bonus:</th>
+                        <td>${parseFloat(record.payroll_record.bonus).toFixed(2)}</td>
                     </tr>
                     <tr>
                         <th>Net Pay:</th>
@@ -91,6 +100,10 @@ const PayrollRecordDetails = () => {
                     <tr>
                         <th>Retirement Payment:</th>
                         <td>${parseFloat(record.retirement_payment).toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                        <th>Total Deductions:</th>
+                        <td>${parseFloat(record.total_deductions).toFixed(2)}</td>
                     </tr>
                 </tbody>
             </table>
