@@ -1,4 +1,3 @@
-// src/components/CreatePayrollRecord.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './CreatePayrollRecord.css';
@@ -12,7 +11,9 @@ const CreatePayrollRecord = () => {
     reported_tips: '',
     loan_payment: '',
     insurance_payment: '',
-    date: ''
+    date: '',
+    gross_pay: '', // Add gross_pay for salaried employees
+    bonus: '', // Add bonus for salaried employees
   });
   const [employee, setEmployee] = useState(null);
   const navigate = useNavigate();
@@ -62,34 +63,61 @@ const CreatePayrollRecord = () => {
             required
           />
         </div>
-        <div className="form-group">
-          <label>Hours Worked</label>
-          <input
-            type="number"
-            name="hours_worked"
-            value={formData.hours_worked}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Overtime Hours Worked</label>
-          <input
-            type="number"
-            name="overtime_hours_worked"
-            value={formData.overtime_hours_worked}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>Reported Tips</label>
-          <input
-            type="number"
-            name="reported_tips"
-            value={formData.reported_tips}
-            onChange={handleInputChange}
-          />
-        </div>
+        {employee?.payroll_type === 'hourly' && (
+          <>
+            <div className="form-group">
+              <label>Hours Worked</label>
+              <input
+                type="number"
+                name="hours_worked"
+                value={formData.hours_worked}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Overtime Hours Worked</label>
+              <input
+                type="number"
+                name="overtime_hours_worked"
+                value={formData.overtime_hours_worked}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="form-group">
+              <label>Reported Tips</label>
+              <input
+                type="number"
+                name="reported_tips"
+                value={formData.reported_tips}
+                onChange={handleInputChange}
+              />
+            </div>
+          </>
+        )}
+        {employee?.payroll_type === 'salaried' && (
+          <>
+            <div className="form-group">
+              <label>Gross Pay</label>
+              <input
+                type="number"
+                name="gross_pay"
+                value={formData.gross_pay}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Bonus</label>
+              <input
+                type="number"
+                name="bonus"
+                value={formData.bonus}
+                onChange={handleInputChange}
+              />
+            </div>
+          </>
+        )}
         <div className="form-group">
           <label>Loan Payment</label>
           <input
