@@ -345,60 +345,64 @@ function EmployeeList() {
 
       <br />
       <div className="add-employee-form">
-        <button className="button-add" onClick={() => setShowAddRow(true)}>Add New Employee</button>
-        {showAddRow && (
-          <div className="add-employee-row">
-            <h3>Add New Employee</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Payroll Type</th>
-                  <th>Department</th>
-                  {newEmployee.payroll_type === 'hourly' && <th>Pay Rate</th>}
-                  <th>401K Rate</th>
-                  <th>Filing Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><input type="text" name="first_name" value={newEmployee.first_name} onChange={handleInputChange} /></td>
-                  <td><input type="text" name="last_name" value={newEmployee.last_name} onChange={handleInputChange} /></td>
-                  <td>
-                    <select name="payroll_type" value={newEmployee.payroll_type} onChange={handleInputChange}>
-                      <option value="hourly">Hourly</option>
-                      <option value="salary">Salary</option>
-                    </select>
-                  </td>
-                  <td>
-                    <select name="department" value={newEmployee.department} onChange={handleInputChange}>
-                      <option value="front_of_house">Front of House</option>
-                      <option value="back_of_house">Back of House</option>
-                      <option value="salary">Salary</option>
-                    </select>
-                  </td>
-                  {newEmployee.payroll_type === 'hourly' && (
-                    <td><input type="number" name="pay_rate" value={newEmployee.pay_rate} onChange={handleInputChange} /></td>
-                  )}
-                  <td><input type="number" name="retirement_rate" value={newEmployee.retirement_rate} onChange={handleInputChange} /></td>
-                  <td>
-                    <select name="filing_status" value={newEmployee.filing_status} onChange={handleInputChange}>
-                      <option value="single">Single</option>
-                      <option value="married">Married</option>
-                      <option value="head_of_household">Head of Household</option>
-                    </select>
-                  </td>
-                  <td>
-                    <button className="button-save" onClick={addEmployee}>Save</button>
-                    <button className="button-cancel" onClick={() => setShowAddRow(false)}>Cancel</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        {!showAddRow && (
+          <button className="button-add" onClick={() => setShowAddRow(true)}>Add New Employee</button>
         )}
+        <div className={`add-employee-row ${showAddRow ? 'visible' : ''}`}>
+          {showAddRow && (
+            <>
+              <h3>Add New Employee</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Payroll Type</th>
+                    <th>Department</th>
+                    {newEmployee.payroll_type === 'hourly' && <th>Pay Rate</th>}
+                    <th>401K Rate</th>
+                    <th>Filing Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" name="first_name" value={newEmployee.first_name} onChange={handleInputChange} /></td>
+                    <td><input type="text" name="last_name" value={newEmployee.last_name} onChange={handleInputChange} /></td>
+                    <td>
+                      <select name="payroll_type" value={newEmployee.payroll_type} onChange={handleInputChange}>
+                        <option value="hourly">Hourly</option>
+                        <option value="salary">Salary</option>
+                      </select>
+                    </td>
+                    <td>
+                      <select name="department" value={newEmployee.department} onChange={handleInputChange}>
+                        <option value="front_of_house">Front of House</option>
+                        <option value="back_of_house">Back of House</option>
+                        <option value="salary">Salary</option>
+                      </select>
+                    </td>
+                    {newEmployee.payroll_type === 'hourly' && (
+                      <td><input type="number" name="pay_rate" value={newEmployee.pay_rate} onChange={handleInputChange} /></td>
+                    )}
+                    <td><input type="number" name="retirement_rate" value={newEmployee.retirement_rate} onChange={handleInputChange} /></td>
+                    <td>
+                      <select name="filing_status" value={newEmployee.filing_status} onChange={handleInputChange}>
+                        <option value="single">Single</option>
+                        <option value="married">Married</option>
+                        <option value="head_of_household">Head of Household</option>
+                      </select>
+                    </td>
+                    <td>
+                      <button className="button-save" onClick={addEmployee}>Save</button>
+                      <button className="button-cancel" onClick={() => setShowAddRow(false)}>Cancel</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </>
+          )}
+        </div>
       </div>
 
       <h2>Company Year-to-Date Totals</h2>

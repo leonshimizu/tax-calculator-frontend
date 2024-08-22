@@ -1,4 +1,4 @@
-/* EmployeeList.css */
+/* Updated EmployeeList.css */
 
 .employee-list {
   width: 100%;
@@ -95,10 +95,22 @@ h2 {
 
 .add-employee-form {
   margin-top: 30px;
-  padding: 15px;
-  background-color: #f7f7f7;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.add-employee-form button.button-add {
+  padding: 10px 15px;
+}
+
+.add-employee-row {
+  display: none;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.add-employee-row.visible {
+  display: block;
 }
 
 .add-employee-row table {
