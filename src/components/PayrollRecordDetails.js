@@ -46,19 +46,19 @@ const PayrollRecordDetails = () => {
                 <tbody>
                     <tr>
                         <th>Date:</th>
-                        <td>{record.date}</td>
+                        <td>{record.payroll_record.date}</td>
                     </tr>
                     <tr>
                         <th>Hours Worked:</th>
-                        <td>{record.hours_worked}</td>
+                        <td>{record.payroll_record.hours_worked}</td>
                     </tr>
                     <tr>
                         <th>Overtime Hours:</th>
-                        <td>{record.overtime_hours_worked || "N/A"}</td>
+                        <td>{record.payroll_record.overtime_hours_worked || "N/A"}</td>
                     </tr>
                     <tr>
                         <th>Reported Tips:</th>
-                        <td>${parseFloat(record.reported_tips).toFixed(2)}</td>
+                        <td>${parseFloat(record.payroll_record.reported_tips).toFixed(2)}</td>
                     </tr>
                     <tr>
                         <th>Gross Income:</th>
@@ -70,11 +70,11 @@ const PayrollRecordDetails = () => {
                     </tr>
                     <tr>
                         <th>Loan Payment:</th>
-                        <td>${parseFloat(record.loan_payment).toFixed(2)}</td>
+                        <td>${parseFloat(record.payroll_record.loan_payment).toFixed(2)}</td>
                     </tr>
                     <tr>
                         <th>Insurance Payment:</th>
-                        <td>${parseFloat(record.insurance_payment).toFixed(2)}</td>
+                        <td>${parseFloat(record.payroll_record.insurance_payment).toFixed(2)}</td>
                     </tr>
                     <tr>
                         <th>Withholding Tax:</th>
