@@ -4,9 +4,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../api/axios';
 
 function EmployeeList() {
-  const { companyId } = useParams(); // Get companyId from the URL params
+  const { companyId } = useParams();
   const [employees, setEmployees] = useState([]);
-  const [company, setCompany] = useState(null); // State to hold the company details
+  const [company, setCompany] = useState(null);
   const [ytdTotals, setYtdTotals] = useState({
     hours_worked: 0,
     overtime_hours_worked: 0,
@@ -24,13 +24,12 @@ function EmployeeList() {
   const [newEmployee, setNewEmployee] = useState({
     first_name: '',
     last_name: '',
-    payroll_type: 'hourly', // Default to hourly
-    department: '', // Add department field
+    payroll_type: 'hourly',
+    department: '',
     pay_rate: '',
-    gross_pay: '', // Add gross pay field
     retirement_rate: '',
     filing_status: 'single',
-    company_id: companyId // Associate new employees with the selected company
+    company_id: companyId,
   });
   const [showAddRow, setShowAddRow] = useState(false);
   const navigate = useNavigate();
@@ -105,7 +104,7 @@ function EmployeeList() {
     const { name, value } = e.target;
     setNewEmployee({ 
       ...newEmployee, 
-      [name]: value === null ? '' : value  // Convert null to an empty string
+      [name]: value === null ? '' : value 
     });
   };
 
@@ -138,13 +137,12 @@ function EmployeeList() {
       setNewEmployee({
         first_name: '',
         last_name: '',
-        payroll_type: 'hourly', // Reset to default
-        department: '', // Reset department field
+        payroll_type: 'hourly',
+        department: '',
         pay_rate: '',
-        gross_pay: '', // Reset gross pay field
         retirement_rate: '',
         filing_status: 'single',
-        company_id: companyId
+        company_id: companyId,
       });
     } catch (error) {
       console.error('Failed to add employee:', error);
@@ -187,39 +185,6 @@ function EmployeeList() {
           </tr>
         </thead>
         <tbody>
-          {showAddRow && newEmployee.payroll_type === 'hourly' && (
-            <tr>
-              <td><input type="text" name="first_name" value={newEmployee.first_name} onChange={handleInputChange} /></td>
-              <td><input type="text" name="last_name" value={newEmployee.last_name} onChange={handleInputChange} /></td>
-              <td>
-                <select name="payroll_type" value={newEmployee.payroll_type} onChange={handleInputChange}>
-                  <option value="hourly">Hourly</option>
-                  <option value="salaried">Salaried</option>
-                </select>
-              </td>
-              <td>
-                <select name="department" value={newEmployee.department} onChange={handleInputChange}>
-                  <option value="front_of_house">Front of House</option>
-                  <option value="back_of_house">Back of House</option>
-                  <option value="administration">Administration</option>
-                  <option value="salary">Salary</option>
-                </select>
-              </td>
-              <td><input type="number" name="pay_rate" value={Number(newEmployee.pay_rate)} onChange={handleInputChange} /></td>
-              <td><input type="number" name="retirement_rate" value={newEmployee.retirement_rate} onChange={handleInputChange} /></td>
-              <td>
-                <select name="filing_status" value={newEmployee.filing_status} onChange={handleInputChange}>
-                  <option value="single">Single</option>
-                  <option value="married">Married</option>
-                  <option value="head_of_household">Head of Household</option>
-                </select>
-              </td>
-              <td>
-                <button className="button button-save" onClick={addEmployee}>Save</button>
-                <button className="button button-cancel" onClick={() => setShowAddRow(false)}>Cancel</button>
-              </td>
-            </tr>
-          )}
           {hourlyEmployees.map((employee) => (
             <tr key={employee.id}>
               {editEmployeeId === employee.id ? (
@@ -240,10 +205,8 @@ function EmployeeList() {
                       <option value="salary">Salary</option>
                     </select>
                   </td>
-                  {employee.payroll_type === 'hourly' ? (
+                  {employee.payroll_type === 'hourly' && (
                     <td><input type="number" value={Number(employee.pay_rate)} onChange={(e) => handleEditChange(e, employee.id, 'pay_rate')} /></td>
-                  ) : (
-                    <td><input type="number" value={Number(employee.gross_pay)} onChange={(e) => handleEditChange(e, employee.id, 'gross_pay')} /></td>
                   )}
                   <td><input type="number" value={employee.retirement_rate} onChange={(e) => handleEditChange(e, employee.id, 'retirement_rate')} /></td>
                   <td>
@@ -264,13 +227,30 @@ function EmployeeList() {
                   <td>{employee.last_name}</td>
                   <td>{employee.payroll_type}</td>
                   <td>{employee.department}</td>
-                  <td>{employee.payroll_type === 'hourly' ? `$${Number(employee.pay_rate).toFixed(2)}` : `$${Number(employee.gross_pay).toFixed(2)}`}</td>
+                  {employee.payroll_type === 'hourly' && (
+                    <td>{`$${Number(employee.pay_rate).toFixed(2)}`}</td>
+                  )}
                   <td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
                   <td>{employee.filing_status}</td>
                   <td>
-                    <button className="button-action button-show" onClick={() => navigate(`/companies/${companyId}/employees/${employee.id}`)}>Show</button>
-                    <button className="button-action button-edit" onClick={() => setEditEmployeeId(employee.id)}>Edit</button>
-                    <button className="button-action button-delete" onClick={() => deleteEmployee(employee.id)}>Delete</button>
+                    <button
+                      className="button-action button-show"
+                      onClick={() => navigate(`/companies/${companyId}/employees/${employee.id}`)}
+                    >
+                      Show
+                    </button>
+                    <button
+                      className="button-action button-edit"
+                      onClick={() => setEditEmployeeId(employee.id)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="button-action button-delete"
+                      onClick={() => deleteEmployee(employee.id)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </>
               )}
@@ -287,46 +267,12 @@ function EmployeeList() {
             <th>Last Name</th>
             <th>Payroll Type</th>
             <th>Department</th>
-            <th>Gross Pay</th>
             <th>401K Rate</th>
             <th>Filing Status</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {showAddRow && newEmployee.payroll_type === 'salaried' && (
-            <tr>
-              <td><input type="text" name="first_name" value={newEmployee.first_name} onChange={handleInputChange} /></td>
-              <td><input type="text" name="last_name" value={newEmployee.last_name} onChange={handleInputChange} /></td>
-              <td>
-                <select name="payroll_type" value={newEmployee.payroll_type} onChange={handleInputChange}>
-                  <option value="hourly">Hourly</option>
-                  <option value="salaried">Salaried</option>
-                </select>
-              </td>
-              <td>
-                <select name="department" value={newEmployee.department} onChange={handleInputChange}>
-                  <option value="front_of_house">Front of House</option>
-                  <option value="back_of_house">Back of House</option>
-                  <option value="administration">Administration</option>
-                  <option value="salary">Salary</option>
-                </select>
-              </td>
-              <td><input type="number" name="gross_pay" value={Number(newEmployee.gross_pay)} onChange={handleInputChange} /></td>
-              <td><input type="number" name="retirement_rate" value={newEmployee.retirement_rate} onChange={handleInputChange} /></td>
-              <td>
-                <select name="filing_status" value={newEmployee.filing_status} onChange={handleInputChange}>
-                  <option value="single">Single</option>
-                  <option value="married">Married</option>
-                  <option value="head_of_household">Head of Household</option>
-                </select>
-              </td>
-              <td>
-                <button className="button button-save" onClick={addEmployee}>Save</button>
-                <button className="button button-cancel" onClick={() => setShowAddRow(false)}>Cancel</button>
-              </td>
-            </tr>
-          )}
           {salariedEmployees.map((employee) => (
             <tr key={employee.id}>
               {editEmployeeId === employee.id ? (
@@ -347,7 +293,6 @@ function EmployeeList() {
                       <option value="salary">Salary</option>
                     </select>
                   </td>
-                  <td><input type="number" value={Number(employee.gross_pay)} onChange={(e) => handleEditChange(e, employee.id, 'gross_pay')} /></td>
                   <td><input type="number" value={employee.retirement_rate} onChange={(e) => handleEditChange(e, employee.id, 'retirement_rate')} /></td>
                   <td>
                     <select value={employee.filing_status} onChange={(e) => handleEditChange(e, employee.id, 'filing_status')}>
@@ -367,13 +312,27 @@ function EmployeeList() {
                   <td>{employee.last_name}</td>
                   <td>{employee.payroll_type}</td>
                   <td>{employee.department}</td>
-                  <td>${Number(employee.gross_pay).toFixed(2)}</td>
                   <td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
                   <td>{employee.filing_status}</td>
                   <td>
-                    <button className="button-action button-show" onClick={() => navigate(`/companies/${companyId}/employees/${employee.id}`)}>Show</button>
-                    <button className="button-action button-edit" onClick={() => setEditEmployeeId(employee.id)}>Edit</button>
-                    <button className="button-action button-delete" onClick={() => deleteEmployee(employee.id)}>Delete</button>
+                    <button
+                      className="button-action button-show"
+                      onClick={() => navigate(`/companies/${companyId}/employees/${employee.id}`)}
+                    >
+                      Show
+                    </button>
+                    <button
+                      className="button-action button-edit"
+                      onClick={() => setEditEmployeeId(employee.id)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="button-action button-delete"
+                      onClick={() => deleteEmployee(employee.id)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </>
               )}
@@ -383,8 +342,62 @@ function EmployeeList() {
       </table>
 
       <br />
-      <div className="button-group">
-      <button className="button-add" onClick={() => setShowAddRow(true)}>Add New Employee</button>
+      <div className="add-employee-form">
+        <button className="button-add" onClick={() => setShowAddRow(true)}>Add New Employee</button>
+        {showAddRow && (
+          <div className="add-employee-row">
+            <h3>Add New Employee</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Payroll Type</th>
+                  <th>Department</th>
+                  {newEmployee.payroll_type === 'hourly' && <th>Pay Rate</th>}
+                  <th>401K Rate</th>
+                  <th>Filing Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="text" name="first_name" value={newEmployee.first_name} onChange={handleInputChange} /></td>
+                  <td><input type="text" name="last_name" value={newEmployee.last_name} onChange={handleInputChange} /></td>
+                  <td>
+                    <select name="payroll_type" value={newEmployee.payroll_type} onChange={handleInputChange}>
+                      <option value="hourly">Hourly</option>
+                      <option value="salaried">Salaried</option>
+                    </select>
+                  </td>
+                  <td>
+                    <select name="department" value={newEmployee.department} onChange={handleInputChange}>
+                      <option value="front_of_house">Front of House</option>
+                      <option value="back_of_house">Back of House</option>
+                      <option value="administration">Administration</option>
+                      <option value="salary">Salary</option>
+                    </select>
+                  </td>
+                  {newEmployee.payroll_type === 'hourly' && (
+                    <td><input type="number" name="pay_rate" value={newEmployee.pay_rate} onChange={handleInputChange} /></td>
+                  )}
+                  <td><input type="number" name="retirement_rate" value={newEmployee.retirement_rate} onChange={handleInputChange} /></td>
+                  <td>
+                    <select name="filing_status" value={newEmployee.filing_status} onChange={handleInputChange}>
+                      <option value="single">Single</option>
+                      <option value="married">Married</option>
+                      <option value="head_of_household">Head of Household</option>
+                    </select>
+                  </td>
+                  <td>
+                    <button className="button-save" onClick={addEmployee}>Save</button>
+                    <button className="button-cancel" onClick={() => setShowAddRow(false)}>Cancel</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       <h2>Company Year-to-Date Totals</h2>
@@ -408,15 +421,15 @@ function EmployeeList() {
           <tr>
             <td>{ytdTotals.hours_worked.toFixed(2)}</td>
             <td>{ytdTotals.overtime_hours_worked.toFixed(2)}</td>
-            <td>${ytdTotals.reported_tips.toFixed(2)}</td>
-            <td>${ytdTotals.loan_payment.toFixed(2)}</td>
-            <td>${ytdTotals.insurance_payment.toFixed(2)}</td>
-            <td>${ytdTotals.gross_pay.toFixed(2)}</td>
-            <td>${ytdTotals.net_pay.toFixed(2)}</td>
-            <td>${ytdTotals.withholding_tax.toFixed(2)}</td>
-            <td>${ytdTotals.social_security_tax.toFixed(2)}</td>
-            <td>${ytdTotals.medicare_tax.toFixed(2)}</td>
-            <td>${ytdTotals.retirement_payment.toFixed(2)}</td>
+            <td>{`$${ytdTotals.reported_tips.toFixed(2)}`}</td>
+            <td>{`$${ytdTotals.loan_payment.toFixed(2)}`}</td>
+            <td>{`$${ytdTotals.insurance_payment.toFixed(2)}`}</td>
+            <td>{`$${ytdTotals.gross_pay.toFixed(2)}`}</td>
+            <td>{`$${ytdTotals.net_pay.toFixed(2)}`}</td>
+            <td>{`$${ytdTotals.withholding_tax.toFixed(2)}`}</td>
+            <td>{`$${ytdTotals.social_security_tax.toFixed(2)}`}</td>
+            <td>{`$${ytdTotals.medicare_tax.toFixed(2)}`}</td>
+            <td>{`$${ytdTotals.retirement_payment.toFixed(2)}`}</td>
           </tr>
         </tbody>
       </table>
