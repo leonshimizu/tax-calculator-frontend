@@ -7,7 +7,7 @@ import './BatchPayrollEntry.css';
 function BatchPayrollEntry() {
   const { companyId } = useParams();
   const [hourlyEmployees, setHourlyEmployees] = useState([]);
-  const [salariedEmployees, setSalariedEmployees] = useState([]);
+  const [salaryEmployees, setSalaryEmployees] = useState([]);
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   const navigate = useNavigate();
 
@@ -26,7 +26,7 @@ function BatchPayrollEntry() {
         loan_payment: '',
         insurance_payment: '',
       }));
-      const salaried = response.data.filter(emp => emp.payroll_type === 'salaried').map(emp => ({
+      const salary = response.data.filter(emp => emp.payroll_type === 'salary').map(emp => ({
         ...emp,
         gross_pay: '',
         bonus: '',
@@ -34,7 +34,7 @@ function BatchPayrollEntry() {
         insurance_payment: '',
       }));
       setHourlyEmployees(hourly);
-      setSalariedEmployees(salaried);
+      setSalaryEmployees(salary);
     } catch (error) {
       console.error('Error fetching employees:', error);
     }
@@ -46,10 +46,10 @@ function BatchPayrollEntry() {
     setHourlyEmployees(updatedEmployees);
   };
 
-  const handleSalariedChange = (index, field, value) => {
-    const updatedEmployees = [...salariedEmployees];
+  const handleSalaryChange = (index, field, value) => {
+    const updatedEmployees = [...salaryEmployees];
     updatedEmployees[index][field] = value;
-    setSalariedEmployees(updatedEmployees);
+    setSalaryEmployees(updatedEmployees);
   };
 
   const handleSubmit = async (event) => {
@@ -65,7 +65,7 @@ function BatchPayrollEntry() {
         insurance_payment: emp.insurance_payment,
       }));
 
-      const salariedPayload = salariedEmployees.map(emp => ({
+      const salaryPayload = salaryEmployees.map(emp => ({
         employee_id: emp.id,
         date: date,
         gross_pay: emp.gross_pay,
@@ -75,7 +75,7 @@ function BatchPayrollEntry() {
       }));
 
       const response = await axios.post(`/companies/${companyId}/employees/batch/payroll_records`, {
-        payroll_records: [...hourlyPayload, ...salariedPayload],
+        payroll_records: [...hourlyPayload, ...salaryPayload],
       });
 
       navigate(`/companies/${companyId}/batch-payroll-records-display`, { state: { records: response.data } });
@@ -132,7 +132,7 @@ function BatchPayrollEntry() {
           </tbody>
         </table>
 
-        <h2>Salaried Employees</h2>
+        <h2>Salary Employees</h2>
         <table>
           <thead>
             <tr className="table-header">
@@ -145,21 +145,21 @@ function BatchPayrollEntry() {
             </tr>
           </thead>
           <tbody>
-            {salariedEmployees.map((emp, index) => (
+            {salaryEmployees.map((emp, index) => (
               <tr key={emp.id} className="table-row">
                 <td>{emp.first_name}</td>
                 <td>{emp.last_name}</td>
                 <td>
-                  <input type="number" value={emp.gross_pay} onChange={(e) => handleSalariedChange(index, 'gross_pay', e.target.value)} className="input-field" />
+                  <input type="number" value={emp.gross_pay} onChange={(e) => handleSalaryChange(index, 'gross_pay', e.target.value)} className="input-field" />
                 </td>
                 <td>
-                  <input type="number" value={emp.bonus} onChange={(e) => handleSalariedChange(index, 'bonus', e.target.value)} className="input-field" />
+                  <input type="number" value={emp.bonus} onChange={(e) => handleSalaryChange(index, 'bonus', e.target.value)} className="input-field" />
                 </td>
                 <td>
-                  <input type="number" value={emp.loan_payment} onChange={(e) => handleSalariedChange(index, 'loan_payment', e.target.value)} className="input-field" />
+                  <input type="number" value={emp.loan_payment} onChange={(e) => handleSalaryChange(index, 'loan_payment', e.target.value)} className="input-field" />
                 </td>
                 <td>
-                  <input type="number" value={emp.insurance_payment} onChange={(e) => handleSalariedChange(index, 'insurance_payment', e.target.value)} className="input-field" />
+                  <input type="number" value={emp.insurance_payment} onChange={(e) => handleSalaryChange(index, 'insurance_payment', e.target.value)} className="input-field" />
                 </td>
               </tr>
             ))}

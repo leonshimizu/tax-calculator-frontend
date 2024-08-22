@@ -65,10 +65,10 @@ function BatchPayrollRecordsDisplay() {
   };
 
   const hourlyRecords = records.filter(record => record.employee?.payroll_type === 'hourly');
-  const salariedRecords = records.filter(record => record.employee?.payroll_type === 'salaried');
+  const salaryRecords = records.filter(record => record.employee?.payroll_type === 'salary');
 
   const hourlyYtdTotals = calculateYtdTotals(hourlyRecords);
-  const salariedYtdTotals = calculateYtdTotals(salariedRecords);
+  const salaryYtdTotals = calculateYtdTotals(salaryRecords);
 
   const formatNumber = (num) => num !== undefined ? num.toFixed(2) : 'N/A';
 
@@ -162,9 +162,9 @@ function BatchPayrollRecordsDisplay() {
             </>
           )}
 
-          {salariedRecords.length > 0 && (
+          {salaryRecords.length > 0 && (
             <>
-              <h2>Salaried Employees</h2>
+              <h2>Salary Employees</h2>
               <table>
                 <thead>
                   <tr>
@@ -184,7 +184,7 @@ function BatchPayrollRecordsDisplay() {
                   </tr>
                 </thead>
                 <tbody>
-                  {salariedRecords.map((record, index) => {
+                  {salaryRecords.map((record, index) => {
                     const employee = record.employee || {};
                     return (
                       <tr key={index}>
@@ -207,15 +207,15 @@ function BatchPayrollRecordsDisplay() {
                   {/* YTD Totals Row */}
                   <tr className="ytd-totals">
                     <td colSpan="4" className="ytd-label">Totals:</td>
-                    <td>{formatNumber(salariedYtdTotals.gross_pay)}</td>
-                    <td>{formatNumber(salariedYtdTotals.bonus)}</td>
-                    <td>{formatNumber(salariedYtdTotals.loan_payment)}</td>
-                    <td>{formatNumber(salariedYtdTotals.insurance_payment)}</td>
-                    <td>{formatNumber(salariedYtdTotals.net_pay)}</td>
-                    <td>{formatNumber(salariedYtdTotals.withholding_tax)}</td>
-                    <td>{formatNumber(salariedYtdTotals.social_security_tax)}</td>
-                    <td>{formatNumber(salariedYtdTotals.medicare_tax)}</td>
-                    <td>{formatNumber(salariedYtdTotals.retirement_payment)}</td>
+                    <td>{formatNumber(salaryYtdTotals.gross_pay)}</td>
+                    <td>{formatNumber(salaryYtdTotals.bonus)}</td>
+                    <td>{formatNumber(salaryYtdTotals.loan_payment)}</td>
+                    <td>{formatNumber(salaryYtdTotals.insurance_payment)}</td>
+                    <td>{formatNumber(salaryYtdTotals.net_pay)}</td>
+                    <td>{formatNumber(salaryYtdTotals.withholding_tax)}</td>
+                    <td>{formatNumber(salaryYtdTotals.social_security_tax)}</td>
+                    <td>{formatNumber(salaryYtdTotals.medicare_tax)}</td>
+                    <td>{formatNumber(salaryYtdTotals.retirement_payment)}</td>
                   </tr>
                 </tbody>
               </table>

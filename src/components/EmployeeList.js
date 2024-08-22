@@ -25,7 +25,7 @@ function EmployeeList() {
     first_name: '',
     last_name: '',
     payroll_type: 'hourly',
-    department: '',
+    department: 'front_of_house',  // Default to front_of_house or any other department
     pay_rate: '',
     retirement_rate: '',
     filing_status: 'single',
@@ -102,10 +102,14 @@ function EmployeeList() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewEmployee({ 
-      ...newEmployee, 
-      [name]: value === null ? '' : value 
-    });
+    const updatedEmployee = { ...newEmployee, [name]: value };
+
+    // If payroll_type is 'salary', automatically set the department to 'salary'
+    if (name === 'payroll_type' && value === 'salary') {
+      updatedEmployee.department = 'salary';
+    }
+
+    setNewEmployee(updatedEmployee);
   };
 
   const handleEditChange = (e, id, field) => {
@@ -159,7 +163,7 @@ function EmployeeList() {
   };
 
   const hourlyEmployees = employees.filter(emp => emp.payroll_type === 'hourly');
-  const salariedEmployees = employees.filter(emp => emp.payroll_type === 'salaried');
+  const salaryEmployees = employees.filter(emp => emp.payroll_type === 'salary');
 
   return (
     <div className="employee-list">
@@ -194,7 +198,7 @@ function EmployeeList() {
                   <td>
                     <select value={employee.payroll_type} onChange={(e) => handleEditChange(e, employee.id, 'payroll_type')}>
                       <option value="hourly">Hourly</option>
-                      <option value="salaried">Salaried</option>
+                      <option value="salary">Salary</option>
                     </select>
                   </td>
                   <td>
@@ -259,7 +263,7 @@ function EmployeeList() {
         </tbody>
       </table>
 
-      <h2>Salaried Employees</h2>
+      <h2>Salary Employees</h2>
       <table className="employee-table">
         <thead>
           <tr>
@@ -273,7 +277,7 @@ function EmployeeList() {
           </tr>
         </thead>
         <tbody>
-          {salariedEmployees.map((employee) => (
+          {salaryEmployees.map((employee) => (
             <tr key={employee.id}>
               {editEmployeeId === employee.id ? (
                 <>
@@ -282,7 +286,7 @@ function EmployeeList() {
                   <td>
                     <select value={employee.payroll_type} onChange={(e) => handleEditChange(e, employee.id, 'payroll_type')}>
                       <option value="hourly">Hourly</option>
-                      <option value="salaried">Salaried</option>
+                      <option value="salary">Salary</option>
                     </select>
                   </td>
                   <td>
@@ -367,7 +371,7 @@ function EmployeeList() {
                   <td>
                     <select name="payroll_type" value={newEmployee.payroll_type} onChange={handleInputChange}>
                       <option value="hourly">Hourly</option>
-                      <option value="salaried">Salaried</option>
+                      <option value="salary">Salary</option>
                     </select>
                   </td>
                   <td>

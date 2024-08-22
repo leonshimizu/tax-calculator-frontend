@@ -12,8 +12,8 @@ const CreatePayrollRecord = () => {
     loan_payment: '',
     insurance_payment: '',
     date: '',
-    gross_pay: '', // Add gross_pay for salaried employees
-    bonus: '', // Add bonus for salaried employees
+    gross_pay: '', // Add gross_pay for salary employees
+    bonus: '', // Add bonus for salary employees
   });
   const [employee, setEmployee] = useState(null);
   const navigate = useNavigate();
@@ -95,7 +95,7 @@ const CreatePayrollRecord = () => {
             </div>
           </>
         )}
-        {employee?.payroll_type === 'salaried' && (
+        {employee?.payroll_type === 'salary' && (
           <>
             <div className="form-group">
               <label>Gross Pay</label>
