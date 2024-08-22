@@ -85,8 +85,15 @@ const EmployeeDetail = () => {
     <div className="employee-detail">
       <button className="button-back" onClick={() => navigate(`/companies/${companyId}/employees`)}>Back</button>
       <h1>{employee.first_name} {employee.last_name}'s Details</h1>
+      <p>Payroll Type: {employee.payroll_type}</p>
       <p>Department: {employee.department}</p>
-      <p>Pay Rate: ${Number(employee.pay_rate).toFixed(2)}</p>
+
+      {employee.payroll_type === 'hourly' ? (
+        <>
+          <p>Pay Rate: ${Number(employee.pay_rate).toFixed(2)}</p>
+        </>
+      ) : null}
+
       <p>Retirement Rate: {employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</p>
       <p>Filing Status: {employee.filing_status}</p>
 
@@ -98,7 +105,7 @@ const EmployeeDetail = () => {
         <thead>
           <tr>
             <th>Date</th>
-            <th>Hours Worked</th>
+            {employee.payroll_type === 'hourly' && <th>Hours Worked</th>}
             <th>Gross Pay</th>
             <th>Actions</th>
           </tr>
@@ -107,7 +114,7 @@ const EmployeeDetail = () => {
           {payrollRecords.map(record => (
             <tr key={record.id}>
               <td>{record.date}</td>
-              <td>{record.hours_worked}</td>
+              {employee.payroll_type === 'hourly' && <td>{record.hours_worked}</td>}
               <td>${Number(record.gross_pay).toFixed(2)}</td>
               <td>
                 <button className="button-payroll" onClick={() => navigate(`/companies/${companyId}/employees/${employeeId}/payroll_records/${record.id}`)}>
@@ -123,8 +130,8 @@ const EmployeeDetail = () => {
       <table className="ytd-totals-table">
         <thead>
           <tr>
-            <th>Hours Worked</th>
-            <th>Overtime Hours</th>
+            {employee.payroll_type === 'hourly' && <th>Hours Worked</th>}
+            {employee.payroll_type === 'hourly' && <th>Overtime Hours</th>}
             <th>Reported Tips</th>
             <th>Loan Payment</th>
             <th>Insurance Payment</th>
@@ -138,8 +145,8 @@ const EmployeeDetail = () => {
         </thead>
         <tbody>
           <tr>
-            <td>{ytdTotals.hours_worked.toFixed(2)}</td>
-            <td>{ytdTotals.overtime_hours_worked.toFixed(2)}</td>
+            {employee.payroll_type === 'hourly' && <td>{ytdTotals.hours_worked.toFixed(2)}</td>}
+            {employee.payroll_type === 'hourly' && <td>{ytdTotals.overtime_hours_worked.toFixed(2)}</td>}
             <td>${ytdTotals.reported_tips.toFixed(2)}</td>
             <td>${ytdTotals.loan_payment.toFixed(2)}</td>
             <td>${ytdTotals.insurance_payment.toFixed(2)}</td>
