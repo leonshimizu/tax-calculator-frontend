@@ -15,6 +15,7 @@ function App() {
       <div>
         <Routes>
           <Route path="/" element={<PayrollHome />} />
+          <Route path="/companies" element={<PayrollHome />} /> {/* Route to PayrollHome for /companies */}
           <Route path="/companies/:companyId/employees" element={<EmployeeList />} />
           <Route path="/companies/:companyId/employees/:employeeId" element={<EmployeeDetail />} />
           <Route path="/companies/:companyId/employees/batch" element={<BatchPayrollEntry />} />
