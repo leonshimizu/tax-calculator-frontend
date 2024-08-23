@@ -1,0 +1,87 @@
+.navbar {
+  background-color: #333;
+  padding: 10px 20px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 100%; /* Ensures the container doesn't exceed screen width */
+  padding: 0 25px; /* Adds some padding on smaller screens */
+  box-sizing: border-box;
+}
+
+.navbar-logo {
+  color: #fff;
+  font-size: 24px;
+  text-decoration: none;
+  font-weight: bold;
+  flex-shrink: 0; /* Prevents the logo from shrinking */
+  margin-right: auto;
+}
+
+.navbar-menu {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap; /* Allows menu items to wrap on smaller screens */
+  justify-content: flex-end;
+}
+
+.navbar-item {
+  margin-left: 20px;
+  flex-shrink: 0; /* Prevents items from shrinking */
+}
+
+.navbar-link {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s ease;
+  display: block;
+}
+
+.navbar-link:hover {
+  color: #ddd;
+}
+
+/* Media Query for Tablets and Smaller Screens */
+@media (max-width: 768px) {
+  .navbar-container {
+    justify-content: center;
+  }
+
+  .navbar-menu {
+    flex-direction: column; /* Stacks the menu items vertically */
+    align-items: center;
+    width: 100%;
+  }
+
+  .navbar-item {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+}
+
+/* Media Query for Mobile Phones */
+@media (max-width: 480px) {
+  .navbar-logo {
+    font-size: 20px; /* Smaller font size for the logo */
+  }
+
+  .navbar-link {
+    font-size: 14px; /* Smaller font size for links */
+  }
+
+  .navbar-item {
+    width: 100%; /* Make sure the items fill the width */
+    text-align: center; /* Center text inside items */
+  }
+}
