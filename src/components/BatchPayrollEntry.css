@@ -1,24 +1,33 @@
 /* src/components/BatchPayrollEntry.css */
 
-.container {
+.batch-payroll-entry {
   padding: 20px;
   max-width: 1200px;
-  margin: auto;
-  background-color: #fff;
+  margin: 20px auto;
+  background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
 }
 
-.table-header {
-  background-color: #f0f0f0;
-  color: #333;
-  text-align: left;
-  padding: 8px 16px;
-  font-weight: bold;
+.batch-payroll-entry h1, 
+.batch-payroll-entry h2 {
+  color: #2c3e50;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.table-row {
-  border-bottom: 1px solid #ccc;
+.form-control {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-control label {
+  margin-bottom: 8px;
+  color: #7f8c8d;
+  font-size: 16px;
 }
 
 .input-field {
@@ -26,23 +35,90 @@
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  box-sizing: border-box; /* Makes sure padding does not affect width */
+  box-sizing: border-box;
+  font-size: 14px;
 }
 
-.button {
-  padding: 8px 16px;
-  background-color: #007bff;
+.table-wrapper {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.employee-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  table-layout: auto;
+}
+
+.employee-table th,
+.employee-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+}
+
+.employee-table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.employee-table td {
+  background-color: #ffffff;
+  color: #333;
+}
+
+.button-back {
+  margin-bottom: 20px;
+  padding: 10px 15px;
+  background-color: #34495e;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.button-back:hover {
+  background-color: #2c3e50;
+}
+
+.button-submit {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4CAF50;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
+  transition: background-color 0.3s ease;
 }
 
-.button:hover {
-  background-color: #0056b3;
+.button-submit:hover {
+  background-color: #45a049;
 }
 
-.form-control {
-  margin: 10px 0;
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+  .batch-payroll-entry {
+    padding: 15px;
+  }
+
+  .employee-table th,
+  .employee-table td {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .button-back,
+  .button-submit {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
 }

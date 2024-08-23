@@ -5,7 +5,7 @@ import './CreatePayrollRecord.css';
 import axios from '../api/axios';
 
 const CreatePayrollRecord = () => {
-  const { companyId, employeeId } = useParams(); // Get companyId and employeeId from the URL params
+  const { companyId, employeeId } = useParams();
   const [formData, setFormData] = useState({
     hours_worked: '',
     overtime_hours_worked: '',
@@ -13,10 +13,10 @@ const CreatePayrollRecord = () => {
     loan_payment: '',
     insurance_payment: '',
     date: '',
-    gross_pay: '', // Add gross_pay for salary employees
-    bonus: '', // Add bonus for salary employees
-    retirement_payment: '', // Add retirement_payment for both hourly and salary employees
-    roth_retirement_payment: '', // Add roth_retirement_payment for both hourly and salary employees
+    gross_pay: '',
+    bonus: '',
+    retirement_payment: '',
+    roth_retirement_payment: '',
   });
   const [employee, setEmployee] = useState(null);
   const navigate = useNavigate();
@@ -43,20 +43,19 @@ const CreatePayrollRecord = () => {
     event.preventDefault();
     try {
       await axios.post(`/companies/${companyId}/employees/${employeeId}/payroll_records`, formData);
-      console.log(formData);
-      navigate(`/companies/${companyId}/employees/${employeeId}`); // Redirect to employee details page
+      navigate(`/companies/${companyId}/employees/${employeeId}`);
     } catch (error) {
       console.error('Error creating payroll record:', error);
     }
   };
 
   return (
-    <div className="container">
+    <div className="create-payroll-record">
       <button onClick={() => navigate(`/companies/${companyId}/employees/${employeeId}`)} className="button-back">
         Back to Employee Details
       </button>
-      <h1 className="form-header">Create Payroll Record for {employee?.first_name} {employee?.last_name}</h1>
-      <form onSubmit={handleSubmit}>
+      <h1>Create Payroll Record for {employee?.first_name} {employee?.last_name}</h1>
+      <form onSubmit={handleSubmit} className="payroll-form">
         <div className="form-group">
           <label>Date</label>
           <input
@@ -158,7 +157,7 @@ const CreatePayrollRecord = () => {
             onChange={handleInputChange}
           />
         </div>
-        <button type="submit" className="button">Create Record</button>
+        <button type="submit" className="button-submit">Create Record</button>
       </form>
     </div>
   );

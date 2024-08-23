@@ -93,104 +93,82 @@ function BatchPayrollEntry() {
   };
 
   return (
-    <div className="container">
+    <div className="batch-payroll-entry">
       <button className="button-back" onClick={() => navigate(`/companies/${companyId}/employees`)}>Back</button>
       <h1>Batch Payroll Entry</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="payroll-form">
         <div className="form-control">
           <label>Date of Payroll:</label>
           <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="input-field" />
         </div>
 
         <h2>Hourly Employees</h2>
-        <table>
-          <thead>
-            <tr className="table-header">
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Hours Worked</th>
-              <th>Overtime Hours</th>
-              <th>Reported Tips</th>
-              <th>Loan Payment</th>
-              <th>Insurance Payment</th>
-              <th>Retirement Payment</th>
-              <th>Roth 401K Payment</th>
-            </tr>
-          </thead>
-          <tbody>
-            {hourlyEmployees.map((emp, index) => (
-              <tr key={emp.id} className="table-row">
-                <td>{emp.first_name}</td>
-                <td>{emp.last_name}</td>
-                <td>
-                  <input type="number" value={emp.hours_worked} onChange={(e) => handleHourlyChange(index, 'hours_worked', e.target.value)} className="input-field" />
-                </td>
-                <td>
-                  <input type="number" value={emp.overtime_hours_worked} onChange={(e) => handleHourlyChange(index, 'overtime_hours_worked', e.target.value)} className="input-field" />
-                </td>
-                <td>
-                  <input type="number" value={emp.reported_tips} onChange={(e) => handleHourlyChange(index, 'reported_tips', e.target.value)} className="input-field" />
-                </td>
-                <td>
-                  <input type="number" value={emp.loan_payment} onChange={(e) => handleHourlyChange(index, 'loan_payment', e.target.value)} className="input-field" />
-                </td>
-                <td>
-                  <input type="number" value={emp.insurance_payment} onChange={(e) => handleHourlyChange(index, 'insurance_payment', e.target.value)} className="input-field" />
-                </td>
-                <td>
-                  <input type="number" value={emp.retirement_payment} onChange={(e) => handleHourlyChange(index, 'retirement_payment', e.target.value)} className="input-field" />
-                </td>
-                <td>
-                  <input type="number" value={emp.roth_retirement_payment} onChange={(e) => handleHourlyChange(index, 'roth_retirement_payment', e.target.value)} className="input-field" />
-                </td>
+        <div className="table-wrapper">
+          <table className="employee-table">
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Hours Worked</th>
+                <th>Overtime Hours</th>
+                <th>Reported Tips</th>
+                <th>Loan Payment</th>
+                <th>Insurance Payment</th>
+                <th>Retirement Payment</th>
+                <th>Roth 401K Payment</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {hourlyEmployees.map((emp, index) => (
+                <tr key={emp.id}>
+                  <td>{emp.first_name}</td>
+                  <td>{emp.last_name}</td>
+                  <td><input type="number" value={emp.hours_worked} onChange={(e) => handleHourlyChange(index, 'hours_worked', e.target.value)} className="input-field" /></td>
+                  <td><input type="number" value={emp.overtime_hours_worked} onChange={(e) => handleHourlyChange(index, 'overtime_hours_worked', e.target.value)} className="input-field" /></td>
+                  <td><input type="number" value={emp.reported_tips} onChange={(e) => handleHourlyChange(index, 'reported_tips', e.target.value)} className="input-field" /></td>
+                  <td><input type="number" value={emp.loan_payment} onChange={(e) => handleHourlyChange(index, 'loan_payment', e.target.value)} className="input-field" /></td>
+                  <td><input type="number" value={emp.insurance_payment} onChange={(e) => handleHourlyChange(index, 'insurance_payment', e.target.value)} className="input-field" /></td>
+                  <td><input type="number" value={emp.retirement_payment} onChange={(e) => handleHourlyChange(index, 'retirement_payment', e.target.value)} className="input-field" /></td>
+                  <td><input type="number" value={emp.roth_retirement_payment} onChange={(e) => handleHourlyChange(index, 'roth_retirement_payment', e.target.value)} className="input-field" /></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         <h2>Salary Employees</h2>
-        <table>
-          <thead>
-            <tr className="table-header">
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Gross Pay</th>
-              <th>Bonus</th>
-              <th>Loan Payment</th>
-              <th>Insurance Payment</th>
-              <th>Retirement Payment</th>
-              <th>Roth 401K Payment</th>
-            </tr>
-          </thead>
-          <tbody>
-            {salaryEmployees.map((emp, index) => (
-              <tr key={emp.id} className="table-row">
-                <td>{emp.first_name}</td>
-                <td>{emp.last_name}</td>
-                <td>
-                  <input type="number" value={emp.gross_pay} onChange={(e) => handleSalaryChange(index, 'gross_pay', e.target.value)} className="input-field" />
-                </td>
-                <td>
-                  <input type="number" value={emp.bonus} onChange={(e) => handleSalaryChange(index, 'bonus', e.target.value)} className="input-field" />
-                </td>
-                <td>
-                  <input type="number" value={emp.loan_payment} onChange={(e) => handleSalaryChange(index, 'loan_payment', e.target.value)} className="input-field" />
-                </td>
-                <td>
-                  <input type="number" value={emp.insurance_payment} onChange={(e) => handleSalaryChange(index, 'insurance_payment', e.target.value)} className="input-field" />
-                </td>
-                <td>
-                  <input type="number" value={emp.retirement_payment} onChange={(e) => handleSalaryChange(index, 'retirement_payment', e.target.value)} className="input-field" />
-                </td>
-                <td>
-                  <input type="number" value={emp.roth_retirement_payment} onChange={(e) => handleSalaryChange(index, 'roth_retirement_payment', e.target.value)} className="input-field" />
-                </td>
+        <div className="table-wrapper">
+          <table className="employee-table">
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Gross Pay</th>
+                <th>Bonus</th>
+                <th>Loan Payment</th>
+                <th>Insurance Payment</th>
+                <th>Retirement Payment</th>
+                <th>Roth 401K Payment</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {salaryEmployees.map((emp, index) => (
+                <tr key={emp.id}>
+                  <td>{emp.first_name}</td>
+                  <td>{emp.last_name}</td>
+                  <td><input type="number" value={emp.gross_pay} onChange={(e) => handleSalaryChange(index, 'gross_pay', e.target.value)} className="input-field" /></td>
+                  <td><input type="number" value={emp.bonus} onChange={(e) => handleSalaryChange(index, 'bonus', e.target.value)} className="input-field" /></td>
+                  <td><input type="number" value={emp.loan_payment} onChange={(e) => handleSalaryChange(index, 'loan_payment', e.target.value)} className="input-field" /></td>
+                  <td><input type="number" value={emp.insurance_payment} onChange={(e) => handleSalaryChange(index, 'insurance_payment', e.target.value)} className="input-field" /></td>
+                  <td><input type="number" value={emp.retirement_payment} onChange={(e) => handleSalaryChange(index, 'retirement_payment', e.target.value)} className="input-field" /></td>
+                  <td><input type="number" value={emp.roth_retirement_payment} onChange={(e) => handleSalaryChange(index, 'roth_retirement_payment', e.target.value)} className="input-field" /></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-        <button type="submit" className="button">Generate Payroll Records</button>
+        <button type="submit" className="button-submit">Generate Payroll Records</button>
       </form>
     </div>
   );

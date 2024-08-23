@@ -1,4 +1,3 @@
-// src/components/EmployeeDetail.js
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './EmployeeDetail.css';
@@ -91,18 +90,16 @@ const EmployeeDetail = () => {
       <p>Payroll Type: {employee.payroll_type}</p>
       <p>Department: {employee.department}</p>
 
-      {employee.payroll_type === 'hourly' ? (
-        <>
-          <p>Pay Rate: ${Number(employee.pay_rate).toFixed(2)}</p>
-        </>
-      ) : null}
+      {employee.payroll_type === 'hourly' && (
+        <p>Pay Rate: ${Number(employee.pay_rate).toFixed(2)}</p>
+      )}
 
       <p>Retirement Rate: {employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</p>
       <p>Roth 401K Rate: {employee.roth_retirement_rate ? `${employee.roth_retirement_rate}%` : 'N/A'}</p>
       <p>Filing Status: {employee.filing_status}</p>
 
       <h2>Payroll Records</h2>
-      <button className="button button-create" onClick={() => navigate(`/companies/${companyId}/employees/${employeeId}/payroll_records/new`)}>
+      <button className="button-create" onClick={() => navigate(`/companies/${companyId}/employees/${employeeId}/payroll_records/new`)}>
         Create New Payroll Record
       </button>
       <table className="details-table">
@@ -130,41 +127,45 @@ const EmployeeDetail = () => {
         </tbody>
       </table>
 
-      <h2>Year-to-Date Totals</h2>
-      <table className="ytd-totals-table">
-        <thead>
-          <tr>
-            {employee.payroll_type === 'hourly' && <th>Hours Worked</th>}
-            {employee.payroll_type === 'hourly' && <th>Overtime Hours</th>}
-            <th>Reported Tips</th>
-            <th>Loan Payment</th>
-            <th>Insurance Payment</th>
-            <th>Gross Pay</th>
-            <th>Net Pay</th>
-            <th>Withholding Tax</th>
-            <th>Social Security Tax</th>
-            <th>Medicare Tax</th>
-            <th>Retirement Payment</th>
-            <th>Roth Retirement Payment</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            {employee.payroll_type === 'hourly' && <td>{ytdTotals.hours_worked.toFixed(2)}</td>}
-            {employee.payroll_type === 'hourly' && <td>{ytdTotals.overtime_hours_worked.toFixed(2)}</td>}
-            <td>${ytdTotals.reported_tips.toFixed(2)}</td>
-            <td>${ytdTotals.loan_payment.toFixed(2)}</td>
-            <td>${ytdTotals.insurance_payment.toFixed(2)}</td>
-            <td>${ytdTotals.gross_pay.toFixed(2)}</td>
-            <td>${ytdTotals.net_pay.toFixed(2)}</td>
-            <td>${ytdTotals.withholding_tax.toFixed(2)}</td>
-            <td>${ytdTotals.social_security_tax.toFixed(2)}</td>
-            <td>${ytdTotals.medicare_tax.toFixed(2)}</td>
-            <td>${ytdTotals.retirement_payment.toFixed(2)}</td>
-            <td>${ytdTotals.roth_retirement_payment.toFixed(2)}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="ytd-totals-section">
+        <h3>Year-to-Date Totals</h3>
+        <div className="ytd-totals-wrapper">
+          <table className="ytd-totals-table">
+            <thead>
+              <tr>
+                {employee.payroll_type === 'hourly' && <th>Hours Worked</th>}
+                {employee.payroll_type === 'hourly' && <th>Overtime Hours</th>}
+                <th>Reported Tips</th>
+                <th>Loan Payment</th>
+                <th>Insurance Payment</th>
+                <th>Gross Pay</th>
+                <th>Net Pay</th>
+                <th>Withholding Tax</th>
+                <th>Social Security Tax</th>
+                <th>Medicare Tax</th>
+                <th>Retirement Payment</th>
+                <th>Roth Retirement Payment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                {employee.payroll_type === 'hourly' && <td>{ytdTotals.hours_worked.toFixed(2)}</td>}
+                {employee.payroll_type === 'hourly' && <td>{ytdTotals.overtime_hours_worked.toFixed(2)}</td>}
+                <td>${ytdTotals.reported_tips.toFixed(2)}</td>
+                <td>${ytdTotals.loan_payment.toFixed(2)}</td>
+                <td>${ytdTotals.insurance_payment.toFixed(2)}</td>
+                <td>${ytdTotals.gross_pay.toFixed(2)}</td>
+                <td>${ytdTotals.net_pay.toFixed(2)}</td>
+                <td>${ytdTotals.withholding_tax.toFixed(2)}</td>
+                <td>${ytdTotals.social_security_tax.toFixed(2)}</td>
+                <td>${ytdTotals.medicare_tax.toFixed(2)}</td>
+                <td>${ytdTotals.retirement_payment.toFixed(2)}</td>
+                <td>${ytdTotals.roth_retirement_payment.toFixed(2)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };

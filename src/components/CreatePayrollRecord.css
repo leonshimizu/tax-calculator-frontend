@@ -1,73 +1,104 @@
 /* src/components/CreatePayrollRecord.css */
-.container {
-  max-width: 600px;
-  margin: 40px auto;
+
+.create-payroll-record {
   padding: 20px;
-  background-color: #fff;
+  max-width: 800px;
+  margin: 20px auto;
+  background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
 }
 
-.form-header {
-  margin-bottom: 20px;
+.create-payroll-record h1 {
+  color: #2c3e50;
+  font-weight: 600;
   text-align: center;
-  color: #333;
+  margin-bottom: 20px;
 }
 
 .form-group {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 15px;
 }
 
 .form-group label {
-  display: block;
+  color: #34495e;
   margin-bottom: 5px;
-  color: #666;
+  font-size: 14px;
 }
 
 .form-group input {
-  width: 100%;
-  padding: 8px;
+  padding: 10px;
+  font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  box-sizing: border-box; /* Include padding in width calculation */
+  transition: border-color 0.3s ease;
 }
 
-.button {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-top: 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.button:hover {
-  background-color: #45a049;
+.form-group input:focus {
+  border-color: #4CAF50;
+  outline: none;
 }
 
 .button-back {
-  margin-top: 20px;
-  padding: 8px 16px;
-  background-color: #ccc;
-  color: #333;
+  margin-bottom: 20px;
+  padding: 10px 15px;
+  background-color: #2c3e50;
+  color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  display: block;
+  width: fit-content;
 }
 
 .button-back:hover {
-  background-color: #bbb;
+  background-color: #1f2d3d;
 }
 
-/* Add responsiveness */
-@media (max-width: 768px) {
-  .container {
-    width: 90%;
-    margin: 20px auto;
+.button-submit {
+  padding: 10px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+  width: fit-content;
+}
+
+.button-submit:hover {
+  background-color: #45a049;
+}
+
+/* Responsive design adjustments */
+@media (max-width: 600px) {
+  .create-payroll-record {
     padding: 15px;
+    font-size: 14px;
+  }
+
+  .create-payroll-record h1 {
+    font-size: 20px;
+  }
+
+  .form-group label, 
+  .form-group input {
+    font-size: 12px;
+  }
+
+  .button-back, 
+  .button-submit {
+    padding: 8px 12px;
+    font-size: 14px;
   }
 }

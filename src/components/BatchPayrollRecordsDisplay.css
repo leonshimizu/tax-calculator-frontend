@@ -1,71 +1,124 @@
 /* src/components/BatchPayrollRecordsDisplay.css */
-/* Container Styling */
-.container {
+
+.batch-payroll-records-display {
   padding: 20px;
-  max-width: 100%; /* Allow the container to expand fully */
+  max-width: 1200px;
   margin: auto;
-  background-color: #f8f9fa;
+  background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  overflow-x: auto; /* Add horizontal scrolling if needed */
+  font-family: 'Roboto', sans-serif;
 }
 
-table {
+.batch-payroll-records-display h1,
+.batch-payroll-records-display h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-container label {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.search-container input[type="date"] {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+}
+
+.button-search {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-search:hover {
+  background-color: #0056b3;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.record-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
 }
 
-table, th, td {
-  border: 1px solid #ccc;
-}
-
-th, td {
+.record-table th,
+.record-table td {
   padding: 10px;
   text-align: left;
+  border: 1px solid #ddd;
 }
 
-th {
-  background-color: #f0f0f0; /* Grayish background for header */
+.record-table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
   color: #333;
+}
+
+.record-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.ytd-totals {
+  background-color: #f8f9fa;
   font-weight: bold;
 }
 
-td {
-  background-color: #ffffff;
+.ytd-label {
+  text-align: right;
+  font-weight: bold;
 }
 
-tr:nth-child(even) {
-  background-color: #f2f2f2; /* Light grey for alternate rows */
-}
-
-td, th {
-  border-right: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-}
-
-tr th:last-child, tr td:last-child {
-  border-right: none;
-}
-
-tr:hover {
-  background-color: #f1f1f1;
-}
-
-/* Button Styling */
 .button-back {
-  display: inline-block;
-  margin-top: 20px;
+  display: block;
+  margin: 20px auto;
   padding: 10px 20px;
   background-color: #6c757d;
-  color: white;
-  text-decoration: none;
-  border-radius: 4px;
+  color: #ffffff;
   text-align: center;
+  border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .button-back:hover {
   background-color: #5a6268;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .record-table th,
+  .record-table td {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .batch-payroll-records-display h1,
+  .batch-payroll-records-display h2 {
+    font-size: 20px;
+  }
+
+  .button-back,
+  .button-search {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
 }

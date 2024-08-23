@@ -3,23 +3,39 @@
   padding: 20px;
   max-width: 800px;
   margin: 20px auto;
-  background-color: #fff;
+  background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
 }
 
-.payroll-record-details h1 {
-  border-bottom: 2px solid #007bff;
-  padding-bottom: 10px;
-  color: #333;
-  font-size: 24px;
+.payroll-record-details h1, 
+.payroll-record-details h2 {
+  color: #2c3e50;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.payroll-record-details p {
+  color: #7f8c8d;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  margin-top: 20px;
 }
 
 .payroll-record-details table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  margin: 0 auto;
+  table-layout: auto;
+  max-width: 800px;
 }
 
 .payroll-record-details th,
@@ -27,32 +43,43 @@
   padding: 12px;
   border: 1px solid #ddd;
   text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .payroll-record-details th {
-  background-color: #f8f9fa;
+  background-color: #f0f0f0;
   font-weight: bold;
+  font-size: 14px;
+  color: #2c3e50;
 }
 
 .payroll-record-details td {
   background-color: #ffffff;
   color: #333;
+  font-size: 14px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .payroll-record-details button {
-  padding: 8px 16px;
-  margin-top: 20px;
-  margin-right: 10px;
+  padding: 10px 20px;
+  margin: 0 10px;
   border: none;
   border-radius: 4px;
-  background-color: #007bff;
+  background-color: #4CAF50;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .payroll-record-details button:hover {
-  background-color: #0056b3;
+  background-color: #45a049;
 }
 
 .payroll-record-details button:last-child {
@@ -61,4 +88,25 @@
 
 .payroll-record-details button:last-child:hover {
   background-color: #5a6268;
+}
+
+/* Responsive design adjustments */
+@media (max-width: 600px) {
+  .payroll-record-details {
+    padding: 15px;
+    font-size: 14px;
+  }
+
+  .payroll-record-details h1, .payroll-record-details h2 {
+    font-size: 20px;
+  }
+
+  .payroll-record-details th, .payroll-record-details td {
+    font-size: 12px;
+  }
+
+  .payroll-record-details button {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
 }

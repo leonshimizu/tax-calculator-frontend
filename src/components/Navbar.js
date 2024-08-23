@@ -1,36 +1,21 @@
+// src/components/Navbar.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 
-const Navbar = () => {
+const Navbar = ({ companyName }) => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          PayrollApp
+          {companyName || 'PayrollApp'}
         </Link>
-        <ul className="navbar-menu">
-          <li className="navbar-item">
-            <Link to="/companies" className="navbar-link">
-              Companies
-            </Link>
-          </li>
-          <li className="navbar-item">
-            <Link to="/employees" className="navbar-link">
-              Employees
-            </Link>
-          </li>
-          <li className="navbar-item">
-            <Link to="/payroll" className="navbar-link">
-              Payroll
-            </Link>
-          </li>
-          <li className="navbar-item">
-            <Link to="/reports" className="navbar-link">
-              Reports
-            </Link>
-          </li>
-        </ul>
+        <div className="navbar-menu">
+          <Link to="/companies" className="navbar-link">Companies</Link>
+          <Link to="/employees" className="navbar-link">Employees</Link>
+          <Link to="/payroll" className="navbar-link">Payroll</Link>
+          <Link to="/reports" className="navbar-link">Reports</Link>
+        </div>
       </div>
     </nav>
   );

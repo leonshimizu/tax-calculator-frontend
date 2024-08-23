@@ -1,4 +1,3 @@
-// src/components/BatchPayrollRecordsDisplay.js
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from '../api/axios';
@@ -76,7 +75,7 @@ function BatchPayrollRecordsDisplay() {
   const formatNumber = (num) => num !== undefined ? num.toFixed(2) : 'N/A';
 
   return (
-    <div className="container">
+    <div className="batch-payroll-records-display">
       <h1>Batch Payroll Records</h1>
 
       <div className="search-container">
@@ -96,139 +95,149 @@ function BatchPayrollRecordsDisplay() {
         <p>Loading records...</p>
       ) : (
         <>
-          {hourlyRecords.length > 0 && (
+          {hourlyRecords.length > 0 || salaryRecords.length > 0 ? (
             <>
-              <h2>Hourly Employees</h2>
-              <table>
-                <thead>
-                  <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Filing Status</th>
-                    <th>Department</th>
-                    <th>Pay Rate</th>
-                    <th>Retirement Rate</th>
-                    <th>Roth 401K Rate</th>
-                    <th>Date</th>
-                    <th>Hours Worked</th>
-                    <th>Overtime Hours</th>
-                    <th>Reported Tips</th>
-                    <th>Loan Payment</th>
-                    <th>Insurance Payment</th>
-                    <th>Net Pay</th>
-                    <th>Withholding Tax</th>
-                    <th>Social Security Tax</th>
-                    <th>Medicare Tax</th>
-                    <th>Retirement Payment</th>
-                    <th>Roth 401K Payment</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {hourlyRecords.map((record, index) => {
-                    const employee = record.employee || {};
-                    return (
-                      <tr key={index}>
-                        <td>{employee.first_name || 'Unknown'}</td>
-                        <td>{employee.last_name || 'Unknown'}</td>
-                        <td>{employee.filing_status || 'N/A'}</td>
-                        <td>{employee.department || 'N/A'}</td>
-                        <td>{formatNumber(parseFloat(employee.pay_rate))}</td>
-                        <td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
-                        <td>{employee.roth_retirement_rate ? `${employee.roth_retirement_rate}%` : 'N/A'}</td>
-                        <td>{record.date || 'N/A'}</td>
-                        <td>{formatNumber(parseFloat(record.hours_worked))}</td>
-                        <td>{formatNumber(parseFloat(record.overtime_hours_worked))}</td>
-                        <td>{formatNumber(parseFloat(record.reported_tips))}</td>
-                        <td>{formatNumber(parseFloat(record.loan_payment))}</td>
-                        <td>{formatNumber(parseFloat(record.insurance_payment))}</td>
-                        <td>{formatNumber(parseFloat(record.net_pay))}</td>
-                        <td>{formatNumber(parseFloat(record.withholding_tax))}</td>
-                        <td>{formatNumber(parseFloat(record.social_security_tax))}</td>
-                        <td>{formatNumber(parseFloat(record.medicare_tax))}</td>
-                        <td>{formatNumber(parseFloat(record.retirement_payment))}</td>
-                        <td>{formatNumber(parseFloat(record.roth_retirement_payment))}</td>
-                      </tr>
-                    );
-                  })}
-                  <tr className="ytd-totals">
-                    <td colSpan="7" className="ytd-label">Totals:</td>
-                    <td>{formatNumber(hourlyYtdTotals.hours_worked)}</td>
-                    <td>{formatNumber(hourlyYtdTotals.overtime_hours_worked)}</td>
-                    <td>{formatNumber(hourlyYtdTotals.reported_tips)}</td>
-                    <td>{formatNumber(hourlyYtdTotals.loan_payment)}</td>
-                    <td>{formatNumber(hourlyYtdTotals.insurance_payment)}</td>
-                    <td>{formatNumber(hourlyYtdTotals.net_pay)}</td>
-                    <td>{formatNumber(hourlyYtdTotals.withholding_tax)}</td>
-                    <td>{formatNumber(hourlyYtdTotals.social_security_tax)}</td>
-                    <td>{formatNumber(hourlyYtdTotals.medicare_tax)}</td>
-                    <td>{formatNumber(hourlyYtdTotals.retirement_payment)}</td>
-                    <td>{formatNumber(hourlyYtdTotals.roth_retirement_payment)}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </>
-          )}
+              {hourlyRecords.length > 0 && (
+                <>
+                  <h2>Hourly Employees</h2>
+                  <div className="table-wrapper">
+                    <table className="record-table">
+                      <thead>
+                        <tr>
+                          <th>First Name</th>
+                          <th>Last Name</th>
+                          <th>Filing Status</th>
+                          <th>Department</th>
+                          <th>Pay Rate</th>
+                          <th>Retirement Rate</th>
+                          <th>Roth 401K Rate</th>
+                          <th>Date</th>
+                          <th>Hours Worked</th>
+                          <th>Overtime Hours</th>
+                          <th>Reported Tips</th>
+                          <th>Loan Payment</th>
+                          <th>Insurance Payment</th>
+                          <th>Net Pay</th>
+                          <th>Withholding Tax</th>
+                          <th>Social Security Tax</th>
+                          <th>Medicare Tax</th>
+                          <th>Retirement Payment</th>
+                          <th>Roth 401K Payment</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {hourlyRecords.map((record, index) => {
+                          const employee = record.employee || {};
+                          return (
+                            <tr key={index}>
+                              <td>{employee.first_name || 'Unknown'}</td>
+                              <td>{employee.last_name || 'Unknown'}</td>
+                              <td>{employee.filing_status || 'N/A'}</td>
+                              <td>{employee.department || 'N/A'}</td>
+                              <td>{formatNumber(parseFloat(employee.pay_rate))}</td>
+                              <td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
+                              <td>{employee.roth_retirement_rate ? `${employee.roth_retirement_rate}%` : 'N/A'}</td>
+                              <td>{record.date || 'N/A'}</td>
+                              <td>{formatNumber(parseFloat(record.hours_worked))}</td>
+                              <td>{formatNumber(parseFloat(record.overtime_hours_worked))}</td>
+                              <td>{formatNumber(parseFloat(record.reported_tips))}</td>
+                              <td>{formatNumber(parseFloat(record.loan_payment))}</td>
+                              <td>{formatNumber(parseFloat(record.insurance_payment))}</td>
+                              <td>{formatNumber(parseFloat(record.net_pay))}</td>
+                              <td>{formatNumber(parseFloat(record.withholding_tax))}</td>
+                              <td>{formatNumber(parseFloat(record.social_security_tax))}</td>
+                              <td>{formatNumber(parseFloat(record.medicare_tax))}</td>
+                              <td>{formatNumber(parseFloat(record.retirement_payment))}</td>
+                              <td>{formatNumber(parseFloat(record.roth_retirement_payment))}</td>
+                            </tr>
+                          );
+                        })}
+                        <tr className="ytd-totals">
+                          <td colSpan="7" className="ytd-label">Totals:</td>
+                          <td>{formatNumber(hourlyYtdTotals.hours_worked)}</td>
+                          <td>{formatNumber(hourlyYtdTotals.overtime_hours_worked)}</td>
+                          <td>{formatNumber(hourlyYtdTotals.reported_tips)}</td>
+                          <td>{formatNumber(hourlyYtdTotals.loan_payment)}</td>
+                          <td>{formatNumber(hourlyYtdTotals.insurance_payment)}</td>
+                          <td>{formatNumber(hourlyYtdTotals.net_pay)}</td>
+                          <td>{formatNumber(hourlyYtdTotals.withholding_tax)}</td>
+                          <td>{formatNumber(hourlyYtdTotals.social_security_tax)}</td>
+                          <td>{formatNumber(hourlyYtdTotals.medicare_tax)}</td>
+                          <td>{formatNumber(hourlyYtdTotals.retirement_payment)}</td>
+                          <td>{formatNumber(hourlyYtdTotals.roth_retirement_payment)}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </>
+              )}
 
-          {salaryRecords.length > 0 && (
-            <>
-              <h2>Salary Employees</h2>
-              <table>
-                <thead>
-                  <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Filing Status</th>
-                    <th>Department</th>
-                    <th>Gross Pay</th>
-                    <th>Bonus</th>
-                    <th>Loan Payment</th>
-                    <th>Insurance Payment</th>
-                    <th>Net Pay</th>
-                    <th>Withholding Tax</th>
-                    <th>Social Security Tax</th>
-                    <th>Medicare Tax</th>
-                    <th>Retirement Payment</th>
-                    <th>Roth 401K Payment</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {salaryRecords.map((record, index) => {
-                    const employee = record.employee || {};
-                    return (
-                      <tr key={index}>
-                        <td>{employee.first_name || 'Unknown'}</td>
-                        <td>{employee.last_name || 'Unknown'}</td>
-                        <td>{employee.filing_status || 'N/A'}</td>
-                        <td>{employee.department || 'N/A'}</td>
-                        <td>{formatNumber(parseFloat(record.gross_pay))}</td>
-                        <td>{formatNumber(parseFloat(record.bonus))}</td>
-                        <td>{formatNumber(parseFloat(record.loan_payment))}</td>
-                        <td>{formatNumber(parseFloat(record.insurance_payment))}</td>
-                        <td>{formatNumber(parseFloat(record.net_pay))}</td>
-                        <td>{formatNumber(parseFloat(record.withholding_tax))}</td>
-                        <td>{formatNumber(parseFloat(record.social_security_tax))}</td>
-                        <td>{formatNumber(parseFloat(record.medicare_tax))}</td>
-                        <td>{formatNumber(parseFloat(record.retirement_payment))}</td>
-                        <td>{formatNumber(parseFloat(record.roth_retirement_payment))}</td>
-                      </tr>
-                    );
-                  })}
-                  <tr className="ytd-totals">
-                    <td colSpan="4" className="ytd-label">Totals:</td>
-                    <td>{formatNumber(salaryYtdTotals.gross_pay)}</td>
-                    <td>{formatNumber(salaryYtdTotals.bonus)}</td>
-                    <td>{formatNumber(salaryYtdTotals.loan_payment)}</td>
-                    <td>{formatNumber(salaryYtdTotals.insurance_payment)}</td>
-                    <td>{formatNumber(salaryYtdTotals.net_pay)}</td>
-                    <td>{formatNumber(salaryYtdTotals.withholding_tax)}</td>
-                    <td>{formatNumber(salaryYtdTotals.social_security_tax)}</td>
-                    <td>{formatNumber(salaryYtdTotals.medicare_tax)}</td>
-                    <td>{formatNumber(salaryYtdTotals.retirement_payment)}</td>
-                    <td>{formatNumber(salaryYtdTotals.roth_retirement_payment)}</td>
-                  </tr>
-                </tbody>
-              </table>
+              {salaryRecords.length > 0 && (
+                <>
+                  <h2>Salary Employees</h2>
+                  <div className="table-wrapper">
+                    <table className="record-table">
+                      <thead>
+                        <tr>
+                          <th>First Name</th>
+                          <th>Last Name</th>
+                          <th>Filing Status</th>
+                          <th>Department</th>
+                          <th>Gross Pay</th>
+                          <th>Bonus</th>
+                          <th>Loan Payment</th>
+                          <th>Insurance Payment</th>
+                          <th>Net Pay</th>
+                          <th>Withholding Tax</th>
+                          <th>Social Security Tax</th>
+                          <th>Medicare Tax</th>
+                          <th>Retirement Payment</th>
+                          <th>Roth 401K Payment</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {salaryRecords.map((record, index) => {
+                          const employee = record.employee || {};
+                          return (
+                            <tr key={index}>
+                              <td>{employee.first_name || 'Unknown'}</td>
+                              <td>{employee.last_name || 'Unknown'}</td>
+                              <td>{employee.filing_status || 'N/A'}</td>
+                              <td>{employee.department || 'N/A'}</td>
+                              <td>{formatNumber(parseFloat(record.gross_pay))}</td>
+                              <td>{formatNumber(parseFloat(record.bonus))}</td>
+                              <td>{formatNumber(parseFloat(record.loan_payment))}</td>
+                              <td>{formatNumber(parseFloat(record.insurance_payment))}</td>
+                              <td>{formatNumber(parseFloat(record.net_pay))}</td>
+                              <td>{formatNumber(parseFloat(record.withholding_tax))}</td>
+                              <td>{formatNumber(parseFloat(record.social_security_tax))}</td>
+                              <td>{formatNumber(parseFloat(record.medicare_tax))}</td>
+                              <td>{formatNumber(parseFloat(record.retirement_payment))}</td>
+                              <td>{formatNumber(parseFloat(record.roth_retirement_payment))}</td>
+                            </tr>
+                          );
+                        })}
+                        <tr className="ytd-totals">
+                          <td colSpan="4" className="ytd-label">Totals:</td>
+                          <td>{formatNumber(salaryYtdTotals.gross_pay)}</td>
+                          <td>{formatNumber(salaryYtdTotals.bonus)}</td>
+                          <td>{formatNumber(salaryYtdTotals.loan_payment)}</td>
+                          <td>{formatNumber(salaryYtdTotals.insurance_payment)}</td>
+                          <td>{formatNumber(salaryYtdTotals.net_pay)}</td>
+                          <td>{formatNumber(salaryYtdTotals.withholding_tax)}</td>
+                          <td>{formatNumber(salaryYtdTotals.social_security_tax)}</td>
+                          <td>{formatNumber(salaryYtdTotals.medicare_tax)}</td>
+                          <td>{formatNumber(salaryYtdTotals.retirement_payment)}</td>
+                          <td>{formatNumber(salaryYtdTotals.roth_retirement_payment)}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </>
+              )}
             </>
+          ) : (
+            <p className="no-records-message">No payroll records found for the selected date.</p>
           )}
         </>
       )}
