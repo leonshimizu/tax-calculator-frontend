@@ -1,55 +1,65 @@
+/* Navbar container */
 .navbar {
-  background-color: #333;
+  background-color: #2c3e50; /* Darker shade for a more professional look */
   padding: 10px 20px;
   position: fixed;
   width: 100%;
   top: 0;
   left: 0;
   z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
+/* Navbar inner container */
 .navbar-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 100%; /* Ensures the container doesn't exceed screen width */
-  padding: 0 25px; /* Adds some padding on smaller screens */
-  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
+/* Navbar logo styling */
 .navbar-logo {
-  color: #fff;
+  color: #ecf0f1;
   font-size: 24px;
   text-decoration: none;
   font-weight: bold;
-  flex-shrink: 0; /* Prevents the logo from shrinking */
-  margin-right: auto;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
 }
 
+.navbar-logo:hover {
+  color: #f39c12; /* Subtle hover effect */
+}
+
+/* Navbar menu styling */
 .navbar-menu {
   list-style: none;
   display: flex;
   margin: 0;
   padding: 0;
-  flex-wrap: wrap; /* Allows menu items to wrap on smaller screens */
-  justify-content: flex-end;
 }
 
+/* Individual navbar item */
 .navbar-item {
   margin-left: 20px;
-  flex-shrink: 0; /* Prevents items from shrinking */
 }
 
+/* Navbar link styling */
 .navbar-link {
-  color: #fff;
+  color: #ecf0f1;
   text-decoration: none;
   font-size: 16px;
-  transition: color 0.3s ease;
-  display: block;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .navbar-link:hover {
-  color: #ddd;
+  background-color: #34495e; /* Darker background on hover */
+  color: #f39c12; /* Accent color for hover */
 }
 
 /* Media Query for Tablets and Smaller Screens */
@@ -59,7 +69,7 @@
   }
 
   .navbar-menu {
-    flex-direction: column; /* Stacks the menu items vertically */
+    flex-direction: column; /* Stack items vertically on smaller screens */
     align-items: center;
     width: 100%;
   }
@@ -81,7 +91,7 @@
   }
 
   .navbar-item {
-    width: 100%; /* Make sure the items fill the width */
-    text-align: center; /* Center text inside items */
+    width: 100%; /* Ensure full width for items */
+    text-align: center; /* Center align text */
   }
 }
