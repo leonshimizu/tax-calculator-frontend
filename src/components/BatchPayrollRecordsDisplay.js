@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from '../api/axios';
+import { utils, writeFile } from 'xlsx'; // Import necessary methods from xlsx library
 import './BatchPayrollRecordsDisplay.css';
 
 function BatchPayrollRecordsDisplay() {
@@ -74,6 +75,38 @@ function BatchPayrollRecordsDisplay() {
 
   const formatNumber = (num) => num !== undefined ? num.toFixed(2) : 'N/A';
 
+  const downloadAsCSV = () => {
+    const data = records.map(record => {
+      const employee = record.employee || {};
+      return {
+        'First Name': employee.first_name || 'Unknown',
+        'Last Name': employee.last_name || 'Unknown',
+        'Filing Status': employee.filing_status || 'N/A',
+        'Department': employee.department || 'N/A',
+        'Pay Rate': employee.pay_rate || 'N/A',
+        'Retirement Rate': employee.retirement_rate || 'N/A',
+        'Roth 401K Rate': employee.roth_retirement_rate || 'N/A',
+        'Date': record.date || 'N/A',
+        'Hours Worked': record.hours_worked || 'N/A',
+        'Overtime Hours': record.overtime_hours_worked || 'N/A',
+        'Reported Tips': record.reported_tips || 'N/A',
+        'Loan Payment': record.loan_payment || 'N/A',
+        'Insurance Payment': record.insurance_payment || 'N/A',
+        'Net Pay': record.net_pay || 'N/A',
+        'Withholding Tax': record.withholding_tax || 'N/A',
+        'Social Security Tax': record.social_security_tax || 'N/A',
+        'Medicare Tax': record.medicare_tax || 'N/A',
+        'Retirement Payment': record.retirement_payment || 'N/A',
+        'Roth 401K Payment': record.roth_retirement_payment || 'N/A',
+      };
+    });
+
+    const worksheet = utils.json_to_sheet(data);
+    const workbook = utils.book_new();
+    utils.book_append_sheet(workbook, worksheet, 'Payroll Records');
+    writeFile(workbook, 'Payroll_Records.xlsx');
+  };
+
   return (
     <div className="batch-payroll-records-display">
       <h1>Batch Payroll Records</h1>
@@ -90,6 +123,10 @@ function BatchPayrollRecordsDisplay() {
           Search
         </button>
       </div>
+
+      <button onClick={downloadAsCSV} className="button-download">
+        Download as Excel
+      </button>
 
       {loading ? (
         <p>Loading records...</p>
