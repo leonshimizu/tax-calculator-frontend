@@ -1,6 +1,7 @@
+/* Existing Styles */
 .employee-list {
   padding: 20px;
-  max-width: 800px; /* Reduced max-width for a cleaner look */
+  max-width: 800px;
   margin: 20px auto;
   background-color: #ffffff;
   border-radius: 8px;
@@ -15,7 +16,7 @@ h1, h2 {
   margin-bottom: 20px;
 }
 
-.button, .button-add, .button-save, .button-cancel {
+.button, .button-add, .button-save, .button-cancel, .button-upload {
   padding: 10px 15px;
   margin: 5px;
   background-color: #34495e;
@@ -28,74 +29,8 @@ h1, h2 {
   display: inline-block;
 }
 
-.button:hover, .button-add:hover, .button-save:hover, .button-cancel:hover {
+.button:hover, .button-add:hover, .button-save:hover, .button-cancel:hover, .button-upload:hover {
   background-color: #2c3e50;
-}
-
-.table-wrapper {
-  overflow-x: auto; /* Enables horizontal scrolling for tables */
-  margin-top: 20px;
-}
-
-.employee-table, .ytd-totals-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #ecf0f1;
-  margin-bottom: 20px;
-}
-
-.employee-table th, .employee-table td, .ytd-totals-table th, .ytd-totals-table td {
-  border: 1px solid #bdc3c7;
-  padding: 10px 15px;
-  text-align: left;
-  white-space: nowrap; /* Prevents text from wrapping */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 14px;
-  color: #34495e;
-}
-
-.employee-table th, .ytd-totals-table th {
-  background-color: #bdc3c7;
-  font-weight: 700;
-  font-size: 16px;
-  color: #2c3e50;
-}
-
-.add-employee-form {
-  margin-top: 30px;
-  text-align: center;
-}
-
-.add-employee-row.visible {
-  display: block;
-  margin-top: 20px;
-}
-
-.add-employee-row {
-  display: none;
-  width: 100%;
-}
-
-.add-employee-row h3 {
-  color: #2c3e50;
-  margin-bottom: 10px;
-}
-
-.button-add {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #27ae60;
-  color: #ffffff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
-.button-add:hover {
-  background-color: #229954;
 }
 
 /* Responsive Design Adjustments */
@@ -115,13 +50,13 @@ h1, h2 {
     font-size: 14px;
   }
 
-  .button-add {
+  .button-add, .button-upload {
     font-size: 14px;
     padding: 8px 12px;
   }
 
   h1, h2 {
-    font-size: 18px; /* Smaller font size for headers */
+    font-size: 18px;
   }
 }
 
@@ -141,12 +76,20 @@ h1, h2 {
     font-size: 12px;
   }
 
-  .button-add {
+  .button-add, .button-upload {
     font-size: 12px;
     padding: 6px 10px;
   }
 
   h1, h2 {
-    font-size: 16px; /* Further reduced font size for smaller screens */
+    font-size: 16px;
   }
+}
+
+/* Updated Styles for Button Group */
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center; /* Align buttons to center */
 }

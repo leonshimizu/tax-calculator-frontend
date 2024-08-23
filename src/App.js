@@ -9,6 +9,7 @@ import PayrollRecordDetails from './components/PayrollRecordDetails';
 import CreatePayrollRecord from './components/CreatePayrollRecord';
 import BatchPayrollEntry from './components/BatchPayrollEntry';
 import BatchPayrollRecordsDisplay from './components/BatchPayrollRecordsDisplay';
+import FileUpload from './components/FileUpload';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/companies/:companyId/batch-payroll-records-display" element={<BatchPayrollRecordsDisplay />} />
           <Route path="/companies/:companyId/employees/:employeeId/payroll_records/:recordId" element={<PayrollRecordDetails />} />
           <Route path="/companies/:companyId/employees/:employeeId/payroll_records/new" element={<CreatePayrollRecord />} />
+          <Route path="/companies/:companyId/employees/upload" element={<FileUpload />} />
         </Routes>
       </div>
     </Router>

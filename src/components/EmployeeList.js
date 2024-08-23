@@ -360,7 +360,10 @@ function EmployeeList() {
       <br />
       <div className="add-employee-form">
         {!showAddRow && (
-          <button className="button-add" onClick={() => setShowAddRow(true)}>Add New Employee</button>
+          <>
+            <button className="button-add" onClick={() => setShowAddRow(true)}>Add New Employee</button>
+            <button className="button-upload" onClick={() => navigate(`/companies/${companyId}/employees/upload`)}>Upload File</button>
+          </>
         )}
         <div className={`add-employee-row ${showAddRow ? 'visible' : ''}`}>
           {showAddRow && (
