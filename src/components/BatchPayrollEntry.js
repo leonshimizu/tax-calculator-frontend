@@ -25,6 +25,8 @@ function BatchPayrollEntry() {
         reported_tips: '',
         loan_payment: '',
         insurance_payment: '',
+        retirement_payment: '',
+        roth_retirement_payment: ''
       }));
       const salary = response.data.filter(emp => emp.payroll_type === 'salary').map(emp => ({
         ...emp,
@@ -32,6 +34,8 @@ function BatchPayrollEntry() {
         bonus: '',
         loan_payment: '',
         insurance_payment: '',
+        retirement_payment: '',
+        roth_retirement_payment: ''
       }));
       setHourlyEmployees(hourly);
       setSalaryEmployees(salary);
@@ -63,6 +67,8 @@ function BatchPayrollEntry() {
         reported_tips: emp.reported_tips,
         loan_payment: emp.loan_payment,
         insurance_payment: emp.insurance_payment,
+        retirement_payment: emp.retirement_payment,
+        roth_retirement_payment: emp.roth_retirement_payment,
       }));
 
       const salaryPayload = salaryEmployees.map(emp => ({
@@ -72,6 +78,8 @@ function BatchPayrollEntry() {
         bonus: emp.bonus,
         loan_payment: emp.loan_payment,
         insurance_payment: emp.insurance_payment,
+        retirement_payment: emp.retirement_payment,
+        roth_retirement_payment: emp.roth_retirement_payment,
       }));
 
       const response = await axios.post(`/companies/${companyId}/employees/batch/payroll_records`, {
@@ -105,6 +113,8 @@ function BatchPayrollEntry() {
               <th>Reported Tips</th>
               <th>Loan Payment</th>
               <th>Insurance Payment</th>
+              <th>Retirement Payment</th>
+              <th>Roth 401K Payment</th>
             </tr>
           </thead>
           <tbody>
@@ -127,6 +137,12 @@ function BatchPayrollEntry() {
                 <td>
                   <input type="number" value={emp.insurance_payment} onChange={(e) => handleHourlyChange(index, 'insurance_payment', e.target.value)} className="input-field" />
                 </td>
+                <td>
+                  <input type="number" value={emp.retirement_payment} onChange={(e) => handleHourlyChange(index, 'retirement_payment', e.target.value)} className="input-field" />
+                </td>
+                <td>
+                  <input type="number" value={emp.roth_retirement_payment} onChange={(e) => handleHourlyChange(index, 'roth_retirement_payment', e.target.value)} className="input-field" />
+                </td>
               </tr>
             ))}
           </tbody>
@@ -142,6 +158,8 @@ function BatchPayrollEntry() {
               <th>Bonus</th>
               <th>Loan Payment</th>
               <th>Insurance Payment</th>
+              <th>Retirement Payment</th>
+              <th>Roth 401K Payment</th>
             </tr>
           </thead>
           <tbody>
@@ -160,6 +178,12 @@ function BatchPayrollEntry() {
                 </td>
                 <td>
                   <input type="number" value={emp.insurance_payment} onChange={(e) => handleSalaryChange(index, 'insurance_payment', e.target.value)} className="input-field" />
+                </td>
+                <td>
+                  <input type="number" value={emp.retirement_payment} onChange={(e) => handleSalaryChange(index, 'retirement_payment', e.target.value)} className="input-field" />
+                </td>
+                <td>
+                  <input type="number" value={emp.roth_retirement_payment} onChange={(e) => handleSalaryChange(index, 'roth_retirement_payment', e.target.value)} className="input-field" />
                 </td>
               </tr>
             ))}

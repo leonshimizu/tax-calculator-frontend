@@ -1,3 +1,4 @@
+// src/components/EmployeeList.js
 import React, { useEffect, useState } from 'react';
 import './EmployeeList.css';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -19,15 +20,17 @@ function EmployeeList() {
     social_security_tax: 0,
     medicare_tax: 0,
     retirement_payment: 0,
+    roth_retirement_payment: 0,
   });
   const [editEmployeeId, setEditEmployeeId] = useState(null);
   const [newEmployee, setNewEmployee] = useState({
     first_name: '',
     last_name: '',
     payroll_type: 'hourly',
-    department: 'front_of_house',  // Default to front_of_house or any other department
+    department: 'front_of_house',
     pay_rate: '',
     retirement_rate: '',
+    roth_retirement_rate: '',
     filing_status: 'single',
     company_id: companyId,
   });
@@ -82,6 +85,7 @@ function EmployeeList() {
         social_security_tax: acc.social_security_tax + parseFloat(record.social_security_tax || 0),
         medicare_tax: acc.medicare_tax + parseFloat(record.medicare_tax || 0),
         retirement_payment: acc.retirement_payment + parseFloat(record.retirement_payment || 0),
+        roth_retirement_payment: acc.roth_retirement_payment + parseFloat(record.roth_retirement_payment || 0),
       };
     }, {
       hours_worked: 0,
@@ -95,6 +99,7 @@ function EmployeeList() {
       social_security_tax: 0,
       medicare_tax: 0,
       retirement_payment: 0,
+      roth_retirement_payment: 0,
     });
 
     setYtdTotals(totals);
@@ -104,7 +109,6 @@ function EmployeeList() {
     const { name, value } = e.target;
     const updatedEmployee = { ...newEmployee, [name]: value };
 
-    // If payroll_type is 'salary', automatically set the department to 'salary'
     if (name === 'payroll_type' && value === 'salary') {
       updatedEmployee.department = 'salary';
     }
@@ -145,6 +149,7 @@ function EmployeeList() {
         department: '',
         pay_rate: '',
         retirement_rate: '',
+        roth_retirement_rate: '',
         filing_status: 'single',
         company_id: companyId,
       });
@@ -184,6 +189,7 @@ function EmployeeList() {
             <th>Department</th>
             <th>Pay Rate</th>
             <th>401K Rate</th>
+            <th>Roth 401K Rate</th>
             <th>Filing Status</th>
             <th>Actions</th>
           </tr>
@@ -212,6 +218,7 @@ function EmployeeList() {
                     <td><input type="number" value={Number(employee.pay_rate)} onChange={(e) => handleEditChange(e, employee.id, 'pay_rate')} /></td>
                   )}
                   <td><input type="number" value={employee.retirement_rate} onChange={(e) => handleEditChange(e, employee.id, 'retirement_rate')} /></td>
+                  <td><input type="number" value={employee.roth_retirement_rate} onChange={(e) => handleEditChange(e, employee.id, 'roth_retirement_rate')} /></td>
                   <td>
                     <select value={employee.filing_status} onChange={(e) => handleEditChange(e, employee.id, 'filing_status')}>
                       <option value="single">Single</option>
@@ -234,6 +241,7 @@ function EmployeeList() {
                     <td>{`$${Number(employee.pay_rate).toFixed(2)}`}</td>
                   )}
                   <td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
+                  <td>{employee.roth_retirement_rate ? `${employee.roth_retirement_rate}%` : 'N/A'}</td>
                   <td>{employee.filing_status}</td>
                   <td>
                     <button
@@ -271,6 +279,7 @@ function EmployeeList() {
             <th>Payroll Type</th>
             <th>Department</th>
             <th>401K Rate</th>
+            <th>Roth 401K Rate</th>
             <th>Filing Status</th>
             <th>Actions</th>
           </tr>
@@ -296,6 +305,7 @@ function EmployeeList() {
                     </select>
                   </td>
                   <td><input type="number" value={employee.retirement_rate} onChange={(e) => handleEditChange(e, employee.id, 'retirement_rate')} /></td>
+                  <td><input type="number" value={employee.roth_retirement_rate} onChange={(e) => handleEditChange(e, employee.id, 'roth_retirement_rate')} /></td>
                   <td>
                     <select value={employee.filing_status} onChange={(e) => handleEditChange(e, employee.id, 'filing_status')}>
                       <option value="single">Single</option>
@@ -315,6 +325,7 @@ function EmployeeList() {
                   <td>{employee.payroll_type}</td>
                   <td>{employee.department}</td>
                   <td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
+                  <td>{employee.roth_retirement_rate ? `${employee.roth_retirement_rate}%` : 'N/A'}</td>
                   <td>{employee.filing_status}</td>
                   <td>
                     <button
@@ -361,6 +372,7 @@ function EmployeeList() {
                     <th>Department</th>
                     {newEmployee.payroll_type === 'hourly' && <th>Pay Rate</th>}
                     <th>401K Rate</th>
+                    <th>Roth 401K Rate</th>
                     <th>Filing Status</th>
                     <th>Actions</th>
                   </tr>
@@ -386,6 +398,7 @@ function EmployeeList() {
                       <td><input type="number" name="pay_rate" value={newEmployee.pay_rate} onChange={handleInputChange} /></td>
                     )}
                     <td><input type="number" name="retirement_rate" value={newEmployee.retirement_rate} onChange={handleInputChange} /></td>
+                    <td><input type="number" name="roth_retirement_rate" value={newEmployee.roth_retirement_rate} onChange={handleInputChange} /></td>
                     <td>
                       <select name="filing_status" value={newEmployee.filing_status} onChange={handleInputChange}>
                         <option value="single">Single</option>
@@ -420,6 +433,7 @@ function EmployeeList() {
             <th>Social Security Tax</th>
             <th>Medicare Tax</th>
             <th>Retirement Payment</th>
+            <th>Roth 401K Payment</th>
           </tr>
         </thead>
         <tbody>
@@ -435,6 +449,7 @@ function EmployeeList() {
             <td>{`$${ytdTotals.social_security_tax.toFixed(2)}`}</td>
             <td>{`$${ytdTotals.medicare_tax.toFixed(2)}`}</td>
             <td>{`$${ytdTotals.retirement_payment.toFixed(2)}`}</td>
+            <td>{`$${ytdTotals.roth_retirement_payment.toFixed(2)}`}</td>
           </tr>
         </tbody>
       </table>

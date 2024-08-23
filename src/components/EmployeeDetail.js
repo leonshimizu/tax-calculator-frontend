@@ -21,6 +21,7 @@ const EmployeeDetail = () => {
     social_security_tax: 0,
     medicare_tax: 0,
     retirement_payment: 0,
+    roth_retirement_payment: 0,
   });
 
   useEffect(() => {
@@ -61,6 +62,7 @@ const EmployeeDetail = () => {
         social_security_tax: acc.social_security_tax + parseFloat(record.social_security_tax || 0),
         medicare_tax: acc.medicare_tax + parseFloat(record.medicare_tax || 0),
         retirement_payment: acc.retirement_payment + parseFloat(record.retirement_payment || 0),
+        roth_retirement_payment: acc.roth_retirement_payment + parseFloat(record.roth_retirement_payment || 0),
       };
     }, {
       hours_worked: 0,
@@ -74,6 +76,7 @@ const EmployeeDetail = () => {
       social_security_tax: 0,
       medicare_tax: 0,
       retirement_payment: 0,
+      roth_retirement_payment: 0,
     });
 
     setYtdTotals(totals);
@@ -95,6 +98,7 @@ const EmployeeDetail = () => {
       ) : null}
 
       <p>Retirement Rate: {employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</p>
+      <p>Roth 401K Rate: {employee.roth_retirement_rate ? `${employee.roth_retirement_rate}%` : 'N/A'}</p>
       <p>Filing Status: {employee.filing_status}</p>
 
       <h2>Payroll Records</h2>
@@ -141,6 +145,7 @@ const EmployeeDetail = () => {
             <th>Social Security Tax</th>
             <th>Medicare Tax</th>
             <th>Retirement Payment</th>
+            <th>Roth Retirement Payment</th>
           </tr>
         </thead>
         <tbody>
@@ -156,6 +161,7 @@ const EmployeeDetail = () => {
             <td>${ytdTotals.social_security_tax.toFixed(2)}</td>
             <td>${ytdTotals.medicare_tax.toFixed(2)}</td>
             <td>${ytdTotals.retirement_payment.toFixed(2)}</td>
+            <td>${ytdTotals.roth_retirement_payment.toFixed(2)}</td>
           </tr>
         </tbody>
       </table>

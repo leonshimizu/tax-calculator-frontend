@@ -1,3 +1,4 @@
+// src/components/BatchPayrollRecordsDisplay.js
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from '../api/axios';
@@ -45,6 +46,7 @@ function BatchPayrollRecordsDisplay() {
       social_security_tax: 0,
       medicare_tax: 0,
       retirement_payment: 0,
+      roth_retirement_payment: 0,
     };
 
     records.forEach(record => {
@@ -59,6 +61,7 @@ function BatchPayrollRecordsDisplay() {
       totals.social_security_tax += parseFloat(record.social_security_tax) || 0;
       totals.medicare_tax += parseFloat(record.medicare_tax) || 0;
       totals.retirement_payment += parseFloat(record.retirement_payment) || 0;
+      totals.roth_retirement_payment += parseFloat(record.roth_retirement_payment) || 0;
     });
 
     return totals;
@@ -105,6 +108,7 @@ function BatchPayrollRecordsDisplay() {
                     <th>Department</th>
                     <th>Pay Rate</th>
                     <th>Retirement Rate</th>
+                    <th>Roth 401K Rate</th>
                     <th>Date</th>
                     <th>Hours Worked</th>
                     <th>Overtime Hours</th>
@@ -116,6 +120,7 @@ function BatchPayrollRecordsDisplay() {
                     <th>Social Security Tax</th>
                     <th>Medicare Tax</th>
                     <th>Retirement Payment</th>
+                    <th>Roth 401K Payment</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -129,6 +134,7 @@ function BatchPayrollRecordsDisplay() {
                         <td>{employee.department || 'N/A'}</td>
                         <td>{formatNumber(parseFloat(employee.pay_rate))}</td>
                         <td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
+                        <td>{employee.roth_retirement_rate ? `${employee.roth_retirement_rate}%` : 'N/A'}</td>
                         <td>{record.date || 'N/A'}</td>
                         <td>{formatNumber(parseFloat(record.hours_worked))}</td>
                         <td>{formatNumber(parseFloat(record.overtime_hours_worked))}</td>
@@ -140,10 +146,10 @@ function BatchPayrollRecordsDisplay() {
                         <td>{formatNumber(parseFloat(record.social_security_tax))}</td>
                         <td>{formatNumber(parseFloat(record.medicare_tax))}</td>
                         <td>{formatNumber(parseFloat(record.retirement_payment))}</td>
+                        <td>{formatNumber(parseFloat(record.roth_retirement_payment))}</td>
                       </tr>
                     );
                   })}
-                  {/* YTD Totals Row */}
                   <tr className="ytd-totals">
                     <td colSpan="7" className="ytd-label">Totals:</td>
                     <td>{formatNumber(hourlyYtdTotals.hours_worked)}</td>
@@ -156,6 +162,7 @@ function BatchPayrollRecordsDisplay() {
                     <td>{formatNumber(hourlyYtdTotals.social_security_tax)}</td>
                     <td>{formatNumber(hourlyYtdTotals.medicare_tax)}</td>
                     <td>{formatNumber(hourlyYtdTotals.retirement_payment)}</td>
+                    <td>{formatNumber(hourlyYtdTotals.roth_retirement_payment)}</td>
                   </tr>
                 </tbody>
               </table>
@@ -181,6 +188,7 @@ function BatchPayrollRecordsDisplay() {
                     <th>Social Security Tax</th>
                     <th>Medicare Tax</th>
                     <th>Retirement Payment</th>
+                    <th>Roth 401K Payment</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -201,10 +209,10 @@ function BatchPayrollRecordsDisplay() {
                         <td>{formatNumber(parseFloat(record.social_security_tax))}</td>
                         <td>{formatNumber(parseFloat(record.medicare_tax))}</td>
                         <td>{formatNumber(parseFloat(record.retirement_payment))}</td>
+                        <td>{formatNumber(parseFloat(record.roth_retirement_payment))}</td>
                       </tr>
                     );
                   })}
-                  {/* YTD Totals Row */}
                   <tr className="ytd-totals">
                     <td colSpan="4" className="ytd-label">Totals:</td>
                     <td>{formatNumber(salaryYtdTotals.gross_pay)}</td>
@@ -216,6 +224,7 @@ function BatchPayrollRecordsDisplay() {
                     <td>{formatNumber(salaryYtdTotals.social_security_tax)}</td>
                     <td>{formatNumber(salaryYtdTotals.medicare_tax)}</td>
                     <td>{formatNumber(salaryYtdTotals.retirement_payment)}</td>
+                    <td>{formatNumber(salaryYtdTotals.roth_retirement_payment)}</td>
                   </tr>
                 </tbody>
               </table>

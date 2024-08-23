@@ -102,6 +102,10 @@ const PayrollRecordDetails = () => {
                         <td>${parseFloat(record.retirement_payment).toFixed(2)}</td>
                     </tr>
                     <tr>
+                        <th>Roth Retirement Payment:</th>
+                        <td>${parseFloat(record.roth_retirement_payment).toFixed(2)}</td>
+                    </tr>
+                    <tr>
                         <th>Total Deductions:</th>
                         <td>${parseFloat(record.total_deductions).toFixed(2)}</td>
                     </tr>

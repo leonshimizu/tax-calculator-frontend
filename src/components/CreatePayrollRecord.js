@@ -1,3 +1,4 @@
+// src/components/CreatePayrollRecord.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './CreatePayrollRecord.css';
@@ -14,6 +15,8 @@ const CreatePayrollRecord = () => {
     date: '',
     gross_pay: '', // Add gross_pay for salary employees
     bonus: '', // Add bonus for salary employees
+    retirement_payment: '', // Add retirement_payment for both hourly and salary employees
+    roth_retirement_payment: '', // Add roth_retirement_payment for both hourly and salary employees
   });
   const [employee, setEmployee] = useState(null);
   const navigate = useNavigate();
@@ -40,6 +43,7 @@ const CreatePayrollRecord = () => {
     event.preventDefault();
     try {
       await axios.post(`/companies/${companyId}/employees/${employeeId}/payroll_records`, formData);
+      console.log(formData);
       navigate(`/companies/${companyId}/employees/${employeeId}`); // Redirect to employee details page
     } catch (error) {
       console.error('Error creating payroll record:', error);
@@ -133,6 +137,24 @@ const CreatePayrollRecord = () => {
             type="number"
             name="insurance_payment"
             value={formData.insurance_payment}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="form-group">
+          <label>Retirement Payment</label>
+          <input
+            type="number"
+            name="retirement_payment"
+            value={formData.retirement_payment}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="form-group">
+          <label>Roth Retirement Payment</label>
+          <input
+            type="number"
+            name="roth_retirement_payment"
+            value={formData.roth_retirement_payment}
             onChange={handleInputChange}
           />
         </div>
