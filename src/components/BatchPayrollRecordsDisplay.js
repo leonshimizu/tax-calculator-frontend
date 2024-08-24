@@ -41,6 +41,7 @@ function BatchPayrollRecordsDisplay() {
       loan_payment: 0,
       insurance_payment: 0,
       gross_pay: 0,
+      bonus: 0,
       net_pay: 0,
       withholding_tax: 0,
       social_security_tax: 0,
@@ -56,6 +57,7 @@ function BatchPayrollRecordsDisplay() {
       totals.loan_payment += parseFloat(record.loan_payment) || 0;
       totals.insurance_payment += parseFloat(record.insurance_payment) || 0;
       totals.gross_pay += parseFloat(record.gross_pay) || 0;
+      totals.bonus += parseFloat(record.bonus) || 0;
       totals.net_pay += parseFloat(record.net_pay) || 0;
       totals.withholding_tax += parseFloat(record.withholding_tax) || 0;
       totals.social_security_tax += parseFloat(record.social_security_tax) || 0;
@@ -148,7 +150,6 @@ function BatchPayrollRecordsDisplay() {
                           <th>Pay Rate</th>
                           <th>Retirement Rate</th>
                           <th>Roth 401K Rate</th>
-                          <th>Date</th>
                           <th>Hours Worked</th>
                           <th>Overtime Hours</th>
                           <th>Reported Tips</th>
@@ -174,7 +175,6 @@ function BatchPayrollRecordsDisplay() {
                               <td>{formatNumber(parseFloat(employee.pay_rate))}</td>
                               <td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
                               <td>{employee.roth_retirement_rate ? `${employee.roth_retirement_rate}%` : 'N/A'}</td>
-                              <td>{record.date || 'N/A'}</td>
                               <td>{formatNumber(parseFloat(record.hours_worked))}</td>
                               <td>{formatNumber(parseFloat(record.overtime_hours_worked))}</td>
                               <td>{formatNumber(parseFloat(record.reported_tips))}</td>
