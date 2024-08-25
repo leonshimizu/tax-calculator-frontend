@@ -10,6 +10,7 @@ import CreatePayrollRecord from './components/CreatePayrollRecord';
 import BatchPayrollEntry from './components/BatchPayrollEntry';
 import BatchPayrollRecordsDisplay from './components/BatchPayrollRecordsDisplay';
 import FileUpload from './components/FileUpload';
+import NotFoundPage from './components/NotFoundPage'; // Import a 404 Not Found page component
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Navbar />
       <div style={{ paddingTop: '60px' }}>
         <Routes>
+          {/* Define all the routes for your application */}
           <Route path="/" element={<PayrollHome />} />
           <Route path="/companies" element={<PayrollHome />} />
           <Route path="/companies/:companyId/employees" element={<EmployeeList />} />
@@ -26,6 +28,9 @@ function App() {
           <Route path="/companies/:companyId/employees/:employeeId/payroll_records/:recordId" element={<PayrollRecordDetails />} />
           <Route path="/companies/:companyId/employees/:employeeId/payroll_records/new" element={<CreatePayrollRecord />} />
           <Route path="/companies/:companyId/employees/upload" element={<FileUpload />} />
+
+          {/* Add a catch-all route for 404 errors */}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
     </Router>
