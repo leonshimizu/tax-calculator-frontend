@@ -142,7 +142,6 @@ const PayrollRecordDetails = () => {
         </table>
       </div>
       <div className="button-group">
-        <button onClick={() => navigate(`/companies/${companyId}/employees/${employeeId}/payroll_records/${recordId}/edit`)}>Edit</button>
         <button onClick={() => navigate(`/companies/${companyId}/employees/${employeeId}`)}>Back to Payroll Records</button>
       </div>
     </div>
