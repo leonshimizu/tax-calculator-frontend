@@ -10,6 +10,7 @@ const PayrollRecordDetails = () => {
   const [record, setRecord] = useState(null);
   const [employee, setEmployee] = useState(null);
   const [customColumns, setCustomColumns] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchPayrollRecord();
@@ -21,8 +22,11 @@ const PayrollRecordDetails = () => {
     try {
       const response = await axios.get(`/companies/${companyId}/employees/${employeeId}/payroll_records/${recordId}`);
       setRecord(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error('Error fetching payroll record details:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,7 +48,9 @@ const PayrollRecordDetails = () => {
     }
   };
 
-  if (!record || !employee) return <div>Loading...</div>;
+  if (loading) return <div>Loading...</div>;
+
+  if (!record || !employee) return <div>No payroll record or employee details found.</div>;
 
   return (
     <div className="payroll-record-details">
@@ -59,67 +65,67 @@ const PayrollRecordDetails = () => {
           <tbody>
             <tr>
               <th>Date:</th>
-              <td>{record.payroll_record.date}</td>
+              <td>{record.payroll_record.date || 'N/A'}</td>
             </tr>
             {employee.payroll_type === 'hourly' && (
               <>
                 <tr>
                   <th>Hours Worked:</th>
-                  <td>{record.payroll_record.hours_worked}</td>
+                  <td>{record.payroll_record.hours_worked || 'N/A'}</td>
                 </tr>
                 <tr>
                   <th>Overtime Hours:</th>
-                  <td>{record.payroll_record.overtime_hours_worked || "N/A"}</td>
+                  <td>{record.payroll_record.overtime_hours_worked || 'N/A'}</td>
                 </tr>
                 <tr>
                   <th>Reported Tips:</th>
-                  <td>${parseFloat(record.payroll_record.reported_tips).toFixed(2)}</td>
+                  <td>${parseFloat(record.payroll_record.reported_tips || 0).toFixed(2)}</td>
                 </tr>
               </>
             )}
             <tr>
-              <th>Gross Income:</th>
-              <td>${parseFloat(record.gross_pay).toFixed(2)}</td>
+              <th>Gross Pay:</th>
+              <td>${parseFloat(record.gross_pay || 0).toFixed(2)}</td>
             </tr>
             <tr>
               <th>Bonus:</th>
-              <td>${parseFloat(record.payroll_record.bonus).toFixed(2)}</td>
+              <td>${parseFloat(record.payroll_record.bonus || 0).toFixed(2)}</td>
             </tr>
             <tr>
               <th>Net Pay:</th>
-              <td>${parseFloat(record.net_pay).toFixed(2)}</td>
+              <td>${parseFloat(record.net_pay || 0).toFixed(2)}</td>
             </tr>
             <tr>
               <th>Loan Payment:</th>
-              <td>${parseFloat(record.payroll_record.loan_payment).toFixed(2)}</td>
+              <td>${parseFloat(record.payroll_record.loan_payment || 0).toFixed(2)}</td>
             </tr>
             <tr>
               <th>Insurance Payment:</th>
-              <td>${parseFloat(record.payroll_record.insurance_payment).toFixed(2)}</td>
+              <td>${parseFloat(record.payroll_record.insurance_payment || 0).toFixed(2)}</td>
             </tr>
             <tr>
               <th>Withholding Tax:</th>
-              <td>${parseFloat(record.withholding_tax).toFixed(2)}</td>
+              <td>${parseFloat(record.withholding_tax || 0).toFixed(2)}</td>
             </tr>
             <tr>
               <th>Social Security Tax:</th>
-              <td>${parseFloat(record.social_security_tax).toFixed(2)}</td>
+              <td>${parseFloat(record.social_security_tax || 0).toFixed(2)}</td>
             </tr>
             <tr>
               <th>Medicare Tax:</th>
-              <td>${parseFloat(record.medicare_tax).toFixed(2)}</td>
+              <td>${parseFloat(record.medicare_tax || 0).toFixed(2)}</td>
             </tr>
             <tr>
               <th>Retirement Payment:</th>
-              <td>${parseFloat(record.retirement_payment).toFixed(2)}</td>
+              <td>${parseFloat(record.retirement_payment || 0).toFixed(2)}</td>
             </tr>
             <tr>
               <th>Roth Retirement Payment:</th>
-              <td>${parseFloat(record.roth_retirement_payment).toFixed(2)}</td>
+              <td>${parseFloat(record.roth_retirement_payment || 0).toFixed(2)}</td>
             </tr>
             <tr>
               <th>Total Deductions:</th>
-              <td>${parseFloat(record.total_deductions).toFixed(2)}</td>
+              <td>${parseFloat(record.total_deductions || 0).toFixed(2)}</td>
             </tr>
 
             {/* Display custom columns */}
@@ -128,11 +134,11 @@ const PayrollRecordDetails = () => {
                 <th>{column.name}:</th>
                 <td>
                   {column.data_type === 'boolean' ? (
-                    record.custom_columns[column.name] ? 'Yes' : 'No'
+                    record.custom_columns && record.custom_columns[column.name] ? 'Yes' : 'No'
                   ) : column.data_type === 'decimal' ? (
-                    `$${parseFloat(record.custom_columns[column.name]).toFixed(2)}`
+                    `$${parseFloat(record.custom_columns ? record.custom_columns[column.name] : 0).toFixed(2)}`
                   ) : (
-                    record.custom_columns[column.name]
+                    record.custom_columns ? record.custom_columns[column.name] : 'N/A'
                   )}
                 </td>
               </tr>
