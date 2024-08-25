@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../api/axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import './CustomColumnsManager.css';
 
 function CustomColumnsManager() {
+  const navigate = useNavigate();
   const { companyId } = useParams();
   const [customColumns, setCustomColumns] = useState([]);
   const [newColumnName, setNewColumnName] = useState('');
@@ -61,6 +62,7 @@ function CustomColumnsManager() {
 
   return (
     <div className="custom-columns-manager">
+      <button className="button-back" onClick={() => navigate(`/companies/${companyId}/employees`)}>Back</button>
       <h3>Manage Custom Columns</h3>
       {loading ? (
         <p>Loading...</p>
