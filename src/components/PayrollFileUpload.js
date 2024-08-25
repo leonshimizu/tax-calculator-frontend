@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
 import axios from '../api/axios';
 import { useParams } from 'react-router-dom';
-import './FileUpload.css'; // Assuming you want to use the same styling
+import './EmployeeFileUpload.css';
 
 function PayrollFileUpload() {
   const [file, setFile] = useState(null);

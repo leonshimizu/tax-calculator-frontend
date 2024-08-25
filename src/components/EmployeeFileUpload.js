@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
 import axios from '../api/axios';
 import { useParams } from 'react-router-dom';
-import './FileUpload.css';
+import './EmployeeFileUpload.css';
 
 function FileUpload() {
   const [file, setFile] = useState(null);

@@ -9,7 +9,7 @@ import PayrollRecordDetails from './components/PayrollRecordDetails';
 import CreatePayrollRecord from './components/CreatePayrollRecord';
 import BatchPayrollEntry from './components/BatchPayrollEntry';
 import BatchPayrollRecordsDisplay from './components/BatchPayrollRecordsDisplay';
-import FileUpload from './components/FileUpload';
+import EmployeeFileUpload from './components/EmployeeFileUpload';
 import PayrollFileUpload from './components/PayrollFileUpload'; // Import the new PayrollFileUpload component
 import NotFoundPage from './components/NotFoundPage'; // Import a 404 Not Found page component
 import CustomColumnsManager from './components/CustomColumnsManager'; // Import the CustomColumnsManager component
@@ -29,7 +29,7 @@ function App() {
           <Route path="/companies/:companyId/batch-payroll-records-display" element={<BatchPayrollRecordsDisplay />} />
           <Route path="/companies/:companyId/employees/:employeeId/payroll_records/:recordId" element={<PayrollRecordDetails />} />
           <Route path="/companies/:companyId/employees/:employeeId/payroll_records/new" element={<CreatePayrollRecord />} />
-          <Route path="/companies/:companyId/employees/upload" element={<FileUpload />} />
+          <Route path="/companies/:companyId/employees/upload" element={<EmployeeFileUpload />} />
           <Route path="/companies/:companyId/payroll_records/upload" element={<PayrollFileUpload />} /> {/* New route for batch payroll record upload */}
 
           {/* Add routes for managing custom columns */}
