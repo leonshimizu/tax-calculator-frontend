@@ -1,14 +1,15 @@
 /* src/components/Navbar.css */
 .navbar {
-  background-color: #2c3e50; /* Dark blue-gray for a more modern look */
+  background-color: #2c3e50; /* Dark blue-gray background */
   padding: 10px 20px;
   position: fixed;
   width: 100%;
   top: 0;
   left: 0;
   z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  font-family: 'Roboto', sans-serif; /* Consistent modern font */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+  border-bottom: 1px solid #1a252f; /* Darker border for subtle separation */
 }
 
 .navbar-container {
@@ -17,64 +18,90 @@
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 15px; /* Added padding for better alignment */
+  padding: 0 15px;
 }
 
 .navbar-logo {
-  color: #ecf0f1; /* Light color for contrast */
+  color: #ecf0f1; /* Light color for contrast against dark background */
   font-size: 24px;
   text-decoration: none;
   font-weight: bold;
 }
 
+.navbar-company-name {
+  color: #ecf0f1; /* Light color for the company name */
+  margin-left: 20px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.navbar-toggle {
+  display: none; /* Hidden by default, shown in mobile view */
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #ecf0f1; /* Light color for contrast */
+  cursor: pointer;
+}
+
 .navbar-menu {
   display: flex;
   align-items: center;
+  transition: max-height 0.3s ease;
 }
 
 .navbar-link {
-  color: #ecf0f1;
+  color: #ecf0f1; /* Light color for text */
   text-decoration: none;
   margin-left: 20px;
   padding: 8px 12px;
-  border-radius: 4px; /* Rounded corners for modern look */
+  border-radius: 4px;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.navbar-link:hover {
-  background-color: #2980b9; /* Slightly lighter blue for hover */
-  color: #fff;
+.navbar-link.active, .navbar-link:hover {
+  background-color: #009688; /* QuickBooks green for active and hover states */
+  color: #ffffff; /* White text for better visibility */
+}
+
+.navbar-message {
+  color: #bdc3c7; /* Light gray for the unavailable message */
+  margin-left: 20px;
 }
 
 @media (max-width: 768px) {
   .navbar-container {
-    flex-direction: column; /* Stack items vertically on smaller screens */
-    align-items: flex-start; /* Align items to the left */
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar-toggle {
+    display: block; /* Show toggle button in mobile view */
   }
 
   .navbar-menu {
-    flex-direction: column; /* Vertical menu for mobile view */
-    width: 100%; /* Full width for mobile menu */
-    display: none; /* Initially hidden */
+    flex-direction: column;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
   }
 
   .navbar-menu.active {
-    display: flex; /* Show menu when active */
+    max-height: 500px; /* Sufficient height to display all items */
   }
 
   .navbar-link {
-    margin: 10px 0; /* Space between links in mobile view */
+    margin: 10px 0;
   }
 
   .navbar-logo {
-    margin-bottom: 10px; /* Space below the logo on smaller screens */
+    margin-bottom: 10px;
   }
 }
 
-/* Responsive adjustments for even smaller screens */
 @media (max-width: 480px) {
   .navbar-logo {
-    font-size: 20px; /* Slightly smaller font size for the logo */
+    font-size: 20px; /* Smaller font size for smaller screens */
   }
 
   .navbar-link {
