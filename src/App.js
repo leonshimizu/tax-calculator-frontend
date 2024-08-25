@@ -11,6 +11,7 @@ import BatchPayrollEntry from './components/BatchPayrollEntry';
 import BatchPayrollRecordsDisplay from './components/BatchPayrollRecordsDisplay';
 import FileUpload from './components/FileUpload';
 import NotFoundPage from './components/NotFoundPage'; // Import a 404 Not Found page component
+import CustomColumnsManager from './components/CustomColumnsManager'; // Import the CustomColumnsManager component
 
 function App() {
   return (
@@ -28,6 +29,9 @@ function App() {
           <Route path="/companies/:companyId/employees/:employeeId/payroll_records/:recordId" element={<PayrollRecordDetails />} />
           <Route path="/companies/:companyId/employees/:employeeId/payroll_records/new" element={<CreatePayrollRecord />} />
           <Route path="/companies/:companyId/employees/upload" element={<FileUpload />} />
+
+          {/* Add routes for managing custom columns */}
+          <Route path="/companies/:companyId/custom_columns" element={<CustomColumnsManager />} />
 
           {/* Add a catch-all route for 404 errors */}
           <Route path="*" element={<NotFoundPage />} />

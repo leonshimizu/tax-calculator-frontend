@@ -177,6 +177,11 @@ function EmployeeList() {
       <button onClick={() => navigate(`/companies/${companyId}/batch-payroll-records-display`)} className="button button-view-records">
         View Payroll Records by Date
       </button>
+      <button
+        className="button-custom-columns"
+        onClick={() => navigate(`/companies/${companyId}/custom_columns`)}>
+        Custom Columns
+      </button>
 
       <h2>Hourly Employees</h2>
       <div className="table-wrapper">

@@ -9,16 +9,19 @@ const PayrollRecordDetails = () => {
   const navigate = useNavigate();
   const [record, setRecord] = useState(null);
   const [employee, setEmployee] = useState(null);
+  const [customColumns, setCustomColumns] = useState([]);
 
   useEffect(() => {
     fetchPayrollRecord();
     fetchEmployee();
+    fetchCustomColumns();
   }, [companyId, employeeId, recordId]);
 
   const fetchPayrollRecord = async () => {
     try {
       const response = await axios.get(`/companies/${companyId}/employees/${employeeId}/payroll_records/${recordId}`);
       setRecord(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error('Error fetching payroll record details:', error);
     }
@@ -30,6 +33,15 @@ const PayrollRecordDetails = () => {
       setEmployee(response.data);
     } catch (error) {
       console.error('Error fetching employee details:', error);
+    }
+  };
+
+  const fetchCustomColumns = async () => {
+    try {
+      const response = await axios.get(`/companies/${companyId}/custom_columns`);
+      setCustomColumns(response.data);
+    } catch (error) {
+      console.error('Error fetching custom columns:', error);
     }
   };
 
@@ -110,6 +122,23 @@ const PayrollRecordDetails = () => {
               <th>Total Deductions:</th>
               <td>${parseFloat(record.total_deductions).toFixed(2)}</td>
             </tr>
+
+            {/* Display custom columns */}
+            {customColumns.map((column) => (
+              <tr key={column.id}>
+                <th>{column.name}:</th>
+                <td>
+                  {column.data_type === 'boolean' ? (
+                    record.custom_columns[column.name] ? 'Yes' : 'No'
+                  ) : column.data_type === 'decimal' ? (
+                    `$${parseFloat(record.custom_columns[column.name]).toFixed(2)}`
+                  ) : (
+                    record.custom_columns[column.name]
+                  )}
+                </td>
+              </tr>
+            ))}
+
           </tbody>
         </table>
       </div>
