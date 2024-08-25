@@ -21,7 +21,6 @@ const PayrollRecordDetails = () => {
     try {
       const response = await axios.get(`/companies/${companyId}/employees/${employeeId}/payroll_records/${recordId}`);
       setRecord(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error('Error fetching payroll record details:', error);
     }

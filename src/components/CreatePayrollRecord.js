@@ -72,7 +72,6 @@ const CreatePayrollRecord = () => {
 
     try {
       await axios.post(`/companies/${companyId}/employees/${employeeId}/payroll_records`, completeFormData);
-      console.log(completeFormData);
       navigate(`/companies/${companyId}/employees/${employeeId}`);
     } catch (error) {
       console.error('Error creating payroll record:', error);
