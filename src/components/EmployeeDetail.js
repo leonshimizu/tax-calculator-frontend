@@ -40,8 +40,10 @@ const EmployeeDetail = () => {
   const fetchPayrollRecords = async () => {
     try {
       const response = await axios.get(`/companies/${companyId}/employees/${employeeId}/payroll_records`);
-      setPayrollRecords(response.data);
-      calculateYtdTotals(response.data);
+      // Sort payroll records by date in descending order
+      const sortedRecords = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
+      setPayrollRecords(sortedRecords);
+      calculateYtdTotals(sortedRecords);
     } catch (error) {
       console.error('Error fetching payroll records:', error);
     }
