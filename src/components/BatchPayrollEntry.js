@@ -124,6 +124,7 @@ function BatchPayrollEntry() {
     <div className="batch-payroll-entry">
       <button className="button-back" onClick={() => navigate(`/companies/${companyId}/employees`)}>Back</button>
       <h1>Batch Payroll Entry</h1>
+      <button onClick={() => navigate(`/companies/${companyId}/payroll_records/upload`)} className="button button-batch-entry">Upload Payroll Records</button>
       <form onSubmit={handleSubmit} className="payroll-form">
         <div className="form-control">
           <label>Date of Payroll:</label>
