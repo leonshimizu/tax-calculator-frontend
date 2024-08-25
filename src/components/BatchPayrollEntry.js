@@ -19,27 +19,35 @@ function BatchPayrollEntry() {
   const fetchEmployees = async () => {
     try {
       const response = await axios.get(`/companies/${companyId}/employees`);
-      const hourly = response.data.filter(emp => emp.payroll_type === 'hourly').map(emp => ({
-        ...emp,
-        hours_worked: '',
-        overtime_hours_worked: '',
-        reported_tips: '',
-        loan_payment: '',
-        insurance_payment: '',
-        retirement_payment: '',
-        roth_retirement_payment: '',
-        custom_columns_data: {} // Initialize empty object for custom column data
-      }));
-      const salary = response.data.filter(emp => emp.payroll_type === 'salary').map(emp => ({
-        ...emp,
-        gross_pay: '',
-        bonus: '',
-        loan_payment: '',
-        insurance_payment: '',
-        retirement_payment: '',
-        roth_retirement_payment: '',
-        custom_columns_data: {} // Initialize empty object for custom column data
-      }));
+      const hourly = response.data
+        .filter(emp => emp.payroll_type === 'hourly')
+        .map(emp => ({
+          ...emp,
+          hours_worked: '',
+          overtime_hours_worked: '',
+          reported_tips: '',
+          loan_payment: '',
+          insurance_payment: '',
+          retirement_payment: '',
+          roth_retirement_payment: '',
+          custom_columns_data: {} // Initialize empty object for custom column data
+        }))
+        .sort((a, b) => a.last_name.localeCompare(b.last_name)); // Sort by last name
+
+      const salary = response.data
+        .filter(emp => emp.payroll_type === 'salary')
+        .map(emp => ({
+          ...emp,
+          gross_pay: '',
+          bonus: '',
+          loan_payment: '',
+          insurance_payment: '',
+          retirement_payment: '',
+          roth_retirement_payment: '',
+          custom_columns_data: {} // Initialize empty object for custom column data
+        }))
+        .sort((a, b) => a.last_name.localeCompare(b.last_name)); // Sort by last name
+
       setHourlyEmployees(hourly);
       setSalaryEmployees(salary);
     } catch (error) {
@@ -112,13 +120,11 @@ function BatchPayrollEntry() {
         payroll_records: [...hourlyPayload, ...salaryPayload],
       });
 
-      // Ensure response.data contains the new records
       navigate(`/companies/${companyId}/batch-payroll-records-display`, { state: { records: response.data } });
     } catch (error) {
       console.error('Error creating batch payroll records:', error);
     }
   };
-
 
   return (
     <div className="batch-payroll-entry">
