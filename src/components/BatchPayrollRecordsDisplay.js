@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from '../api/axios';
-import { utils, writeFile } from 'xlsx'; // Import necessary methods from xlsx library
+import { utils, writeFile } from 'xlsx';
 import './BatchPayrollRecordsDisplay.css';
 
 function BatchPayrollRecordsDisplay() {
@@ -9,14 +9,28 @@ function BatchPayrollRecordsDisplay() {
   const location = useLocation();
   const navigate = useNavigate();
   const [records, setRecords] = useState(location.state?.records || []);
+  const [customColumns, setCustomColumns] = useState([]);
   const [searchDate, setSearchDate] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (searchDate) {
+    fetchCustomColumns();
+
+    if (location.state?.records) {
+      setRecords(location.state.records);
+    } else if (searchDate) {
       handleSearch();
     }
-  }, [searchDate]);
+  }, [location.state, searchDate]);
+
+  const fetchCustomColumns = async () => {
+    try {
+      const response = await axios.get(`/companies/${companyId}/custom_columns`);
+      setCustomColumns(response.data);
+    } catch (error) {
+      console.error('Error fetching custom columns:', error);
+    }
+  };
 
   const handleSearch = async () => {
     if (searchDate) {
@@ -48,7 +62,12 @@ function BatchPayrollRecordsDisplay() {
       medicare_tax: 0,
       retirement_payment: 0,
       roth_retirement_payment: 0,
+      custom_columns_totals: {}
     };
+
+    customColumns.forEach(column => {
+      totals.custom_columns_totals[column.name] = 0; // Initialize totals for each custom column
+    });
 
     records.forEach(record => {
       totals.hours_worked += parseFloat(record.hours_worked) || 0;
@@ -64,6 +83,13 @@ function BatchPayrollRecordsDisplay() {
       totals.medicare_tax += parseFloat(record.medicare_tax) || 0;
       totals.retirement_payment += parseFloat(record.retirement_payment) || 0;
       totals.roth_retirement_payment += parseFloat(record.roth_retirement_payment) || 0;
+
+      // Add custom columns data to totals
+      if (record.custom_columns_data) {
+        Object.keys(record.custom_columns_data).forEach(columnName => {
+          totals.custom_columns_totals[columnName] += parseFloat(record.custom_columns_data[columnName]) || 0;
+        });
+      }
     });
 
     return totals;
@@ -80,6 +106,11 @@ function BatchPayrollRecordsDisplay() {
   const downloadAsCSV = () => {
     const data = records.map(record => {
       const employee = record.employee || {};
+      const customColumnsData = record.custom_columns_data || {};
+      const customColumnsFormatted = customColumns.reduce((acc, column) => {
+        acc[column.name] = customColumnsData[column.name] || 'N/A';
+        return acc;
+      }, {});
       return {
         'First Name': employee.first_name || 'Unknown',
         'Last Name': employee.last_name || 'Unknown',
@@ -100,6 +131,7 @@ function BatchPayrollRecordsDisplay() {
         'Medicare Tax': record.medicare_tax || 'N/A',
         'Retirement Payment': record.retirement_payment || 'N/A',
         'Roth 401K Payment': record.roth_retirement_payment || 'N/A',
+        ...customColumnsFormatted
       };
     });
 
@@ -161,6 +193,9 @@ function BatchPayrollRecordsDisplay() {
                           <th>Medicare Tax</th>
                           <th>Retirement Payment</th>
                           <th>Roth 401K Payment</th>
+                          {customColumns.map(column => (
+                            <th key={column.id}>{column.name}</th>
+                          ))}
                         </tr>
                       </thead>
                       <tbody>
@@ -186,9 +221,16 @@ function BatchPayrollRecordsDisplay() {
                               <td>{formatNumber(parseFloat(record.medicare_tax))}</td>
                               <td>{formatNumber(parseFloat(record.retirement_payment))}</td>
                               <td>{formatNumber(parseFloat(record.roth_retirement_payment))}</td>
+                              {/* Display custom column values */}
+                              {customColumns.map(column => (
+                                <td key={column.id}>
+                                  {formatNumber(parseFloat(record.custom_columns_data?.[column.name])) || 'N/A'}
+                                </td>
+                              ))}
                             </tr>
                           );
                         })}
+                        {/* Add totals row for hourly records */}
                         <tr className="ytd-totals">
                           <td colSpan="7" className="ytd-label">Totals:</td>
                           <td>{formatNumber(hourlyYtdTotals.hours_worked)}</td>
@@ -202,6 +244,11 @@ function BatchPayrollRecordsDisplay() {
                           <td>{formatNumber(hourlyYtdTotals.medicare_tax)}</td>
                           <td>{formatNumber(hourlyYtdTotals.retirement_payment)}</td>
                           <td>{formatNumber(hourlyYtdTotals.roth_retirement_payment)}</td>
+                          {customColumns.map(column => (
+                            <td key={column.id}>
+                              {formatNumber(hourlyYtdTotals.custom_columns_totals[column.name]) || 'N/A'}
+                            </td>
+                          ))}
                         </tr>
                       </tbody>
                     </table>
@@ -230,6 +277,9 @@ function BatchPayrollRecordsDisplay() {
                           <th>Medicare Tax</th>
                           <th>Retirement Payment</th>
                           <th>Roth 401K Payment</th>
+                          {customColumns.map(column => (
+                            <th key={column.id}>{column.name}</th>
+                          ))}
                         </tr>
                       </thead>
                       <tbody>
@@ -251,9 +301,16 @@ function BatchPayrollRecordsDisplay() {
                               <td>{formatNumber(parseFloat(record.medicare_tax))}</td>
                               <td>{formatNumber(parseFloat(record.retirement_payment))}</td>
                               <td>{formatNumber(parseFloat(record.roth_retirement_payment))}</td>
+                              {/* Display custom column values for salary employees */}
+                              {customColumns.map(column => (
+                                <td key={column.id}>
+                                  {formatNumber(parseFloat(record.custom_columns_data?.[column.name])) || 'N/A'}
+                                </td>
+                              ))}
                             </tr>
                           );
                         })}
+                        {/* Add totals row for salary records */}
                         <tr className="ytd-totals">
                           <td colSpan="4" className="ytd-label">Totals:</td>
                           <td>{formatNumber(salaryYtdTotals.gross_pay)}</td>
@@ -266,6 +323,11 @@ function BatchPayrollRecordsDisplay() {
                           <td>{formatNumber(salaryYtdTotals.medicare_tax)}</td>
                           <td>{formatNumber(salaryYtdTotals.retirement_payment)}</td>
                           <td>{formatNumber(salaryYtdTotals.roth_retirement_payment)}</td>
+                          {customColumns.map(column => (
+                            <td key={column.id}>
+                              {formatNumber(salaryYtdTotals.custom_columns_totals[column.name]) || 'N/A'}
+                            </td>
+                          ))}
                         </tr>
                       </tbody>
                     </table>

@@ -1,4 +1,3 @@
-// src/components/BatchPayrollEntry.js
 import React, { useState, useEffect } from 'react';
 import axios from '../api/axios';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -8,11 +7,13 @@ function BatchPayrollEntry() {
   const { companyId } = useParams();
   const [hourlyEmployees, setHourlyEmployees] = useState([]);
   const [salaryEmployees, setSalaryEmployees] = useState([]);
+  const [customColumns, setCustomColumns] = useState([]);
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchEmployees();
+    fetchCustomColumns();
   }, [companyId]);
 
   const fetchEmployees = async () => {
@@ -26,7 +27,8 @@ function BatchPayrollEntry() {
         loan_payment: '',
         insurance_payment: '',
         retirement_payment: '',
-        roth_retirement_payment: ''
+        roth_retirement_payment: '',
+        custom_columns_data: {} // Initialize empty object for custom column data
       }));
       const salary = response.data.filter(emp => emp.payroll_type === 'salary').map(emp => ({
         ...emp,
@@ -35,12 +37,22 @@ function BatchPayrollEntry() {
         loan_payment: '',
         insurance_payment: '',
         retirement_payment: '',
-        roth_retirement_payment: ''
+        roth_retirement_payment: '',
+        custom_columns_data: {} // Initialize empty object for custom column data
       }));
       setHourlyEmployees(hourly);
       setSalaryEmployees(salary);
     } catch (error) {
       console.error('Error fetching employees:', error);
+    }
+  };
+
+  const fetchCustomColumns = async () => {
+    try {
+      const response = await axios.get(`/companies/${companyId}/custom_columns`);
+      setCustomColumns(response.data);
+    } catch (error) {
+      console.error('Error fetching custom columns:', error);
     }
   };
 
@@ -56,6 +68,18 @@ function BatchPayrollEntry() {
     setSalaryEmployees(updatedEmployees);
   };
 
+  const handleCustomColumnChange = (index, field, value, type) => {
+    if (type === 'hourly') {
+      const updatedEmployees = [...hourlyEmployees];
+      updatedEmployees[index].custom_columns_data[field] = value;
+      setHourlyEmployees(updatedEmployees);
+    } else {
+      const updatedEmployees = [...salaryEmployees];
+      updatedEmployees[index].custom_columns_data[field] = value;
+      setSalaryEmployees(updatedEmployees);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -69,6 +93,7 @@ function BatchPayrollEntry() {
         insurance_payment: emp.insurance_payment,
         retirement_payment: emp.retirement_payment,
         roth_retirement_payment: emp.roth_retirement_payment,
+        custom_columns_data: emp.custom_columns_data // Include custom columns data
       }));
 
       const salaryPayload = salaryEmployees.map(emp => ({
@@ -80,17 +105,20 @@ function BatchPayrollEntry() {
         insurance_payment: emp.insurance_payment,
         retirement_payment: emp.retirement_payment,
         roth_retirement_payment: emp.roth_retirement_payment,
+        custom_columns_data: emp.custom_columns_data // Include custom columns data
       }));
 
       const response = await axios.post(`/companies/${companyId}/employees/batch/payroll_records`, {
         payroll_records: [...hourlyPayload, ...salaryPayload],
       });
 
+      // Ensure response.data contains the new records
       navigate(`/companies/${companyId}/batch-payroll-records-display`, { state: { records: response.data } });
     } catch (error) {
       console.error('Error creating batch payroll records:', error);
     }
   };
+
 
   return (
     <div className="batch-payroll-entry">
@@ -116,6 +144,9 @@ function BatchPayrollEntry() {
                 <th>Insurance Payment</th>
                 <th>Retirement Payment</th>
                 <th>Roth 401K Payment</th>
+                {customColumns.map(column => (
+                  <th key={column.id}>{column.name}</th>
+                ))}
               </tr>
             </thead>
             <tbody>
@@ -130,6 +161,16 @@ function BatchPayrollEntry() {
                   <td><input type="number" value={emp.insurance_payment} onChange={(e) => handleHourlyChange(index, 'insurance_payment', e.target.value)} className="input-field" /></td>
                   <td><input type="number" value={emp.retirement_payment} onChange={(e) => handleHourlyChange(index, 'retirement_payment', e.target.value)} className="input-field" /></td>
                   <td><input type="number" value={emp.roth_retirement_payment} onChange={(e) => handleHourlyChange(index, 'roth_retirement_payment', e.target.value)} className="input-field" /></td>
+                  {customColumns.map(column => (
+                    <td key={column.id}>
+                      <input
+                        type="number"
+                        value={emp.custom_columns_data[column.name] || ''}
+                        onChange={(e) => handleCustomColumnChange(index, column.name, e.target.value, 'hourly')}
+                        className="input-field"
+                      />
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>
@@ -149,6 +190,9 @@ function BatchPayrollEntry() {
                 <th>Insurance Payment</th>
                 <th>Retirement Payment</th>
                 <th>Roth 401K Payment</th>
+                {customColumns.map(column => (
+                  <th key={column.id}>{column.name}</th>
+                ))}
               </tr>
             </thead>
             <tbody>
@@ -162,6 +206,16 @@ function BatchPayrollEntry() {
                   <td><input type="number" value={emp.insurance_payment} onChange={(e) => handleSalaryChange(index, 'insurance_payment', e.target.value)} className="input-field" /></td>
                   <td><input type="number" value={emp.retirement_payment} onChange={(e) => handleSalaryChange(index, 'retirement_payment', e.target.value)} className="input-field" /></td>
                   <td><input type="number" value={emp.roth_retirement_payment} onChange={(e) => handleSalaryChange(index, 'roth_retirement_payment', e.target.value)} className="input-field" /></td>
+                  {customColumns.map(column => (
+                    <td key={column.id}>
+                      <input
+                        type="number"
+                        value={emp.custom_columns_data[column.name] || ''}
+                        onChange={(e) => handleCustomColumnChange(index, column.name, e.target.value, 'salary')}
+                        className="input-field"
+                      />
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>
