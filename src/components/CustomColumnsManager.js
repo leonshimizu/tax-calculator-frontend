@@ -90,8 +90,6 @@ function CustomColumnsManager() {
               className="select-new-column-type"
             >
               <option value="decimal">Decimal</option>
-              <option value="string">String</option>
-              <option value="boolean">Boolean</option>
             </select>
             <button className="button-add" onClick={handleAddColumn}>Add Column</button>
           </div>
