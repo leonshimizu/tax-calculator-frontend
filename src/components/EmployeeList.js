@@ -160,7 +160,7 @@ function EmployeeList() {
 
   const deleteEmployee = async (id) => {
     try {
-      await axios.delete(`/employees/${id}`);
+      await axios.delete(`companies/${companyId}/employees/${id}`);
       fetchEmployees();
     } catch (error) {
       console.error('Failed to delete employee:', error);
