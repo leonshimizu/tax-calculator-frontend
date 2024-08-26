@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import PayrollHome from './components/PayrollHome';
 import EmployeeList from './components/EmployeeList';
@@ -33,8 +33,8 @@ function App() {
           {/* Add routes for managing custom columns */}
           <Route path="/companies/:companyId/custom_columns" element={<><Navbar /><CustomColumnsManager /></>} />
 
-          {/* Add a catch-all route for 404 errors */}
-          <Route path="*" element={<><Navbar /><NotFoundPage /></>} />
+          {/* Catch-all route to redirect to home page */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
     </Router>
