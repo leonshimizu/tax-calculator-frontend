@@ -7,6 +7,7 @@ const Navbar = () => {
   const location = useLocation();
   const [companyId, setCompanyId] = useState(null);
   const [company, setCompany] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     const pathParts = location.pathname.split('/');
@@ -31,34 +32,43 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         {company ? (
-          <Link to={`/`} className="navbar-logo">
+          <Link to="/" className="navbar-logo">
             {company.name}
           </Link>
         ) : (
           <Link to="/" className="navbar-logo">PayrollApp</Link>
         )}
+        {companyId && (
+          <Link to={`/companies/${companyId}/employees`} className={`navbar-link ${location.pathname.includes('/employees') ? 'active' : ''}`}>
+            Employees
+          </Link>
+        )}
       </div>
-      <div className="navbar-menu">
+      <div className="navbar-options">
         {companyId ? (
-          <>
-            <Link to={`/companies/${companyId}/employees`} className={`navbar-link ${location.pathname.includes('/employees') ? 'active' : ''}`}>
-              Employees
-            </Link>
-            <Link to={`/companies/${companyId}/batch-payroll-records-display`} className={`navbar-link ${location.pathname.includes('/batch-payroll-records-display') ? 'active' : ''}`}>
-              Batch Payroll Records
-            </Link>
-            <Link to={`/companies/${companyId}/employees/upload`} className={`navbar-link ${location.pathname.includes('/employees/upload') ? 'active' : ''}`}>
-              Upload Employees
-            </Link>
-            <Link to={`/companies/${companyId}/payroll_records/upload`} className={`navbar-link ${location.pathname.includes('/payroll_records/upload') ? 'active' : ''}`}>
-              Upload Payroll Records
-            </Link>
-            <Link to={`/companies/${companyId}/custom_columns`} className={`navbar-link ${location.pathname.includes('/custom_columns') ? 'active' : ''}`}>
-              Manage Custom Columns
-            </Link>
-          </>
+          <div className="dropdown">
+            <button className="dropdown-toggle" onClick={() => setDropdownOpen(!dropdownOpen)}>
+              Options
+            </button>
+            {dropdownOpen && (
+              <div className="dropdown-menu">
+                <Link to={`/companies/${companyId}/employees/batch`} className="dropdown-item">
+                  Batch Payroll Entry
+                </Link>
+                <Link to={`/companies/${companyId}/employees/upload`} className="dropdown-item">
+                  Upload Employees
+                </Link>
+                <Link to={`/companies/${companyId}/payroll_records/upload`} className="dropdown-item">
+                  Upload Payroll Records
+                </Link>
+                <Link to={`/companies/${companyId}/custom_columns`} className="dropdown-item">
+                  Manage Custom Columns
+                </Link>
+              </div>
+            )}
+          </div>
         ) : (
-          <p>Please select a company to access these options</p>
+          <p className="navbar-message">Please select a company to access these options</p>
         )}
       </div>
     </nav>
