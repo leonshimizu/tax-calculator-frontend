@@ -47,7 +47,7 @@ function PayrollFileUpload() {
     reader.readAsBinaryString(file);
   };
 
-  const handlePdfSubmit = async (e) => { // New handler for PDF submission
+  const handlePdfSubmit = async (e) => { // Updated handler for PDF submission and Excel download
     e.preventDefault();
     if (!pdfFile) return;
 
@@ -57,17 +57,28 @@ function PayrollFileUpload() {
     formData.append('pdf', pdfFile);
 
     try {
-      // Send the PDF file to backend
-      const response = await axios.post(`/api/upload_pdf`, formData, {
+      // Send the PDF file to backend and receive the Excel file
+      const response = await axios.post('/api/upload_pdf', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
+        responseType: 'blob', // Important for handling file downloads
       });
-      console.log('PDF upload response:', response);
-      alert('PDF uploaded successfully!');
+
+      // Create a URL for the downloaded Excel file
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'payroll_data.xlsx'); // Set the download attribute with a filename
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      alert('Excel file generated and downloaded successfully!');
     } catch (error) {
       console.error('Error uploading PDF:', error);
-      alert('Failed to upload PDF.');
+      alert('Failed to process PDF.');
+    } finally {
+      setUploading(false);
     }
-    setUploading(false);
   };
 
   return (
@@ -84,7 +95,7 @@ function PayrollFileUpload() {
       <form onSubmit={handlePdfSubmit}>
         <input type="file" accept=".pdf" onChange={handlePdfFileChange} />
         <button type="submit" disabled={uploading}>
-          {uploading ? 'Uploading...' : 'Upload PDF'}
+          {uploading ? 'Processing...' : 'Upload PDF and Generate Excel'}
         </button>
       </form>
     </div>
