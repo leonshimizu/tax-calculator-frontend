@@ -12,6 +12,7 @@ import EmployeeFileUpload from './components/EmployeeFileUpload';
 import PayrollFileUpload from './components/PayrollFileUpload';
 import NotFoundPage from './components/NotFoundPage';
 import CustomColumnsManager from './components/CustomColumnsManager';
+import PayrollMasterFileUpload from './components/PayrollMasterFileUpload'; // Import the new component
 
 const App = () => {
   const location = useLocation();
@@ -39,6 +40,7 @@ const App = () => {
         <Route path="/companies/:companyId/employees/:employeeId/payroll_records/new" element={<><Navbar /><CreatePayrollRecord /></>} />
         <Route path="/companies/:companyId/employees/upload" element={<><Navbar /><EmployeeFileUpload /></>} />
         <Route path="/companies/:companyId/payroll_records/upload" element={<><Navbar /><PayrollFileUpload /></>} />
+        <Route path="/companies/:companyId/payroll_master_file/upload" element={<><Navbar /><PayrollMasterFileUpload /></>} /> {/* New route for PayrollMasterFileUpload */}
 
         {/* Add routes for managing custom columns */}
         <Route path="/companies/:companyId/custom_columns" element={<><Navbar /><CustomColumnsManager /></>} />

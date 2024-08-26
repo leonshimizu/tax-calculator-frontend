@@ -27,7 +27,7 @@ function PayrollFileUpload() {
       const sheetName = workbook.SheetNames[0];
       const sheet = workbook.Sheets[sheetName];
       const data = XLSX.utils.sheet_to_json(sheet);
-      
+
       try {
         // Send parsed data to backend with companyId in the URL
         const response = await axios.post(`/companies/${companyId}/payroll_records/upload`, { payroll_data: data });
@@ -48,7 +48,7 @@ function PayrollFileUpload() {
       <form onSubmit={handleSubmit}>
         <input type="file" accept=".xlsx, .xls" onChange={handleFileChange} />
         <button type="submit" disabled={uploading}>
-          {uploading ? 'Uploading...' : 'Upload'}
+          {uploading ? 'Uploading...' : 'Upload Excel'}
         </button>
       </form>
     </div>

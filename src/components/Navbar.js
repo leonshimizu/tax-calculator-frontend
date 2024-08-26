@@ -96,6 +96,10 @@ const Navbar = () => {
                   <Link to={`/companies/${companyId}/custom_columns`} className="dropdown-item">
                     Manage Custom Columns
                   </Link>
+                  {/* New link for Payroll Master File Upload */}
+                  <Link to={`/companies/${companyId}/payroll_master_file/upload`} className="dropdown-item">
+                    Upload Payroll Master File
+                  </Link>
                 </div>
               )}
             </div>
