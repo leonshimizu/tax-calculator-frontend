@@ -205,6 +205,7 @@ function EmployeeList() {
                       <select value={employee.department} onChange={(e) => handleEditChange(e, employee.id, 'department')}>
                         <option value="front_of_house">Front of House</option>
                         <option value="back_of_house">Back of House</option>
+                        <option value="maintenance">Maintenance</option>
                         <option value="salary">Salary</option>
                       </select>
                     </td>
@@ -297,6 +298,7 @@ function EmployeeList() {
                       <select value={employee.department} onChange={(e) => handleEditChange(e, employee.id, 'department')}>
                         <option value="front_of_house">Front of House</option>
                         <option value="back_of_house">Back of House</option>
+                        <option value="maintenance">Maintenance</option>
                         <option value="salary">Salary</option>
                       </select>
                     </td>
@@ -391,6 +393,7 @@ function EmployeeList() {
                         <select name="department" value={newEmployee.department} onChange={handleInputChange}>
                           <option value="front_of_house">Front of House</option>
                           <option value="back_of_house">Back of House</option>
+                          <option value="maintenance">Maintenance</option>
                           <option value="salary">Salary</option>
                         </select>
                       </td>
