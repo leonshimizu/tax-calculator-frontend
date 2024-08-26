@@ -54,6 +54,9 @@ const PayrollRecordDetails = () => {
 
   return (
     <div className="payroll-record-details">
+      <div className="button-group">
+        <button onClick={() => navigate(`/companies/${companyId}/employees/${employeeId}`)}>Back to Payroll Records</button>
+      </div>
       <h1>Payroll Record Details</h1>
       <h2>{employee.first_name} {employee.last_name}</h2>
       <p>Payroll Type: {employee.payroll_type}</p>
@@ -146,9 +149,6 @@ const PayrollRecordDetails = () => {
 
           </tbody>
         </table>
-      </div>
-      <div className="button-group">
-        <button onClick={() => navigate(`/companies/${companyId}/employees/${employeeId}`)}>Back to Payroll Records</button>
       </div>
     </div>
   );

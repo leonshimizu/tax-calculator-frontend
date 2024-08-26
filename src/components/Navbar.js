@@ -31,45 +31,55 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        {company ? (
-          <Link to="/" className="navbar-logo">
-            {company.name}
-          </Link>
-        ) : (
-          <Link to="/" className="navbar-logo">PayrollApp</Link>
-        )}
+        {/* Employees button on the left */}
         {companyId && (
           <Link to={`/companies/${companyId}/employees`} className={`navbar-link ${location.pathname.includes('/employees') ? 'active' : ''}`}>
             Employees
           </Link>
         )}
-      </div>
-      <div className="navbar-options">
-        {companyId ? (
-          <div className="dropdown">
-            <button className="dropdown-toggle" onClick={() => setDropdownOpen(!dropdownOpen)}>
-              Options
-            </button>
-            {dropdownOpen && (
-              <div className="dropdown-menu">
-                <Link to={`/companies/${companyId}/employees/batch`} className="dropdown-item">
-                  Batch Payroll Entry
-                </Link>
-                <Link to={`/companies/${companyId}/employees/upload`} className="dropdown-item">
-                  Upload Employees
-                </Link>
-                <Link to={`/companies/${companyId}/payroll_records/upload`} className="dropdown-item">
-                  Upload Payroll Records
-                </Link>
-                <Link to={`/companies/${companyId}/custom_columns`} className="dropdown-item">
-                  Manage Custom Columns
-                </Link>
-              </div>
-            )}
-          </div>
-        ) : (
-          <p className="navbar-message">Please select a company to access these options</p>
-        )}
+
+        {/* Centered company name */}
+        <div className="navbar-center">
+          {company ? (
+            <Link to="/" className="navbar-logo">
+              {company.name}
+            </Link>
+          ) : (
+            <Link to="/" className="navbar-logo">PayrollApp</Link>
+          )}
+        </div>
+
+        {/* Options dropdown on the right */}
+        <div className="navbar-options">
+          {companyId ? (
+            <div className="dropdown">
+              <button className="dropdown-toggle" onClick={() => setDropdownOpen(!dropdownOpen)}>
+                Options
+              </button>
+              {dropdownOpen && (
+                <div className="dropdown-menu">
+                  <Link to={`/companies/${companyId}/employees/batch`} className="dropdown-item">
+                    Batch Payroll Entry
+                  </Link>
+                  <Link to={`/companies/${companyId}/batch-payroll-records-display`} className="dropdown-item">
+                    View Payroll Records by Date
+                  </Link>
+                  <Link to={`/companies/${companyId}/employees/upload`} className="dropdown-item">
+                    Upload Employees
+                  </Link>
+                  <Link to={`/companies/${companyId}/payroll_records/upload`} className="dropdown-item">
+                    Upload Payroll Records
+                  </Link>
+                  <Link to={`/companies/${companyId}/custom_columns`} className="dropdown-item">
+                    Manage Custom Columns
+                  </Link>
+                </div>
+              )}
+            </div>
+          ) : (
+            <p className="navbar-message">Please select a company to access these options</p>
+          )}
+        </div>
       </div>
     </nav>
   );

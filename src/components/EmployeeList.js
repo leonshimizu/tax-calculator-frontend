@@ -172,17 +172,6 @@ function EmployeeList() {
 
   return (
     <div className="employee-list">
-      <h1>{company?.name}'s Employees</h1>
-      <button onClick={() => navigate(`/companies/${companyId}/employees/batch`)} className="button button-batch-entry">Batch Payroll Entry</button>
-      <button onClick={() => navigate(`/companies/${companyId}/batch-payroll-records-display`)} className="button button-view-records">
-        View Payroll Records by Date
-      </button>
-      <button
-        className="button-custom-columns"
-        onClick={() => navigate(`/companies/${companyId}/custom_columns`)}>
-        Custom Columns
-      </button>
-
       <h2>Hourly Employees</h2>
       <div className="table-wrapper">
         <table className="employee-table">
@@ -367,7 +356,6 @@ function EmployeeList() {
         {!showAddRow && (
           <>
             <button className="button-add" onClick={() => setShowAddRow(true)}>Add New Employee</button>
-            <button className="button-upload" onClick={() => navigate(`/companies/${companyId}/employees/upload`)}>Upload File</button>
           </>
         )}
         <div className={`add-employee-row ${showAddRow ? 'visible' : ''}`}>
