@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import axios from '../api/axios';
 import './Navbar.css';
@@ -8,7 +8,8 @@ const Navbar = () => {
   const [companyId, setCompanyId] = useState(null);
   const [company, setCompany] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false); // State to handle menu toggle
+  const [menuOpen, setMenuOpen] = useState(false);
+  const dropdownRef = useRef(null);  // Reference to the dropdown menu
 
   useEffect(() => {
     const pathParts = location.pathname.split('/');
@@ -30,6 +31,20 @@ const Navbar = () => {
   };
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
+
+  // Close the dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav className="navbar">
@@ -58,7 +73,7 @@ const Navbar = () => {
         </button>
 
         {/* Options dropdown on the right */}
-        <div className={`navbar-options ${menuOpen ? 'active' : ''}`}>
+        <div className={`navbar-options ${menuOpen ? 'active' : ''}`} ref={dropdownRef}>
           {companyId ? (
             <div className="dropdown">
               <button className="dropdown-toggle" onClick={() => setDropdownOpen(!dropdownOpen)}>
