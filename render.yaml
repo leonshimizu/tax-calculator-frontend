@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: tax-calculator-frontend
+    env: static
+    staticPublishPath: build
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
