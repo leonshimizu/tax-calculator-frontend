@@ -8,6 +8,7 @@ const Navbar = () => {
   const [companyId, setCompanyId] = useState(null);
   const [company, setCompany] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false); // State to handle menu toggle
 
   useEffect(() => {
     const pathParts = location.pathname.split('/');
@@ -27,6 +28,8 @@ const Navbar = () => {
       console.error('Error fetching company data:', error);
     }
   };
+
+  const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
     <nav className="navbar">
@@ -49,8 +52,13 @@ const Navbar = () => {
           )}
         </div>
 
+        {/* Menu toggle button for mobile */}
+        <button className="navbar-toggle" onClick={toggleMenu}>
+          ☰
+        </button>
+
         {/* Options dropdown on the right */}
-        <div className="navbar-options">
+        <div className={`navbar-options ${menuOpen ? 'active' : ''}`}>
           {companyId ? (
             <div className="dropdown">
               <button className="dropdown-toggle" onClick={() => setDropdownOpen(!dropdownOpen)}>
