@@ -10,7 +10,7 @@ export function LogoutLink() {
   };
 
   return (
-    <button onClick={handleClick} className="logout-button">
+    <button onClick={handleClick} className="logout-link">  {/* Use 'logout-link' to match CSS class */}
       Logout
     </button>
   );

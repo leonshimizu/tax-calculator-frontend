@@ -1,5 +1,5 @@
 /* LogoutLink.css */
-.logout-link {
+.logout-link {  /* Match this class name with the component */
   padding: 10px 15px;
   font-size: 16px;
   background-color: #009688;
