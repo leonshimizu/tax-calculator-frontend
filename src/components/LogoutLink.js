@@ -1,5 +1,5 @@
 import axios from "axios";
-import './LogoutLink.css'; // Import the CSS file
+import './LogoutLink.css';
 
 export function LogoutLink() {
   const handleClick = (event) => {
@@ -10,8 +10,8 @@ export function LogoutLink() {
   };
 
   return (
-    <a href="#" className="logout-link" onClick={handleClick}>
+    <button onClick={handleClick} className="logout-button">
       Logout
-    </a>
+    </button>
   );
 }

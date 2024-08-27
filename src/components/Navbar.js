@@ -10,7 +10,7 @@ const Navbar = () => {
   const [company, setCompany] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("jwt")); // Check if JWT exists
+  const [isLoggedIn] = useState(!!localStorage.getItem("jwt"));
 
   const dropdownRef = useRef(null); // Reference to the dropdown menu
 

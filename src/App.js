@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import PayrollHome from './components/PayrollHome';
 import EmployeeList from './components/EmployeeList';
@@ -15,7 +15,6 @@ import CustomColumnsManager from './components/CustomColumnsManager';
 import PayrollMasterFileUpload from './components/PayrollMasterFileUpload';
 import { Signup } from './components/Signup';
 import { Login } from './components/Login';
-import { LogoutLink } from './components/LogoutLink';
 import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute
 
 const App = () => {

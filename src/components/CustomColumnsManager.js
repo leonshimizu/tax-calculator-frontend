@@ -19,7 +19,7 @@ function CustomColumnsManager() {
       setError('Invalid company ID');
       setLoading(false);
     }
-  }, [companyId]);
+  }, [companyId, fetchCustomColumns]);
 
   const fetchCustomColumns = async () => {
     try {
