@@ -8,7 +8,7 @@ function CustomColumnsManager() {
   const { companyId } = useParams();
   const [customColumns, setCustomColumns] = useState([]);
   const [newColumnName, setNewColumnName] = useState('');
-  const [newColumnType, setNewColumnType] = useState('decimal'); // State for the new column's data type
+  const [isDeduction, setIsDeduction] = useState(true); // Default state for the column type
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -24,7 +24,11 @@ function CustomColumnsManager() {
   const fetchCustomColumns = async () => {
     try {
       const response = await axios.get(`/companies/${companyId}/custom_columns`);
-      setCustomColumns(response.data);
+      if (response && response.data) {
+        setCustomColumns(response.data);
+      } else {
+        setError('No data found in response');
+      }
     } catch (err) {
       console.error('Error fetching custom columns:', err);
       setError('Failed to fetch custom columns');
@@ -35,15 +39,20 @@ function CustomColumnsManager() {
 
   const handleAddColumn = async () => {
     if (!newColumnName.trim()) return;
-
+  
     try {
       const response = await axios.post(`/companies/${companyId}/custom_columns`, {
         name: newColumnName,
-        data_type: newColumnType,  // Include data type in the request
+        is_deduction: isDeduction, // Send is_deduction based on user selection
       });
-      setCustomColumns([...customColumns, response.data]);
-      setNewColumnName('');
-      setNewColumnType('decimal');  // Reset to default
+  
+      if (response && response.data) {
+        setCustomColumns([...customColumns, response.data]);
+        setNewColumnName('');
+        setIsDeduction(true); // Reset to default after adding
+      } else {
+        setError('No data found in response');
+      }
     } catch (err) {
       console.error('Error adding custom column:', err);
       setError('Failed to add custom column');
@@ -73,7 +82,7 @@ function CustomColumnsManager() {
           <ul className="custom-columns-list">
             {customColumns.map((column) => (
               <li key={column.id}>
-                {column.name} ({column.data_type})
+                {column.name} - {column.is_deduction ? "Deduction" : "Addition"}
                 <button className="button-remove" onClick={() => handleRemoveColumn(column.id)}>Remove</button>
               </li>
             ))}
@@ -86,13 +95,26 @@ function CustomColumnsManager() {
               placeholder="New Column Name"
               className="input-new-column"
             />
-            <select
-              value={newColumnType}
-              onChange={(e) => setNewColumnType(e.target.value)}
-              className="select-new-column-type"
-            >
-              <option value="decimal">Decimal</option>
-            </select>
+            <div className="deduction-toggle">
+              <label>
+                <input
+                  type="radio"
+                  name="columnType"
+                  checked={isDeduction}
+                  onChange={() => setIsDeduction(true)} // Set to true when "Deduction" is selected
+                />
+                Deduction
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="columnType"
+                  checked={!isDeduction}
+                  onChange={() => setIsDeduction(false)} // Set to false when "Addition" is selected
+                />
+                Addition
+              </label>
+            </div>
             <button className="button-add" onClick={handleAddColumn}>Add Column</button>
           </div>
         </>
