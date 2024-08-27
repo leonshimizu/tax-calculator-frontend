@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import axios from '../api/axios';
+import { LogoutLink } from './LogoutLink';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -9,7 +10,9 @@ const Navbar = () => {
   const [company, setCompany] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const dropdownRef = useRef(null);  // Reference to the dropdown menu
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("jwt")); // Check if JWT exists
+
+  const dropdownRef = useRef(null); // Reference to the dropdown menu
 
   useEffect(() => {
     const pathParts = location.pathname.split('/');
@@ -106,6 +109,17 @@ const Navbar = () => {
           ) : (
             <p className="navbar-message">Please select a company to access these options</p>
           )}
+          {/* Login, Signup, and Logout buttons */}
+          <div className="auth-buttons">
+            {isLoggedIn ? (
+              <LogoutLink />
+            ) : (
+              <>
+                <Link to="/login" className="navbar-link">Login</Link>
+                <Link to="/signup" className="navbar-link">Signup</Link>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </nav>
