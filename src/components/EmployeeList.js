@@ -107,7 +107,7 @@ function EmployeeList() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    const updatedEmployee = { ...newEmployee, [name]: value };
+    const updatedEmployee = { ...newEmployee, [name]: value || '' }; // Ensure value is not null
 
     if (name === 'payroll_type' && value === 'salary') {
       updatedEmployee.department = 'salary';
@@ -119,7 +119,7 @@ function EmployeeList() {
   const handleEditChange = (e, id, field) => {
     const newEmployees = employees.map(employee => {
       if (employee.id === id) {
-        return { ...employee, [field]: e.target.value };
+        return { ...employee, [field]: e.target.value || '' }; // Ensure value is not null
       }
       return employee;
     });
@@ -193,16 +193,16 @@ function EmployeeList() {
               <tr key={employee.id}>
                 {editEmployeeId === employee.id ? (
                   <>
-                    <td><input type="text" value={employee.first_name} onChange={(e) => handleEditChange(e, employee.id, 'first_name')} /></td>
-                    <td><input type="text" value={employee.last_name} onChange={(e) => handleEditChange(e, employee.id, 'last_name')} /></td>
+                    <td><input type="text" value={employee.first_name || ''} onChange={(e) => handleEditChange(e, employee.id, 'first_name')} /></td>
+                    <td><input type="text" value={employee.last_name || ''} onChange={(e) => handleEditChange(e, employee.id, 'last_name')} /></td>
                     <td>
-                      <select value={employee.payroll_type} onChange={(e) => handleEditChange(e, employee.id, 'payroll_type')}>
+                      <select value={employee.payroll_type || ''} onChange={(e) => handleEditChange(e, employee.id, 'payroll_type')}>
                         <option value="hourly">Hourly</option>
                         <option value="salary">Salary</option>
                       </select>
                     </td>
                     <td>
-                      <select value={employee.department} onChange={(e) => handleEditChange(e, employee.id, 'department')}>
+                      <select value={employee.department || ''} onChange={(e) => handleEditChange(e, employee.id, 'department')}>
                         <option value="front_of_house">Front of House</option>
                         <option value="back_of_house">Back of House</option>
                         <option value="maintenance">Maintenance</option>
@@ -210,12 +210,12 @@ function EmployeeList() {
                       </select>
                     </td>
                     {employee.payroll_type === 'hourly' && (
-                      <td><input type="number" value={Number(employee.pay_rate)} onChange={(e) => handleEditChange(e, employee.id, 'pay_rate')} /></td>
+                      <td><input type="number" value={employee.pay_rate || ''} onChange={(e) => handleEditChange(e, employee.id, 'pay_rate')} /></td>
                     )}
-                    <td><input type="number" value={employee.retirement_rate} onChange={(e) => handleEditChange(e, employee.id, 'retirement_rate')} /></td>
-                    <td><input type="number" value={employee.roth_retirement_rate} onChange={(e) => handleEditChange(e, employee.id, 'roth_retirement_rate')} /></td>
+                    <td><input type="number" value={employee.retirement_rate || ''} onChange={(e) => handleEditChange(e, employee.id, 'retirement_rate')} /></td>
+                    <td><input type="number" value={employee.roth_retirement_rate || ''} onChange={(e) => handleEditChange(e, employee.id, 'roth_retirement_rate')} /></td>
                     <td>
-                      <select value={employee.filing_status} onChange={(e) => handleEditChange(e, employee.id, 'filing_status')}>
+                      <select value={employee.filing_status || ''} onChange={(e) => handleEditChange(e, employee.id, 'filing_status')}>
                         <option value="single">Single</option>
                         <option value="married">Married</option>
                         <option value="head_of_household">Head of Household</option>
@@ -233,7 +233,7 @@ function EmployeeList() {
                     <td>{employee.payroll_type}</td>
                     <td>{employee.department}</td>
                     {employee.payroll_type === 'hourly' && (
-                      <td>{`$${Number(employee.pay_rate).toFixed(2)}`}</td>
+                      <td>{employee.pay_rate ? `$${Number(employee.pay_rate).toFixed(2)}` : ''}</td>
                     )}
                     <td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
                     <td>{employee.roth_retirement_rate ? `${employee.roth_retirement_rate}%` : 'N/A'}</td>
@@ -286,26 +286,26 @@ function EmployeeList() {
               <tr key={employee.id}>
                 {editEmployeeId === employee.id ? (
                   <>
-                    <td><input type="text" value={employee.first_name} onChange={(e) => handleEditChange(e, employee.id, 'first_name')} /></td>
-                    <td><input type="text" value={employee.last_name} onChange={(e) => handleEditChange(e, employee.id, 'last_name')} /></td>
+                    <td><input type="text" value={employee.first_name || ''} onChange={(e) => handleEditChange(e, employee.id, 'first_name')} /></td>
+                    <td><input type="text" value={employee.last_name || ''} onChange={(e) => handleEditChange(e, employee.id, 'last_name')} /></td>
                     <td>
-                      <select value={employee.payroll_type} onChange={(e) => handleEditChange(e, employee.id, 'payroll_type')}>
+                      <select value={employee.payroll_type || ''} onChange={(e) => handleEditChange(e, employee.id, 'payroll_type')}>
                         <option value="hourly">Hourly</option>
                         <option value="salary">Salary</option>
                       </select>
                     </td>
                     <td>
-                      <select value={employee.department} onChange={(e) => handleEditChange(e, employee.id, 'department')}>
+                      <select value={employee.department || ''} onChange={(e) => handleEditChange(e, employee.id, 'department')}>
                         <option value="front_of_house">Front of House</option>
                         <option value="back_of_house">Back of House</option>
                         <option value="maintenance">Maintenance</option>
                         <option value="salary">Salary</option>
                       </select>
                     </td>
-                    <td><input type="number" value={employee.retirement_rate} onChange={(e) => handleEditChange(e, employee.id, 'retirement_rate')} /></td>
-                    <td><input type="number" value={employee.roth_retirement_rate} onChange={(e) => handleEditChange(e, employee.id, 'roth_retirement_rate')} /></td>
+                    <td><input type="number" value={employee.retirement_rate || ''} onChange={(e) => handleEditChange(e, employee.id, 'retirement_rate')} /></td>
+                    <td><input type="number" value={employee.roth_retirement_rate || ''} onChange={(e) => handleEditChange(e, employee.id, 'roth_retirement_rate')} /></td>
                     <td>
-                      <select value={employee.filing_status} onChange={(e) => handleEditChange(e, employee.id, 'filing_status')}>
+                      <select value={employee.filing_status || ''} onChange={(e) => handleEditChange(e, employee.id, 'filing_status')}>
                         <option value="single">Single</option>
                         <option value="married">Married</option>
                         <option value="head_of_household">Head of Household</option>
@@ -381,16 +381,16 @@ function EmployeeList() {
                   </thead>
                   <tbody>
                     <tr>
-                      <td><input type="text" name="first_name" value={newEmployee.first_name} onChange={handleInputChange} /></td>
-                      <td><input type="text" name="last_name" value={newEmployee.last_name} onChange={handleInputChange} /></td>
+                      <td><input type="text" name="first_name" value={newEmployee.first_name || ''} onChange={handleInputChange} /></td>
+                      <td><input type="text" name="last_name" value={newEmployee.last_name || ''} onChange={handleInputChange} /></td>
                       <td>
-                        <select name="payroll_type" value={newEmployee.payroll_type} onChange={handleInputChange}>
+                        <select name="payroll_type" value={newEmployee.payroll_type || ''} onChange={handleInputChange}>
                           <option value="hourly">Hourly</option>
                           <option value="salary">Salary</option>
                         </select>
                       </td>
                       <td>
-                        <select name="department" value={newEmployee.department} onChange={handleInputChange}>
+                        <select name="department" value={newEmployee.department || ''} onChange={handleInputChange}>
                           <option value="front_of_house">Front of House</option>
                           <option value="back_of_house">Back of House</option>
                           <option value="maintenance">Maintenance</option>
@@ -398,12 +398,12 @@ function EmployeeList() {
                         </select>
                       </td>
                       {newEmployee.payroll_type === 'hourly' && (
-                        <td><input type="number" name="pay_rate" value={newEmployee.pay_rate} onChange={handleInputChange} /></td>
+                        <td><input type="number" name="pay_rate" value={newEmployee.pay_rate || ''} onChange={handleInputChange} /></td>
                       )}
-                      <td><input type="number" name="retirement_rate" value={newEmployee.retirement_rate} onChange={handleInputChange} /></td>
-                      <td><input type="number" name="roth_retirement_rate" value={newEmployee.roth_retirement_rate} onChange={handleInputChange} /></td>
+                      <td><input type="number" name="retirement_rate" value={newEmployee.retirement_rate || ''} onChange={handleInputChange} /></td>
+                      <td><input type="number" name="roth_retirement_rate" value={newEmployee.roth_retirement_rate || ''} onChange={handleInputChange} /></td>
                       <td>
-                        <select name="filing_status" value={newEmployee.filing_status} onChange={handleInputChange}>
+                        <select name="filing_status" value={newEmployee.filing_status || ''} onChange={handleInputChange}>
                           <option value="single">Single</option>
                           <option value="married">Married</option>
                           <option value="head_of_household">Head of Household</option>
