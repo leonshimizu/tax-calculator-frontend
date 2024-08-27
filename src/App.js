@@ -16,6 +16,7 @@ import PayrollMasterFileUpload from './components/PayrollMasterFileUpload';
 import { Signup } from './components/Signup';
 import { Login } from './components/Login';
 import { LogoutLink } from './components/LogoutLink';
+import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute
 
 const App = () => {
   const location = useLocation();
@@ -33,23 +34,107 @@ const App = () => {
     <div style={{ paddingTop: '60px' }}>
       <Navbar />
       <Routes>
-        {/* Define all the routes for your application */}
-        <Route path="/" element={<PayrollHome />} />
-        <Route path="/companies" element={<PayrollHome />} />
-        <Route path="/companies/:companyId/employees" element={<EmployeeList />} />
-        <Route path="/companies/:companyId/employees/:employeeId" element={<EmployeeDetail />} />
-        <Route path="/companies/:companyId/employees/batch" element={<BatchPayrollEntry />} />
-        <Route path="/companies/:companyId/batch-payroll-records-display" element={<BatchPayrollRecordsDisplay />} />
-        <Route path="/companies/:companyId/employees/:employeeId/payroll_records/:recordId" element={<PayrollRecordDetails />} />
-        <Route path="/companies/:companyId/employees/:employeeId/payroll_records/new" element={<CreatePayrollRecord />} />
-        <Route path="/companies/:companyId/employees/upload" element={<EmployeeFileUpload />} />
-        <Route path="/companies/:companyId/payroll_records/upload" element={<PayrollFileUpload />} />
-        <Route path="/companies/:companyId/payroll_master_file/upload" element={<PayrollMasterFileUpload />} /> {/* New route for PayrollMasterFileUpload */}
-        <Route path="/companies/:companyId/custom_columns" element={<CustomColumnsManager />} />
-
-        {/* Routes for authentication */}
+        {/* Define routes for authentication */}
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+
+        {/* Protected routes */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <PayrollHome />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/companies"
+          element={
+            <ProtectedRoute>
+              <PayrollHome />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/companies/:companyId/employees"
+          element={
+            <ProtectedRoute>
+              <EmployeeList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/companies/:companyId/employees/:employeeId"
+          element={
+            <ProtectedRoute>
+              <EmployeeDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/companies/:companyId/employees/batch"
+          element={
+            <ProtectedRoute>
+              <BatchPayrollEntry />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/companies/:companyId/batch-payroll-records-display"
+          element={
+            <ProtectedRoute>
+              <BatchPayrollRecordsDisplay />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/companies/:companyId/employees/:employeeId/payroll_records/:recordId"
+          element={
+            <ProtectedRoute>
+              <PayrollRecordDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/companies/:companyId/employees/:employeeId/payroll_records/new"
+          element={
+            <ProtectedRoute>
+              <CreatePayrollRecord />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/companies/:companyId/employees/upload"
+          element={
+            <ProtectedRoute>
+              <EmployeeFileUpload />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/companies/:companyId/payroll_records/upload"
+          element={
+            <ProtectedRoute>
+              <PayrollFileUpload />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/companies/:companyId/payroll_master_file/upload"
+          element={
+            <ProtectedRoute>
+              <PayrollMasterFileUpload />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/companies/:companyId/custom_columns"
+          element={
+            <ProtectedRoute>
+              <CustomColumnsManager />
+            </ProtectedRoute>
+          }
+        />
 
         {/* Catch-all route to handle unknown paths */}
         <Route path="*" element={<NotFoundPage />} />

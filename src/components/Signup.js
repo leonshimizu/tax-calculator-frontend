@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import './Auth.css'; // Import CSS file
 
 export function Signup() {
   const [errors, setErrors] = useState([]);
@@ -22,27 +23,31 @@ export function Signup() {
   };
 
   return (
-    <div id="signup">
-      <h1>Signup</h1>
-      <ul>
+    <div className="auth-container">
+      <h1 className="auth-title">Signup</h1>
+      <ul className="auth-errors">
         {errors.map((error) => (
           <li key={error}>{error}</li>
         ))}
       </ul>
-      <form onSubmit={handleSubmit}>
-        <div>
-          Name: <input name="name" type="text" />
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <div className="auth-field">
+          <label>Name:</label>
+          <input name="name" type="text" />
         </div>
-        <div>
-          Email: <input name="email" type="email" />
+        <div className="auth-field">
+          <label>Email:</label>
+          <input name="email" type="email" />
         </div>
-        <div>
-          Password: <input name="password" type="password" />
+        <div className="auth-field">
+          <label>Password:</label>
+          <input name="password" type="password" />
         </div>
-        <div>
-          Password confirmation: <input name="password_confirmation" type="password" />
+        <div className="auth-field">
+          <label>Password confirmation:</label>
+          <input name="password_confirmation" type="password" />
         </div>
-        <button type="submit">Signup</button>
+        <button className="auth-button" type="submit">Signup</button>
       </form>
     </div>
   );

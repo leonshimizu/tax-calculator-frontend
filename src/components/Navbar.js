@@ -107,7 +107,7 @@ const Navbar = () => {
               )}
             </div>
           ) : (
-            <p className="navbar-message">Please select a company to access these options</p>
+            <p className="navbar-message"></p>
           )}
           {/* Login, Signup, and Logout buttons */}
           <div className="auth-buttons">
