@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from '../api/axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import './CustomColumnsManager.css';
@@ -12,16 +12,8 @@ function CustomColumnsManager() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    if (companyId) {
-      fetchCustomColumns();
-    } else {
-      setError('Invalid company ID');
-      setLoading(false);
-    }
-  }, [companyId, fetchCustomColumns]);
-
-  const fetchCustomColumns = async () => {
+  // Define fetchCustomColumns using useCallback to memoize the function
+  const fetchCustomColumns = useCallback(async () => {
     try {
       const response = await axios.get(`/companies/${companyId}/custom_columns`);
       if (response && response.data) {
@@ -35,17 +27,26 @@ function CustomColumnsManager() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [companyId]);
+
+  useEffect(() => {
+    if (companyId) {
+      fetchCustomColumns();
+    } else {
+      setError('Invalid company ID');
+      setLoading(false);
+    }
+  }, [companyId, fetchCustomColumns]); // Ensure fetchCustomColumns is added to dependencies
 
   const handleAddColumn = async () => {
     if (!newColumnName.trim()) return;
-  
+
     try {
       const response = await axios.post(`/companies/${companyId}/custom_columns`, {
         name: newColumnName,
         is_deduction: isDeduction, // Send is_deduction based on user selection
       });
-  
+
       if (response && response.data) {
         setCustomColumns([...customColumns, response.data]);
         setNewColumnName('');
