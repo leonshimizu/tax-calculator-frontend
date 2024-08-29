@@ -11,4 +11,10 @@ const instance = axios.create({
   baseURL: baseURL
 });
 
+// Set JWT token in headers if it exists
+const jwt = localStorage.getItem("jwt");
+if (jwt) {
+  instance.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
+}
+
 export default instance;

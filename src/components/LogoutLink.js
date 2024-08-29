@@ -1,3 +1,4 @@
+// src/components/LogoutLink.js
 import axios from "axios";
 import './LogoutLink.css';
 
@@ -6,11 +7,11 @@ export function LogoutLink() {
     event.preventDefault();
     delete axios.defaults.headers.common["Authorization"];
     localStorage.removeItem("jwt");
-    window.location.href = "/";
+    window.location.href = "/login";
   };
 
   return (
-    <button onClick={handleClick} className="logout-link">  {/* Use 'logout-link' to match CSS class */}
+    <button onClick={handleClick} className="logout-link">
       Logout
     </button>
   );

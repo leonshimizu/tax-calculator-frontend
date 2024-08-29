@@ -5,21 +5,35 @@ import './Auth.css'; // Import CSS file
 export function Signup() {
   const [errors, setErrors] = useState([]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    setErrors([]);
+    setErrors([]); // Reset errors before making a new request
+
     const params = new FormData(event.target);
-    axios
-      .post("http://localhost:3000/users.json", params)
-      .then((response) => {
+
+    try {
+      const response = await axios.post("http://localhost:3000/users.json", params);
+
+      // Ensure response and response.data exist before accessing them
+      if (response && response.data) {
         console.log(response.data);
         event.target.reset();
         window.location.href = "/"; // Change this to hide a modal, redirect to a specific page, etc.
-      })
-      .catch((error) => {
+      } else {
+        // Handle case where response does not have expected data
+        setErrors(["Unexpected response format from the server"]);
+      }
+    } catch (error) {
+      console.error("Error during signup:", error);
+      // If there's an error response from the server, log it
+      if (error.response && error.response.data && error.response.data.errors) {
         console.log(error.response.data.errors);
-        setErrors(error.response.data.errors);
-      });
+        setErrors(error.response.data.errors); // Display server-side validation errors
+      } else {
+        // Handle network or other errors
+        setErrors(["Failed to sign up. Please try again."]);
+      }
+    }
   };
 
   return (

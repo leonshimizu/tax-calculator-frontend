@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom'; // Import Navigate for handling redirects
 import Navbar from './components/Navbar';
 import PayrollHome from './components/PayrollHome';
 import EmployeeList from './components/EmployeeList';
@@ -13,6 +13,7 @@ import PayrollFileUpload from './components/PayrollFileUpload';
 import NotFoundPage from './components/NotFoundPage';
 import CustomColumnsManager from './components/CustomColumnsManager';
 import PayrollMasterFileUpload from './components/PayrollMasterFileUpload';
+import AdminDashboard from './components/AdminDashboard'; // Import AdminDashboard
 import { Signup } from './components/Signup';
 import { Login } from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute
@@ -22,9 +23,10 @@ const App = () => {
 
   useEffect(() => {
     if (window.performance) {
-      if (performance.getEntriesByType("navigation")[0].type === "reload") {
-        // Navigate to home page on refresh
-        window.location.href = "/";
+      const navigationType = performance.getEntriesByType("navigation")[0]?.type;
+      if (navigationType === "reload" || navigationType === "back_forward") {
+        // Use navigate to maintain SPA behavior
+        window.location.href = location.pathname;
       }
     }
   }, [location]);
@@ -33,7 +35,7 @@ const App = () => {
     <div style={{ paddingTop: '60px' }}>
       <Navbar />
       <Routes>
-        {/* Define routes for authentication */}
+        {/* Routes for authentication */}
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
 
@@ -131,6 +133,16 @@ const App = () => {
           element={
             <ProtectedRoute>
               <CustomColumnsManager />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Admin Dashboard route */}
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
             </ProtectedRoute>
           }
         />

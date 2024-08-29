@@ -1,3 +1,5 @@
+// src/components/Login.js
+
 import axios from "axios";
 import { useState } from "react";
 import './Auth.css'; // Import CSS file
@@ -24,8 +26,11 @@ export function Login() {
         window.location.href = "/"; // Change this to hide a modal, redirect to a specific page, etc.
       })
       .catch((error) => {
-        console.log(error.response);
-        setErrors(["Invalid email or password"]);
+        if (error.response.status === 403) {
+          setErrors(["Your account is pending approval. Please contact the administrator."]);
+        } else {
+          setErrors(["Invalid email or password"]);
+        }
       });
   };
 

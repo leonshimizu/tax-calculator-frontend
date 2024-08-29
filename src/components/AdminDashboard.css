@@ -1,0 +1,89 @@
+/* src/components/AdminDashboard.css */
+
+/* Container styles */
+.admin-dashboard {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Header styles */
+.admin-dashboard h1 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Error and loading messages */
+.admin-dashboard .error-message,
+.admin-dashboard .loading-message {
+  text-align: center;
+  color: #ff4d4d;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+/* User list styles */
+.admin-dashboard ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-dashboard li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+/* User information styles */
+.admin-dashboard li span {
+  font-size: 16px;
+  color: #333;
+}
+
+/* Button styles */
+.admin-dashboard button {
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #ffffff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.admin-dashboard button.reject {
+  background-color: #ff4d4d;
+}
+
+.admin-dashboard button:hover {
+  background-color: #0056b3;
+}
+
+.admin-dashboard button.reject:hover {
+  background-color: #e60000;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .admin-dashboard li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-dashboard button {
+    width: 100%;
+    margin-top: 8px;
+  }
+}

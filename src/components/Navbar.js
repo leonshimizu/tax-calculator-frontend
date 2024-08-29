@@ -1,3 +1,4 @@
+// src/components/Navbar.js
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import axios from '../api/axios';
@@ -10,9 +11,11 @@ const Navbar = () => {
   const [company, setCompany] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isLoggedIn] = useState(!!localStorage.getItem("jwt"));
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("jwt"));
+  const [isAdmin, setIsAdmin] = useState(false); // State to track if the user is an admin
+  const [error, setError] = useState(null); // State for handling errors
 
-  const dropdownRef = useRef(null); // Reference to the dropdown menu
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const pathParts = location.pathname.split('/');
@@ -30,12 +33,32 @@ const Navbar = () => {
       setCompany(response.data);
     } catch (error) {
       console.error('Error fetching company data:', error);
+      setError('Failed to load company data.');
     }
   };
 
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get('/current_user');
+      if (response.data) {
+        setIsAdmin(response.data.admin);
+      } else {
+        setIsAdmin(false);
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      setError('Failed to fetch user data.');
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchUserData();
+    }
+  }, [isLoggedIn]);
+
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
-  // Close the dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -52,14 +75,11 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        {/* Employees button on the left */}
         {companyId && (
           <Link to={`/companies/${companyId}/employees`} className={`navbar-link ${location.pathname.includes('/employees') ? 'active' : ''}`}>
             Employees
           </Link>
         )}
-
-        {/* Centered company name */}
         <div className="navbar-center">
           {company ? (
             <Link to="/" className="navbar-logo">
@@ -69,13 +89,9 @@ const Navbar = () => {
             <Link to="/" className="navbar-logo">PayrollApp</Link>
           )}
         </div>
-
-        {/* Menu toggle button for mobile */}
         <button className="navbar-toggle" onClick={toggleMenu}>
           ☰
         </button>
-
-        {/* Options dropdown on the right */}
         <div className={`navbar-options ${menuOpen ? 'active' : ''}`} ref={dropdownRef}>
           {companyId ? (
             <div className="dropdown">
@@ -99,7 +115,6 @@ const Navbar = () => {
                   <Link to={`/companies/${companyId}/custom_columns`} className="dropdown-item">
                     Manage Custom Columns
                   </Link>
-                  {/* New link for Payroll Master File Upload */}
                   <Link to={`/companies/${companyId}/payroll_master_file/upload`} className="dropdown-item">
                     Upload Payroll Master File
                   </Link>
@@ -109,10 +124,14 @@ const Navbar = () => {
           ) : (
             <p className="navbar-message"></p>
           )}
-          {/* Login, Signup, and Logout buttons */}
           <div className="auth-buttons">
             {isLoggedIn ? (
-              <LogoutLink />
+              <>
+                {isAdmin && (
+                  <Link to="/admin/dashboard" className="navbar-link">Admin Dashboard</Link>
+                )}
+                <LogoutLink />
+              </>
             ) : (
               <>
                 <Link to="/login" className="navbar-link">Login</Link>
@@ -122,6 +141,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+      {error && <div className="navbar-error">{error}</div>}
     </nav>
   );
 };
