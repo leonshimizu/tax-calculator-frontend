@@ -1,4 +1,5 @@
-import axios from "axios";
+// src/components/Signup.js
+import axios from "../api/axios"; // Import the custom axios instance
 import { useState } from "react";
 import './Auth.css'; // Import CSS file
 
@@ -12,13 +13,13 @@ export function Signup() {
     const params = new FormData(event.target);
 
     try {
-      const response = await axios.post("http://localhost:3000/users.json", params);
+      const response = await axios.post("/users", params); // Use the custom axios instance and relative URL
 
       // Ensure response and response.data exist before accessing them
       if (response && response.data) {
         console.log(response.data);
         event.target.reset();
-        window.location.href = "/"; // Change this to hide a modal, redirect to a specific page, etc.
+        window.location.href = "/"; // Redirect to home or another page as needed
       } else {
         // Handle case where response does not have expected data
         setErrors(["Unexpected response format from the server"]);

@@ -1,13 +1,7 @@
 // src/components/Login.js
-
-import axios from "axios";
+import axios from "../api/axios";  // Use the custom axios instance
 import { useState } from "react";
 import './Auth.css'; // Import CSS file
-
-const jwt = localStorage.getItem("jwt");
-if (jwt) {
-  axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
-}
 
 export function Login() {
   const [errors, setErrors] = useState([]);
@@ -17,7 +11,7 @@ export function Login() {
     setErrors([]);
     const params = new FormData(event.target);
     axios
-      .post("http://localhost:3000/sessions.json", params)
+      .post("/sessions", params)  // This will now use the baseURL from the custom axios instance
       .then((response) => {
         console.log(response.data);
         axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.jwt;
@@ -26,7 +20,7 @@ export function Login() {
         window.location.href = "/"; // Change this to hide a modal, redirect to a specific page, etc.
       })
       .catch((error) => {
-        if (error.response.status === 403) {
+        if (error.response && error.response.status === 403) {
           setErrors(["Your account is pending approval. Please contact the administrator."]);
         } else {
           setErrors(["Invalid email or password"]);

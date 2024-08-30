@@ -1,8 +1,10 @@
+// src/index.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import './api/axios';  // Import the axios setup to initialize interceptors
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
