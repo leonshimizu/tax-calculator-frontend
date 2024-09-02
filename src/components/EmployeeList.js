@@ -1,4 +1,3 @@
-// src/components/EmployeeList.js
 import React, { useEffect, useState } from 'react';
 import './EmployeeList.css';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -8,6 +7,7 @@ function EmployeeList() {
   const { companyId } = useParams();
   const [employees, setEmployees] = useState([]);
   const [company, setCompany] = useState(null);
+  const [departments, setDepartments] = useState([]); // State for departments
   const [ytdTotals, setYtdTotals] = useState({
     hours_worked: 0,
     overtime_hours_worked: 0,
@@ -27,7 +27,7 @@ function EmployeeList() {
     first_name: '',
     last_name: '',
     payroll_type: 'hourly',
-    department: 'front_of_house',
+    department_id: '', // Use department_id instead of department
     pay_rate: '',
     retirement_rate: '',
     roth_retirement_rate: '',
@@ -41,6 +41,7 @@ function EmployeeList() {
     fetchCompany();
     fetchEmployees();
     fetchYtdTotals();
+    fetchDepartments(); // Fetch departments when the component mounts
   }, [companyId]);
 
   const fetchCompany = async () => {
@@ -59,6 +60,16 @@ function EmployeeList() {
       setEmployees(sortedEmployees);
     } catch (error) {
       console.error('Error fetching employees:', error);
+    }
+  };
+
+  const fetchDepartments = async () => {
+    try {
+      const response = await axios.get(`/companies/${companyId}/departments`);
+      setDepartments(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error fetching departments:', error);
     }
   };
 
@@ -109,10 +120,6 @@ function EmployeeList() {
     const { name, value } = e.target;
     const updatedEmployee = { ...newEmployee, [name]: value || '' }; // Ensure value is not null
 
-    if (name === 'payroll_type' && value === 'salary') {
-      updatedEmployee.department = 'salary';
-    }
-
     setNewEmployee(updatedEmployee);
   };
 
@@ -146,7 +153,7 @@ function EmployeeList() {
         first_name: '',
         last_name: '',
         payroll_type: 'hourly',
-        department: '',
+        department_id: '',
         pay_rate: '',
         retirement_rate: '',
         roth_retirement_rate: '',
@@ -165,6 +172,11 @@ function EmployeeList() {
     } catch (error) {
       console.error('Failed to delete employee:', error);
     }
+  };
+
+  const getDepartmentName = (departmentId) => {
+    const department = departments.find(dept => dept.id === departmentId);
+    return department ? department.name : '';
   };
 
   const hourlyEmployees = employees.filter(emp => emp.payroll_type === 'hourly');
@@ -202,11 +214,10 @@ function EmployeeList() {
                       </select>
                     </td>
                     <td>
-                      <select value={employee.department || ''} onChange={(e) => handleEditChange(e, employee.id, 'department')}>
-                        <option value="front_of_house">Front of House</option>
-                        <option value="back_of_house">Back of House</option>
-                        <option value="maintenance">Maintenance</option>
-                        <option value="salary">Salary</option>
+                      <select value={employee.department_id || ''} onChange={(e) => handleEditChange(e, employee.id, 'department_id')}>
+                        {departments.map(department => (
+                          <option key={department.id} value={department.id}>{department.name}</option>
+                        ))}
                       </select>
                     </td>
                     {employee.payroll_type === 'hourly' && (
@@ -231,7 +242,7 @@ function EmployeeList() {
                     <td>{employee.first_name}</td>
                     <td>{employee.last_name}</td>
                     <td>{employee.payroll_type}</td>
-                    <td>{employee.department}</td>
+                    <td>{getDepartmentName(employee.department_id)}</td>
                     {employee.payroll_type === 'hourly' && (
                       <td>{employee.pay_rate ? `$${Number(employee.pay_rate).toFixed(2)}` : ''}</td>
                     )}
@@ -295,11 +306,10 @@ function EmployeeList() {
                       </select>
                     </td>
                     <td>
-                      <select value={employee.department || ''} onChange={(e) => handleEditChange(e, employee.id, 'department')}>
-                        <option value="front_of_house">Front of House</option>
-                        <option value="back_of_house">Back of House</option>
-                        <option value="maintenance">Maintenance</option>
-                        <option value="salary">Salary</option>
+                      <select value={employee.department_id || ''} onChange={(e) => handleEditChange(e, employee.id, 'department_id')}>
+                        {departments.map(department => (
+                          <option key={department.id} value={department.id}>{department.name}</option>
+                        ))}
                       </select>
                     </td>
                     <td><input type="number" value={employee.retirement_rate || ''} onChange={(e) => handleEditChange(e, employee.id, 'retirement_rate')} /></td>
@@ -321,7 +331,7 @@ function EmployeeList() {
                     <td>{employee.first_name}</td>
                     <td>{employee.last_name}</td>
                     <td>{employee.payroll_type}</td>
-                    <td>{employee.department}</td>
+                    <td>{getDepartmentName(employee.department_id)}</td>
                     <td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
                     <td>{employee.roth_retirement_rate ? `${employee.roth_retirement_rate}%` : 'N/A'}</td>
                     <td>{employee.filing_status}</td>
@@ -390,11 +400,10 @@ function EmployeeList() {
                         </select>
                       </td>
                       <td>
-                        <select name="department" value={newEmployee.department || ''} onChange={handleInputChange}>
-                          <option value="front_of_house">Front of House</option>
-                          <option value="back_of_house">Back of House</option>
-                          <option value="maintenance">Maintenance</option>
-                          <option value="salary">Salary</option>
+                        <select name="department_id" value={newEmployee.department_id || ''} onChange={handleInputChange}>
+                          {departments.map(department => (
+                            <option key={department.id} value={department.id}>{department.name}</option>
+                          ))}
                         </select>
                       </td>
                       {newEmployee.payroll_type === 'hourly' && (

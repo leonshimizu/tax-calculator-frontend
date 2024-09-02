@@ -11,7 +11,7 @@ import BatchPayrollRecordsDisplay from './components/BatchPayrollRecordsDisplay'
 import EmployeeFileUpload from './components/EmployeeFileUpload';
 import PayrollFileUpload from './components/PayrollFileUpload';
 import NotFoundPage from './components/NotFoundPage';
-import CustomColumnsManager from './components/CustomColumnsManager';
+import CompanySettingsManager from './components/CompanySettingsManager'; // Updated import
 import PayrollMasterFileUpload from './components/PayrollMasterFileUpload';
 import AdminDashboard from './components/AdminDashboard'; // Import AdminDashboard
 import { Signup } from './components/Signup';
@@ -128,11 +128,12 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        {/* Updated route to reflect new component name */}
         <Route
-          path="/companies/:companyId/custom_columns"
+          path="/companies/:companyId/settings"
           element={
             <ProtectedRoute>
-              <CustomColumnsManager />
+              <CompanySettingsManager />
             </ProtectedRoute>
           }
         />

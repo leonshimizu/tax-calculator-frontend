@@ -7,6 +7,7 @@ const EmployeeDetail = () => {
   const { companyId, employeeId } = useParams();
   const navigate = useNavigate();
   const [employee, setEmployee] = useState(null);
+  const [departments, setDepartments] = useState([]);  // State for storing departments
   const [payrollRecords, setPayrollRecords] = useState([]);
   const [ytdTotals, setYtdTotals] = useState({
     hours_worked: 0,
@@ -26,6 +27,7 @@ const EmployeeDetail = () => {
   useEffect(() => {
     fetchEmployee();
     fetchPayrollRecords();
+    fetchDepartments();  // Fetch departments on component mount
   }, [companyId, employeeId]);
 
   const fetchEmployee = async () => {
@@ -40,12 +42,20 @@ const EmployeeDetail = () => {
   const fetchPayrollRecords = async () => {
     try {
       const response = await axios.get(`/companies/${companyId}/employees/${employeeId}/payroll_records`);
-      // Sort payroll records by date in descending order
       const sortedRecords = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
       setPayrollRecords(sortedRecords);
       calculateYtdTotals(sortedRecords);
     } catch (error) {
       console.error('Error fetching payroll records:', error);
+    }
+  };
+
+  const fetchDepartments = async () => {
+    try {
+      const response = await axios.get(`/companies/${companyId}/departments`);
+      setDepartments(response.data || []);
+    } catch (error) {
+      console.error('Error fetching departments:', error);
     }
   };
 
@@ -83,6 +93,11 @@ const EmployeeDetail = () => {
     setYtdTotals(totals);
   };
 
+  const getDepartmentName = (departmentId) => {
+    const department = departments.find(dept => dept.id === departmentId);
+    return department ? department.name : 'N/A';
+  };
+
   if (!employee) return <div>Loading...</div>;
 
   return (
@@ -90,7 +105,7 @@ const EmployeeDetail = () => {
       <button className="button-back" onClick={() => navigate(`/companies/${companyId}/employees`)}>Back</button>
       <h1>{employee.first_name} {employee.last_name}'s Details</h1>
       <p>Payroll Type: {employee.payroll_type}</p>
-      <p>Department: {employee.department}</p>
+      <p>Department: {getDepartmentName(employee.department_id)}</p>  {/* Update to use department_id */}
 
       {employee.payroll_type === 'hourly' && (
         <p>Pay Rate: ${Number(employee.pay_rate).toFixed(2)}</p>

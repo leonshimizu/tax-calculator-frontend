@@ -1,4 +1,3 @@
-// src/components/Navbar.js
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import axios from '../api/axios';
@@ -112,8 +111,9 @@ const Navbar = () => {
                   <Link to={`/companies/${companyId}/payroll_records/upload`} className="dropdown-item">
                     Upload Payroll Records
                   </Link>
-                  <Link to={`/companies/${companyId}/custom_columns`} className="dropdown-item">
-                    Manage Custom Columns
+                  {/* Updated to reflect new component name */}
+                  <Link to={`/companies/${companyId}/settings`} className="dropdown-item">
+                    Manage Company Settings
                   </Link>
                   <Link to={`/companies/${companyId}/payroll_master_file/upload`} className="dropdown-item">
                     Upload Payroll Master File
