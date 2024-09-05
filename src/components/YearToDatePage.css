@@ -1,0 +1,32 @@
+/* src/components/YearToDatePage.css */
+.ytd-page {
+  padding: 20px;
+}
+
+.ytd-year-selector {
+  margin-bottom: 20px;
+}
+
+.ytd-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.ytd-table th, .ytd-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.ytd-table th {
+  background-color: #f4f4f4;
+}
+
+.ytd-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.ytd-table tr:hover {
+  background-color: #f1f1f1;
+}

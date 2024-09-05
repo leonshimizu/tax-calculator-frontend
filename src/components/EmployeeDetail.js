@@ -9,20 +9,6 @@ const EmployeeDetail = () => {
   const [employee, setEmployee] = useState(null);
   const [departments, setDepartments] = useState([]);  // State for storing departments
   const [payrollRecords, setPayrollRecords] = useState([]);
-  const [ytdTotals, setYtdTotals] = useState({
-    hours_worked: 0,
-    overtime_hours_worked: 0,
-    reported_tips: 0,
-    loan_payment: 0,
-    insurance_payment: 0,
-    gross_pay: 0,
-    net_pay: 0,
-    withholding_tax: 0,
-    social_security_tax: 0,
-    medicare_tax: 0,
-    retirement_payment: 0,
-    roth_retirement_payment: 0,
-  });
 
   useEffect(() => {
     fetchEmployee();
@@ -44,7 +30,6 @@ const EmployeeDetail = () => {
       const response = await axios.get(`/companies/${companyId}/employees/${employeeId}/payroll_records`);
       const sortedRecords = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
       setPayrollRecords(sortedRecords);
-      calculateYtdTotals(sortedRecords);
     } catch (error) {
       console.error('Error fetching payroll records:', error);
     }
@@ -57,40 +42,6 @@ const EmployeeDetail = () => {
     } catch (error) {
       console.error('Error fetching departments:', error);
     }
-  };
-
-  const calculateYtdTotals = (records) => {
-    const totals = records.reduce((acc, record) => {
-      return {
-        hours_worked: acc.hours_worked + parseFloat(record.hours_worked || 0),
-        overtime_hours_worked: acc.overtime_hours_worked + parseFloat(record.overtime_hours_worked || 0),
-        reported_tips: acc.reported_tips + parseFloat(record.reported_tips || 0),
-        loan_payment: acc.loan_payment + parseFloat(record.loan_payment || 0),
-        insurance_payment: acc.insurance_payment + parseFloat(record.insurance_payment || 0),
-        gross_pay: acc.gross_pay + parseFloat(record.gross_pay || 0),
-        net_pay: acc.net_pay + parseFloat(record.net_pay || 0),
-        withholding_tax: acc.withholding_tax + parseFloat(record.withholding_tax || 0),
-        social_security_tax: acc.social_security_tax + parseFloat(record.social_security_tax || 0),
-        medicare_tax: acc.medicare_tax + parseFloat(record.medicare_tax || 0),
-        retirement_payment: acc.retirement_payment + parseFloat(record.retirement_payment || 0),
-        roth_retirement_payment: acc.roth_retirement_payment + parseFloat(record.roth_retirement_payment || 0),
-      };
-    }, {
-      hours_worked: 0,
-      overtime_hours_worked: 0,
-      reported_tips: 0,
-      loan_payment: 0,
-      insurance_payment: 0,
-      gross_pay: 0,
-      net_pay: 0,
-      withholding_tax: 0,
-      social_security_tax: 0,
-      medicare_tax: 0,
-      retirement_payment: 0,
-      roth_retirement_payment: 0,
-    });
-
-    setYtdTotals(totals);
   };
 
   const getDepartmentName = (departmentId) => {
@@ -143,46 +94,6 @@ const EmployeeDetail = () => {
           ))}
         </tbody>
       </table>
-
-      <div className="ytd-totals-section">
-        <h3>Year-to-Date Totals</h3>
-        <div className="ytd-totals-wrapper">
-          <table className="ytd-totals-table">
-            <thead>
-              <tr>
-                {employee.payroll_type === 'hourly' && <th>Hours Worked</th>}
-                {employee.payroll_type === 'hourly' && <th>Overtime Hours</th>}
-                <th>Reported Tips</th>
-                <th>Loan Payment</th>
-                <th>Insurance Payment</th>
-                <th>Gross Pay</th>
-                <th>Net Pay</th>
-                <th>Withholding Tax</th>
-                <th>Social Security Tax</th>
-                <th>Medicare Tax</th>
-                <th>Retirement Payment</th>
-                <th>Roth Retirement Payment</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                {employee.payroll_type === 'hourly' && <td>{ytdTotals.hours_worked.toFixed(2)}</td>}
-                {employee.payroll_type === 'hourly' && <td>{ytdTotals.overtime_hours_worked.toFixed(2)}</td>}
-                <td>${ytdTotals.reported_tips.toFixed(2)}</td>
-                <td>${ytdTotals.loan_payment.toFixed(2)}</td>
-                <td>${ytdTotals.insurance_payment.toFixed(2)}</td>
-                <td>${ytdTotals.gross_pay.toFixed(2)}</td>
-                <td>${ytdTotals.net_pay.toFixed(2)}</td>
-                <td>${ytdTotals.withholding_tax.toFixed(2)}</td>
-                <td>${ytdTotals.social_security_tax.toFixed(2)}</td>
-                <td>${ytdTotals.medicare_tax.toFixed(2)}</td>
-                <td>${ytdTotals.retirement_payment.toFixed(2)}</td>
-                <td>${ytdTotals.roth_retirement_payment.toFixed(2)}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
   );
 };

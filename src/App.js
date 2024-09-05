@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom'; // Import Navigate for handling redirects
+import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import PayrollHome from './components/PayrollHome';
 import EmployeeList from './components/EmployeeList';
@@ -11,12 +11,13 @@ import BatchPayrollRecordsDisplay from './components/BatchPayrollRecordsDisplay'
 import EmployeeFileUpload from './components/EmployeeFileUpload';
 import PayrollFileUpload from './components/PayrollFileUpload';
 import NotFoundPage from './components/NotFoundPage';
-import CompanySettingsManager from './components/CompanySettingsManager'; // Updated import
+import CompanySettingsManager from './components/CompanySettingsManager';
 import PayrollMasterFileUpload from './components/PayrollMasterFileUpload';
-import AdminDashboard from './components/AdminDashboard'; // Import AdminDashboard
+import AdminDashboard from './components/AdminDashboard';
 import { Signup } from './components/Signup';
 import { Login } from './components/Login';
-import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute
+import ProtectedRoute from './components/ProtectedRoute';
+import YearToDatePage from './components/YearToDatePage'; 
 
 const App = () => {
   const location = useLocation();
@@ -144,6 +145,16 @@ const App = () => {
           element={
             <ProtectedRoute>
               <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Add route for YearToDatePage */}
+        <Route
+          path="/companies/:companyId/ytd-totals"
+          element={
+            <ProtectedRoute>
+              <YearToDatePage />
             </ProtectedRoute>
           }
         />

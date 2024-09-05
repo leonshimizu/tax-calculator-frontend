@@ -11,8 +11,8 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("jwt"));
-  const [isAdmin, setIsAdmin] = useState(false); // State to track if the user is an admin
-  const [error, setError] = useState(null); // State for handling errors
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [error, setError] = useState(null);
 
   const dropdownRef = useRef(null);
 
@@ -92,7 +92,13 @@ const Navbar = () => {
           ☰
         </button>
         <div className={`navbar-options ${menuOpen ? 'active' : ''}`} ref={dropdownRef}>
-          {companyId ? (
+          {/* Admin Dashboard Button */}
+          {isLoggedIn && isAdmin && (
+            <Link to="/admin/dashboard" className="navbar-link">Admin Dashboard</Link>
+          )}
+
+          {/* Options Dropdown */}
+          {companyId && (
             <div className="dropdown">
               <button className="dropdown-toggle" onClick={() => setDropdownOpen(!dropdownOpen)}>
                 Options
@@ -111,27 +117,25 @@ const Navbar = () => {
                   <Link to={`/companies/${companyId}/payroll_records/upload`} className="dropdown-item">
                     Upload Payroll Records
                   </Link>
-                  {/* Updated to reflect new component name */}
                   <Link to={`/companies/${companyId}/settings`} className="dropdown-item">
                     Manage Company Settings
                   </Link>
                   <Link to={`/companies/${companyId}/payroll_master_file/upload`} className="dropdown-item">
                     Upload Payroll Master File
                   </Link>
+                  {/* Add Year to Date Totals option */}
+                  <Link to={`/companies/${companyId}/ytd-totals`} className="dropdown-item">
+                    Year to Date Totals
+                  </Link>
                 </div>
               )}
             </div>
-          ) : (
-            <p className="navbar-message"></p>
           )}
+
+          {/* Login/Signup/Logout Buttons */}
           <div className="auth-buttons">
             {isLoggedIn ? (
-              <>
-                {isAdmin && (
-                  <Link to="/admin/dashboard" className="navbar-link">Admin Dashboard</Link>
-                )}
-                <LogoutLink />
-              </>
+              <LogoutLink />
             ) : (
               <>
                 <Link to="/login" className="navbar-link">Login</Link>

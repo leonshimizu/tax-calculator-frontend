@@ -1,4 +1,3 @@
-// src/components/PayrollRecordDetails.js
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './PayrollRecordDetails.css';
@@ -60,7 +59,7 @@ const PayrollRecordDetails = () => {
       <h1>Payroll Record Details</h1>
       <h2>{employee.first_name} {employee.last_name}</h2>
       <p>Payroll Type: {employee.payroll_type}</p>
-      <p>Department: {employee.department}</p>
+      <p>Department: {employee.department ? employee.department.name : 'N/A'}</p> {/* Access department name */}
       <p>Filing Status: {employee.filing_status}</p>
 
       <div className="table-wrapper">
@@ -68,21 +67,21 @@ const PayrollRecordDetails = () => {
           <tbody>
             <tr>
               <th>Date:</th>
-              <td>{record.payroll_record.date || 'N/A'}</td>
+              <td>{record.payroll_record && record.payroll_record.date ? record.payroll_record.date : 'N/A'}</td>
             </tr>
             {employee.payroll_type === 'hourly' && (
               <>
                 <tr>
                   <th>Hours Worked:</th>
-                  <td>{record.payroll_record.hours_worked || 'N/A'}</td>
+                  <td>{record.payroll_record && record.payroll_record.hours_worked ? record.payroll_record.hours_worked : 'N/A'}</td>
                 </tr>
                 <tr>
                   <th>Overtime Hours:</th>
-                  <td>{record.payroll_record.overtime_hours_worked || 'N/A'}</td>
+                  <td>{record.payroll_record && record.payroll_record.overtime_hours_worked ? record.payroll_record.overtime_hours_worked : 'N/A'}</td>
                 </tr>
                 <tr>
                   <th>Reported Tips:</th>
-                  <td>${parseFloat(record.payroll_record.reported_tips || 0).toFixed(2)}</td>
+                  <td>${parseFloat(record.payroll_record && record.payroll_record.reported_tips ? record.payroll_record.reported_tips : 0).toFixed(2)}</td>
                 </tr>
               </>
             )}
@@ -92,7 +91,7 @@ const PayrollRecordDetails = () => {
             </tr>
             <tr>
               <th>Bonus:</th>
-              <td>${parseFloat(record.payroll_record.bonus || 0).toFixed(2)}</td>
+              <td>${parseFloat(record.payroll_record && record.payroll_record.bonus ? record.payroll_record.bonus : 0).toFixed(2)}</td>
             </tr>
             <tr>
               <th>Net Pay:</th>
@@ -100,11 +99,11 @@ const PayrollRecordDetails = () => {
             </tr>
             <tr>
               <th>Loan Payment:</th>
-              <td>${parseFloat(record.payroll_record.loan_payment || 0).toFixed(2)}</td>
+              <td>${parseFloat(record.payroll_record && record.payroll_record.loan_payment ? record.payroll_record.loan_payment : 0).toFixed(2)}</td>
             </tr>
             <tr>
               <th>Insurance Payment:</th>
-              <td>${parseFloat(record.payroll_record.insurance_payment || 0).toFixed(2)}</td>
+              <td>${parseFloat(record.payroll_record && record.payroll_record.insurance_payment ? record.payroll_record.insurance_payment : 0).toFixed(2)}</td>
             </tr>
             <tr>
               <th>Withholding Tax:</th>
