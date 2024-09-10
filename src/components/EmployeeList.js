@@ -92,7 +92,7 @@ function EmployeeList() {
   const saveEdit = async (id) => {
     const employee = employees.find(emp => emp.id === id);
     try {
-      await axios.put(`/employees/${id}`, employee);
+      await axios.put(`/companies/${companyId}/employees/${id}`, employee);
       setEditEmployeeId(null);
       fetchEmployees();
     } catch (error) {
@@ -102,7 +102,7 @@ function EmployeeList() {
 
   const addEmployee = async () => {
     try {
-      await axios.post('/employees', newEmployee);
+      await axios.post(`/companies/${companyId}/employees`, newEmployee);
       fetchEmployees();
       setShowAddRow(false);
       setNewEmployee({

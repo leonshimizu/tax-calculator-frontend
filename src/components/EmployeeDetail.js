@@ -7,13 +7,13 @@ const EmployeeDetail = () => {
   const { companyId, employeeId } = useParams();
   const navigate = useNavigate();
   const [employee, setEmployee] = useState(null);
-  const [departments, setDepartments] = useState([]);  // State for storing departments
+  const [departments, setDepartments] = useState([]);
   const [payrollRecords, setPayrollRecords] = useState([]);
 
   useEffect(() => {
     fetchEmployee();
     fetchPayrollRecords();
-    fetchDepartments();  // Fetch departments on component mount
+    fetchDepartments();
   }, [companyId, employeeId]);
 
   const fetchEmployee = async () => {
@@ -56,10 +56,10 @@ const EmployeeDetail = () => {
       <button className="button-back" onClick={() => navigate(`/companies/${companyId}/employees`)}>Back</button>
       <h1>{employee.first_name} {employee.last_name}'s Details</h1>
       <p>Payroll Type: {employee.payroll_type}</p>
-      <p>Department: {getDepartmentName(employee.department_id)}</p>  {/* Update to use department_id */}
+      <p>Department: {getDepartmentName(employee.department_id)}</p>
 
       {employee.payroll_type === 'hourly' && (
-        <p>Pay Rate: ${Number(employee.pay_rate).toFixed(2)}</p>
+        <p>Pay Rate: ${Number(employee.pay_rate).toLocaleString(undefined, { minimumFractionDigits: 2 })}</p>
       )}
 
       <p>Retirement Rate: {employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</p>
@@ -84,7 +84,7 @@ const EmployeeDetail = () => {
             <tr key={record.id}>
               <td>{record.date}</td>
               {employee.payroll_type === 'hourly' && <td>{record.hours_worked}</td>}
-              <td>${Number(record.gross_pay).toFixed(2)}</td>
+              <td>${Number(record.gross_pay).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
               <td>
                 <button className="button-payroll" onClick={() => navigate(`/companies/${companyId}/employees/${employeeId}/payroll_records/${record.id}`)}>
                   View Details

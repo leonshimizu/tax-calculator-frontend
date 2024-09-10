@@ -59,7 +59,7 @@ const PayrollRecordDetails = () => {
       <h1>Payroll Record Details</h1>
       <h2>{employee.first_name} {employee.last_name}</h2>
       <p>Payroll Type: {employee.payroll_type}</p>
-      <p>Department: {employee.department ? employee.department.name : 'N/A'}</p> {/* Access department name */}
+      <p>Department: {employee.department ? employee.department.name : 'N/A'}</p>
       <p>Filing Status: {employee.filing_status}</p>
 
       <div className="table-wrapper">
@@ -81,53 +81,53 @@ const PayrollRecordDetails = () => {
                 </tr>
                 <tr>
                   <th>Reported Tips:</th>
-                  <td>${parseFloat(record.payroll_record && record.payroll_record.reported_tips ? record.payroll_record.reported_tips : 0).toFixed(2)}</td>
+                  <td>${parseFloat(record.payroll_record && record.payroll_record.reported_tips ? record.payroll_record.reported_tips : 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
                 </tr>
               </>
             )}
             <tr>
               <th>Gross Pay:</th>
-              <td>${parseFloat(record.gross_pay || 0).toFixed(2)}</td>
+              <td>${parseFloat(record.gross_pay || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
             </tr>
             <tr>
               <th>Bonus:</th>
-              <td>${parseFloat(record.payroll_record && record.payroll_record.bonus ? record.payroll_record.bonus : 0).toFixed(2)}</td>
+              <td>${parseFloat(record.payroll_record && record.payroll_record.bonus ? record.payroll_record.bonus : 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
             </tr>
             <tr>
               <th>Net Pay:</th>
-              <td>${parseFloat(record.net_pay || 0).toFixed(2)}</td>
+              <td>${parseFloat(record.net_pay || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
             </tr>
             <tr>
               <th>Loan Payment:</th>
-              <td>${parseFloat(record.payroll_record && record.payroll_record.loan_payment ? record.payroll_record.loan_payment : 0).toFixed(2)}</td>
+              <td>${parseFloat(record.payroll_record && record.payroll_record.loan_payment ? record.payroll_record.loan_payment : 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
             </tr>
             <tr>
               <th>Insurance Payment:</th>
-              <td>${parseFloat(record.payroll_record && record.payroll_record.insurance_payment ? record.payroll_record.insurance_payment : 0).toFixed(2)}</td>
+              <td>${parseFloat(record.payroll_record && record.payroll_record.insurance_payment ? record.payroll_record.insurance_payment : 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
             </tr>
             <tr>
               <th>Withholding Tax:</th>
-              <td>${parseFloat(record.withholding_tax || 0).toFixed(2)}</td>
+              <td>${parseFloat(record.withholding_tax || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
             </tr>
             <tr>
               <th>Social Security Tax:</th>
-              <td>${parseFloat(record.social_security_tax || 0).toFixed(2)}</td>
+              <td>${parseFloat(record.social_security_tax || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
             </tr>
             <tr>
               <th>Medicare Tax:</th>
-              <td>${parseFloat(record.medicare_tax || 0).toFixed(2)}</td>
+              <td>${parseFloat(record.medicare_tax || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
             </tr>
             <tr>
               <th>Retirement Payment:</th>
-              <td>${parseFloat(record.retirement_payment || 0).toFixed(2)}</td>
+              <td>${parseFloat(record.retirement_payment || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
             </tr>
             <tr>
               <th>Roth Retirement Payment:</th>
-              <td>${parseFloat(record.roth_retirement_payment || 0).toFixed(2)}</td>
+              <td>${parseFloat(record.roth_retirement_payment || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
             </tr>
             <tr>
               <th>Total Deductions:</th>
-              <td>${parseFloat(record.total_deductions || 0).toFixed(2)}</td>
+              <td>${parseFloat(record.total_deductions || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
             </tr>
 
             {/* Display custom columns */}
@@ -138,7 +138,7 @@ const PayrollRecordDetails = () => {
                   {column.data_type === 'boolean' ? (
                     record.custom_columns && record.custom_columns[column.name] ? 'Yes' : 'No'
                   ) : column.data_type === 'decimal' ? (
-                    `$${parseFloat(record.custom_columns ? record.custom_columns[column.name] : 0).toFixed(2)}`
+                    `$${parseFloat(record.custom_columns ? record.custom_columns[column.name] : 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}`
                   ) : (
                     record.custom_columns ? record.custom_columns[column.name] : 'N/A'
                   )}

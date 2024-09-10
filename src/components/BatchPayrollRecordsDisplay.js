@@ -26,7 +26,7 @@ function BatchPayrollRecordsDisplay() {
   const fetchCustomColumns = async () => {
     try {
       const response = await axios.get(`/companies/${companyId}/custom_columns`);
-      setCustomColumns(response.data);
+      setCustomColumns(response.data || []);  // Ensure it's an array
     } catch (error) {
       console.error('Error fetching custom columns:', error);
     }
@@ -65,9 +65,11 @@ function BatchPayrollRecordsDisplay() {
       custom_columns_totals: {}
     };
 
-    customColumns.forEach(column => {
-      totals.custom_columns_totals[column.name] = 0; // Initialize totals for each custom column
-    });
+    if (Array.isArray(customColumns)) {  // Check if customColumns is an array before using it
+      customColumns.forEach(column => {
+        totals.custom_columns_totals[column.name] = 0; // Initialize totals for each custom column
+      });
+    }
 
     records.forEach(record => {
       totals.hours_worked += parseFloat(record.hours_worked) || 0;
@@ -85,9 +87,11 @@ function BatchPayrollRecordsDisplay() {
       totals.roth_retirement_payment += parseFloat(record.roth_retirement_payment) || 0;
 
       // Add custom columns data to totals
-      if (record.custom_columns_data) {
+      if (record.custom_columns_data && Array.isArray(customColumns)) {
         Object.keys(record.custom_columns_data).forEach(columnName => {
-          totals.custom_columns_totals[columnName] += parseFloat(record.custom_columns_data[columnName]) || 0;
+          if (totals.custom_columns_totals.hasOwnProperty(columnName)) {
+            totals.custom_columns_totals[columnName] += parseFloat(record.custom_columns_data[columnName]) || 0;
+          }
         });
       }
     });
@@ -104,13 +108,14 @@ function BatchPayrollRecordsDisplay() {
     });
   };
 
-  const hourlyRecords = sortRecordsByLastName(records.filter(record => record.employee?.payroll_type === 'hourly'));
-  const salaryRecords = sortRecordsByLastName(records.filter(record => record.employee?.payroll_type === 'salary'));
+  // Ensure records is an array before calling filter
+  const hourlyRecords = Array.isArray(records) ? sortRecordsByLastName(records.filter(record => record.employee?.payroll_type === 'hourly')) : [];
+  const salaryRecords = Array.isArray(records) ? sortRecordsByLastName(records.filter(record => record.employee?.payroll_type === 'salary')) : [];
 
   const hourlyYtdTotals = calculateYtdTotals(hourlyRecords);
   const salaryYtdTotals = calculateYtdTotals(salaryRecords);
 
-  const formatNumber = (num) => (num !== undefined ? num.toFixed(2) : 'N/A');
+  const formatNumber = (num) => (num !== undefined ? num.toLocaleString(undefined, { minimumFractionDigits: 2 }) : 'N/A');
 
   const downloadAsCSV = () => {
     const data = records.map(record => {

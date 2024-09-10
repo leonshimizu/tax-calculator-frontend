@@ -23,7 +23,7 @@ function PayrollMasterFileUpload() {
     }
 
     try {
-      const response = await axios.post('/api/upload_files', formData, {
+      const response = await axios.post('/upload_files', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         responseType: 'blob',
       });
