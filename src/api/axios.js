@@ -5,7 +5,7 @@ import axios from 'axios';
 const baseURL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3000' // Use localhost when in development mode
-    : process.env.REACT_APP_API_URL_2 || ''; // Use the environment variable or leave empty for production
+    : process.env.REACT_APP_API_URL || ''; // Use the environment variable or leave empty for production
 
 const instance = axios.create({
   baseURL: baseURL,
