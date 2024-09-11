@@ -15,7 +15,6 @@ function BatchPayrollRecordsDisplay() {
 
   useEffect(() => {
     fetchCustomColumns();
-
     if (location.state?.records) {
       setRecords(location.state.records);
     } else if (searchDate) {
@@ -26,7 +25,7 @@ function BatchPayrollRecordsDisplay() {
   const fetchCustomColumns = async () => {
     try {
       const response = await axios.get(`/companies/${companyId}/custom_columns`);
-      setCustomColumns(response.data || []);  // Ensure it's an array
+      setCustomColumns(response.data || []);
     } catch (error) {
       console.error('Error fetching custom columns:', error);
     }
@@ -47,78 +46,8 @@ function BatchPayrollRecordsDisplay() {
     }
   };
 
-  const calculateYtdTotals = (records) => {
-    const totals = {
-      hours_worked: 0,
-      overtime_hours_worked: 0,
-      reported_tips: 0,
-      loan_payment: 0,
-      insurance_payment: 0,
-      gross_pay: 0,
-      bonus: 0,
-      net_pay: 0,
-      withholding_tax: 0,
-      social_security_tax: 0,
-      medicare_tax: 0,
-      retirement_payment: 0,
-      roth_retirement_payment: 0,
-      custom_columns_totals: {}
-    };
-
-    if (Array.isArray(customColumns)) {  // Check if customColumns is an array before using it
-      customColumns.forEach(column => {
-        totals.custom_columns_totals[column.name] = 0; // Initialize totals for each custom column
-      });
-    }
-
-    records.forEach(record => {
-      totals.hours_worked += parseFloat(record.hours_worked) || 0;
-      totals.overtime_hours_worked += parseFloat(record.overtime_hours_worked) || 0;
-      totals.reported_tips += parseFloat(record.reported_tips) || 0;
-      totals.loan_payment += parseFloat(record.loan_payment) || 0;
-      totals.insurance_payment += parseFloat(record.insurance_payment) || 0;
-      totals.gross_pay += parseFloat(record.gross_pay) || 0;
-      totals.bonus += parseFloat(record.bonus) || 0;
-      totals.net_pay += parseFloat(record.net_pay) || 0;
-      totals.withholding_tax += parseFloat(record.withholding_tax) || 0;
-      totals.social_security_tax += parseFloat(record.social_security_tax) || 0;
-      totals.medicare_tax += parseFloat(record.medicare_tax) || 0;
-      totals.retirement_payment += parseFloat(record.retirement_payment) || 0;
-      totals.roth_retirement_payment += parseFloat(record.roth_retirement_payment) || 0;
-
-      // Add custom columns data to totals
-      if (record.custom_columns_data && Array.isArray(customColumns)) {
-        Object.keys(record.custom_columns_data).forEach(columnName => {
-          if (totals.custom_columns_totals.hasOwnProperty(columnName)) {
-            totals.custom_columns_totals[columnName] += parseFloat(record.custom_columns_data[columnName]) || 0;
-          }
-        });
-      }
-    });
-
-    return totals;
-  };
-
-  // Sort records by last name
-  const sortRecordsByLastName = (records) => {
-    return records.sort((a, b) => {
-      const lastNameA = a.employee?.last_name?.toLowerCase() || '';
-      const lastNameB = b.employee?.last_name?.toLowerCase() || '';
-      return lastNameA.localeCompare(lastNameB);
-    });
-  };
-
-  // Ensure records is an array before calling filter
-  const hourlyRecords = Array.isArray(records) ? sortRecordsByLastName(records.filter(record => record.employee?.payroll_type === 'hourly')) : [];
-  const salaryRecords = Array.isArray(records) ? sortRecordsByLastName(records.filter(record => record.employee?.payroll_type === 'salary')) : [];
-
-  const hourlyYtdTotals = calculateYtdTotals(hourlyRecords);
-  const salaryYtdTotals = calculateYtdTotals(salaryRecords);
-
-  const formatNumber = (num) => (num !== undefined ? num.toLocaleString(undefined, { minimumFractionDigits: 2 }) : 'N/A');
-
   const downloadAsCSV = () => {
-    const data = records.map(record => {
+    const data = records.map((record) => {
       const employee = record.employee || {};
       const customColumnsData = record.custom_columns_data || {};
       const customColumnsFormatted = customColumns.reduce((acc, column) => {
@@ -139,13 +68,16 @@ function BatchPayrollRecordsDisplay() {
         'Reported Tips': record.reported_tips || 'N/A',
         'Loan Payment': record.loan_payment || 'N/A',
         'Insurance Payment': record.insurance_payment || 'N/A',
+        'Gross Pay': record.gross_pay || 'N/A',
         'Net Pay': record.net_pay || 'N/A',
         'Withholding Tax': record.withholding_tax || 'N/A',
         'Social Security Tax': record.social_security_tax || 'N/A',
         'Medicare Tax': record.medicare_tax || 'N/A',
         'Retirement Payment': record.retirement_payment || 'N/A',
         'Roth 401K Payment': record.roth_retirement_payment || 'N/A',
-        ...customColumnsFormatted
+        'Total Deductions': record.total_deductions || 'N/A',
+        'Total Additions': record.total_additions || 'N/A',
+        ...customColumnsFormatted,
       };
     });
 
@@ -153,6 +85,10 @@ function BatchPayrollRecordsDisplay() {
     const workbook = utils.book_new();
     utils.book_append_sheet(workbook, worksheet, 'Payroll Records');
     writeFile(workbook, 'Payroll_Records.xlsx');
+  };
+
+  const handleCreateChecks = () => {
+    navigate(`/companies/${companyId}/create-checks`, { state: { records } });
   };
 
   return (
@@ -172,179 +108,87 @@ function BatchPayrollRecordsDisplay() {
         </button>
       </div>
 
-      <button onClick={downloadAsCSV} className="button-download">
-        Download as Excel
-      </button>
+      <div className="button-group">
+        <button onClick={downloadAsCSV} className="button-download">
+          Download as Excel
+        </button>
+        <button onClick={handleCreateChecks} className="button-create-checks">
+          Create Checks
+        </button>
+      </div>
 
       {loading ? (
         <p>Loading records...</p>
       ) : (
         <>
-          {hourlyRecords.length > 0 || salaryRecords.length > 0 ? (
-            <>
-              {hourlyRecords.length > 0 && (
-                <>
-                  <h2>Hourly Employees</h2>
-                  <div className="table-wrapper">
-                    <table className="record-table">
-                      <thead>
-                        <tr>
-                          <th>First Name</th>
-                          <th>Last Name</th>
-                          <th>Filing Status</th>
-                          <th>Department</th>
-                          <th>Pay Rate</th>
-                          <th>Retirement Rate</th>
-                          <th>Roth 401K Rate</th>
-                          <th>Hours Worked</th>
-                          <th>Overtime Hours</th>
-                          <th>Reported Tips</th>
-                          <th>Loan Payment</th>
-                          <th>Insurance Payment</th>
-                          <th>Net Pay</th>
-                          <th>Withholding Tax</th>
-                          <th>Social Security Tax</th>
-                          <th>Medicare Tax</th>
-                          <th>Retirement Payment</th>
-                          <th>Roth 401K Payment</th>
-                          {customColumns.map(column => (
-                            <th key={column.id}>{column.name}</th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {hourlyRecords.map((record, index) => {
-                          const employee = record.employee || {};
-                          return (
-                            <tr key={index}>
-                              <td>{employee.first_name || 'Unknown'}</td>
-                              <td>{employee.last_name || 'Unknown'}</td>
-                              <td>{employee.filing_status || 'N/A'}</td>
-                              <td>{employee.department || 'N/A'}</td>
-                              <td>{formatNumber(parseFloat(employee.pay_rate))}</td>
-                              <td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
-                              <td>{employee.roth_retirement_rate ? `${employee.roth_retirement_rate}%` : 'N/A'}</td>
-                              <td>{formatNumber(parseFloat(record.hours_worked))}</td>
-                              <td>{formatNumber(parseFloat(record.overtime_hours_worked))}</td>
-                              <td>{formatNumber(parseFloat(record.reported_tips))}</td>
-                              <td>{formatNumber(parseFloat(record.loan_payment))}</td>
-                              <td>{formatNumber(parseFloat(record.insurance_payment))}</td>
-                              <td>{formatNumber(parseFloat(record.net_pay))}</td>
-                              <td>{formatNumber(parseFloat(record.withholding_tax))}</td>
-                              <td>{formatNumber(parseFloat(record.social_security_tax))}</td>
-                              <td>{formatNumber(parseFloat(record.medicare_tax))}</td>
-                              <td>{formatNumber(parseFloat(record.retirement_payment))}</td>
-                              <td>{formatNumber(parseFloat(record.roth_retirement_payment))}</td>
-                              {customColumns.map(column => (
-                                <td key={column.id}>
-                                  {formatNumber(parseFloat(record.custom_columns_data?.[column.name])) || 'N/A'}
-                                </td>
-                              ))}
-                            </tr>
-                          );
-                        })}
-                        <tr className="ytd-totals">
-                          <td colSpan="7" className="ytd-label">Totals:</td>
-                          <td>{formatNumber(hourlyYtdTotals.hours_worked)}</td>
-                          <td>{formatNumber(hourlyYtdTotals.overtime_hours_worked)}</td>
-                          <td>{formatNumber(hourlyYtdTotals.reported_tips)}</td>
-                          <td>{formatNumber(hourlyYtdTotals.loan_payment)}</td>
-                          <td>{formatNumber(hourlyYtdTotals.insurance_payment)}</td>
-                          <td>{formatNumber(hourlyYtdTotals.net_pay)}</td>
-                          <td>{formatNumber(hourlyYtdTotals.withholding_tax)}</td>
-                          <td>{formatNumber(hourlyYtdTotals.social_security_tax)}</td>
-                          <td>{formatNumber(hourlyYtdTotals.medicare_tax)}</td>
-                          <td>{formatNumber(hourlyYtdTotals.retirement_payment)}</td>
-                          <td>{formatNumber(hourlyYtdTotals.roth_retirement_payment)}</td>
-                          {customColumns.map(column => (
-                            <td key={column.id}>
-                              {formatNumber(hourlyYtdTotals.custom_columns_totals[column.name]) || 'N/A'}
-                            </td>
-                          ))}
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </>
-              )}
-
-              {salaryRecords.length > 0 && (
-                <>
-                  <h2>Salary Employees</h2>
-                  <div className="table-wrapper">
-                    <table className="record-table">
-                      <thead>
-                        <tr>
-                          <th>First Name</th>
-                          <th>Last Name</th>
-                          <th>Filing Status</th>
-                          <th>Department</th>
-                          <th>Gross Pay</th>
-                          <th>Bonus</th>
-                          <th>Loan Payment</th>
-                          <th>Insurance Payment</th>
-                          <th>Net Pay</th>
-                          <th>Withholding Tax</th>
-                          <th>Social Security Tax</th>
-                          <th>Medicare Tax</th>
-                          <th>Retirement Payment</th>
-                          <th>Roth 401K Payment</th>
-                          {customColumns.map(column => (
-                            <th key={column.id}>{column.name}</th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {salaryRecords.map((record, index) => {
-                          const employee = record.employee || {};
-                          return (
-                            <tr key={index}>
-                              <td>{employee.first_name || 'Unknown'}</td>
-                              <td>{employee.last_name || 'Unknown'}</td>
-                              <td>{employee.filing_status || 'N/A'}</td>
-                              <td>{employee.department || 'N/A'}</td>
-                              <td>{formatNumber(parseFloat(record.gross_pay))}</td>
-                              <td>{formatNumber(parseFloat(record.bonus))}</td>
-                              <td>{formatNumber(parseFloat(record.loan_payment))}</td>
-                              <td>{formatNumber(parseFloat(record.insurance_payment))}</td>
-                              <td>{formatNumber(parseFloat(record.net_pay))}</td>
-                              <td>{formatNumber(parseFloat(record.withholding_tax))}</td>
-                              <td>{formatNumber(parseFloat(record.social_security_tax))}</td>
-                              <td>{formatNumber(parseFloat(record.medicare_tax))}</td>
-                              <td>{formatNumber(parseFloat(record.retirement_payment))}</td>
-                              <td>{formatNumber(parseFloat(record.roth_retirement_payment))}</td>
-                              {customColumns.map(column => (
-                                <td key={column.id}>
-                                  {formatNumber(parseFloat(record.custom_columns_data?.[column.name])) || 'N/A'}
-                                </td>
-                              ))}
-                            </tr>
-                          );
-                        })}
-                        <tr className="ytd-totals">
-                          <td colSpan="4" className="ytd-label">Totals:</td>
-                          <td>{formatNumber(salaryYtdTotals.gross_pay)}</td>
-                          <td>{formatNumber(salaryYtdTotals.bonus)}</td>
-                          <td>{formatNumber(salaryYtdTotals.loan_payment)}</td>
-                          <td>{formatNumber(salaryYtdTotals.insurance_payment)}</td>
-                          <td>{formatNumber(salaryYtdTotals.net_pay)}</td>
-                          <td>{formatNumber(salaryYtdTotals.withholding_tax)}</td>
-                          <td>{formatNumber(salaryYtdTotals.social_security_tax)}</td>
-                          <td>{formatNumber(salaryYtdTotals.medicare_tax)}</td>
-                          <td>{formatNumber(salaryYtdTotals.retirement_payment)}</td>
-                          <td>{formatNumber(salaryYtdTotals.roth_retirement_payment)}</td>
-                          {customColumns.map(column => (
-                            <td key={column.id}>
-                              {formatNumber(salaryYtdTotals.custom_columns_totals[column.name]) || 'N/A'}
-                            </td>
-                          ))}
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </>
-              )}
-            </>
+          {records.length > 0 ? (
+            <div className="table-wrapper">
+              <table className="record-table">
+                <thead>
+                  <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Filing Status</th>
+                    <th>Department</th>
+                    <th>Pay Rate</th>
+                    <th>Retirement Rate</th>
+                    <th>Roth 401K Rate</th>
+                    <th>Hours Worked</th>
+                    <th>Overtime Hours</th>
+                    <th>Reported Tips</th>
+                    <th>Loan Payment</th>
+                    <th>Insurance Payment</th>
+                    <th>Gross Pay</th>
+                    <th>Net Pay</th>
+                    <th>Withholding Tax</th>
+                    <th>Social Security Tax</th>
+                    <th>Medicare Tax</th>
+                    <th>Retirement Payment</th>
+                    <th>Roth 401K Payment</th>
+                    <th>Total Deductions</th>
+                    <th>Total Additions</th>
+                    {customColumns.map((column) => (
+                      <th key={column.id}>{column.name}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {records.map((record, index) => {
+                    const employee = record.employee || {};
+                    return (
+                      <tr key={index}>
+                        <td>{employee.first_name || 'Unknown'}</td>
+                        <td>{employee.last_name || 'Unknown'}</td>
+                        <td>{employee.filing_status || 'N/A'}</td>
+                        <td>{employee.department || 'N/A'}</td>
+                        <td>{employee.pay_rate || 'N/A'}</td>
+                        <td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
+                        <td>{employee.roth_retirement_rate ? `${employee.roth_retirement_rate}%` : 'N/A'}</td>
+                        <td>{record.hours_worked || 'N/A'}</td>
+                        <td>{record.overtime_hours_worked || 'N/A'}</td>
+                        <td>{record.reported_tips || 'N/A'}</td>
+                        <td>{record.loan_payment || 'N/A'}</td>
+                        <td>{record.insurance_payment || 'N/A'}</td>
+                        <td>{record.gross_pay || 'N/A'}</td>
+                        <td>{record.net_pay || 'N/A'}</td>
+                        <td>{record.withholding_tax || 'N/A'}</td>
+                        <td>{record.social_security_tax || 'N/A'}</td>
+                        <td>{record.medicare_tax || 'N/A'}</td>
+                        <td>{record.retirement_payment || 'N/A'}</td>
+                        <td>{record.roth_retirement_payment || 'N/A'}</td>
+                        <td>{record.total_deductions || 'N/A'}</td>
+                        <td>{record.total_additions || 'N/A'}</td>
+                        {customColumns.map((column) => (
+                          <td key={column.id}>
+                            {record.custom_columns_data?.[column.name] || 'N/A'}
+                          </td>
+                        ))}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           ) : (
             <p className="no-records-message">No payroll records found for the selected date.</p>
           )}

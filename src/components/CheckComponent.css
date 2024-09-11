@@ -1,0 +1,33 @@
+.check-container {
+  padding: 20px;
+}
+
+.check-section {
+  border: 1px solid #000;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.company-info, .employee-info, .pay-period-info {
+  margin-bottom: 10px;
+}
+
+.earnings-table, .deductions-table {
+  width: 100%;
+  margin-bottom: 20px;
+  border-collapse: collapse;
+}
+
+.earnings-table th, .deductions-table th, .earnings-table td, .deductions-table td {
+  border: 1px solid #000;
+  padding: 8px;
+  text-align: left;
+}
+
+.print-button {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}

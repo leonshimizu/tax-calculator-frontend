@@ -19,6 +19,7 @@ import { Signup } from './components/Signup';
 import { Login } from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import YearToDatePage from './components/YearToDatePage';
+import CheckComponent from './components/CheckComponent';
 
 const App = () => (
   <div style={{ paddingTop: '60px' }}>
@@ -138,6 +139,16 @@ const App = () => (
         element={
           <ProtectedRoute>
             <YearToDatePage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* New route for creating checks */}
+      <Route
+        path="/companies/:companyId/create-checks"
+        element={
+          <ProtectedRoute>
+            <CheckComponent />
           </ProtectedRoute>
         }
       />
