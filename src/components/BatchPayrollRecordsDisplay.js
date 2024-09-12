@@ -10,13 +10,13 @@ function BatchPayrollRecordsDisplay() {
   const navigate = useNavigate();
   const [records, setRecords] = useState(location.state?.records || []);
   const [customColumns, setCustomColumns] = useState([]);
-  const [departments, setDepartments] = useState([]); // Add state for departments
+  const [departments, setDepartments] = useState([]);
   const [searchDate, setSearchDate] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchCustomColumns();
-    fetchDepartments(); // Fetch departments on page load
+    fetchDepartments();
     if (location.state?.records) {
       setRecords(location.state.records);
     } else if (searchDate) {
@@ -24,7 +24,6 @@ function BatchPayrollRecordsDisplay() {
     }
   }, [location.state, searchDate]);
 
-  // Fetch departments
   const fetchDepartments = async () => {
     try {
       const response = await axios.get(`/companies/${companyId}/departments`);
@@ -75,7 +74,7 @@ function BatchPayrollRecordsDisplay() {
         'First Name': employee.first_name || 'Unknown',
         'Last Name': employee.last_name || 'Unknown',
         'Filing Status': employee.filing_status || 'N/A',
-        'Department': getDepartmentName(employee.department_id), // Use department_id
+        'Department': getDepartmentName(employee.department_id),
         'Pay Rate': employee.pay_rate || 'N/A',
         'Retirement Rate': employee.retirement_rate || 'N/A',
         'Roth 401K Rate': employee.roth_retirement_rate || 'N/A',
@@ -94,6 +93,7 @@ function BatchPayrollRecordsDisplay() {
         'Roth 401K Payment': record.roth_retirement_payment || 'N/A',
         'Total Deductions': record.total_deductions || 'N/A',
         'Total Additions': record.total_additions || 'N/A',
+        'Bonus': record.bonus || 'N/A',
         ...customColumnsFormatted,
       };
     });
@@ -140,44 +140,45 @@ function BatchPayrollRecordsDisplay() {
         <>
           {records.length > 0 ? (
             <div className="table-wrapper">
-            <table className="record-table">
-              <thead>
-                <tr>
-                  <th>First Name</th><th>Last Name</th><th>Filing Status</th><th>Department</th><th>Pay Rate</th>
-                  <th>Retirement Rate</th><th>Roth 401K Rate</th><th>Hours Worked</th><th>Overtime Hours</th>
-                  <th>Reported Tips</th><th>Loan Payment</th><th>Insurance Payment</th><th>Gross Pay</th><th>Net Pay</th>
-                  <th>Withholding Tax</th><th>Social Security Tax</th><th>Medicare Tax</th><th>Retirement Payment</th>
-                  <th>Roth 401K Payment</th><th>Total Deductions</th><th>Total Additions</th>
-                  {customColumns.map((column) => (
-                    <th key={column.id}>{column.name}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {records.map((record, index) => {
-                  const employee = record.employee || {};
-                  return (
-                    <tr key={index}>
-                      <td>{employee.first_name || 'Unknown'}</td><td>{employee.last_name || 'Unknown'}</td>
-                      <td>{employee.filing_status || 'N/A'}</td><td>{getDepartmentName(employee.department_id)}</td>
-                      <td>{employee.pay_rate || 'N/A'}</td><td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
-                      <td>{employee.roth_retirement_rate ? `${employee.roth_retirement_rate}%` : 'N/A'}</td>
-                      <td>{record.hours_worked || 'N/A'}</td><td>{record.overtime_hours_worked || 'N/A'}</td>
-                      <td>{record.reported_tips || 'N/A'}</td><td>{record.loan_payment || 'N/A'}</td>
-                      <td>{record.insurance_payment || 'N/A'}</td><td>{record.gross_pay || 'N/A'}</td>
-                      <td>{record.net_pay || 'N/A'}</td><td>{record.withholding_tax || 'N/A'}</td>
-                      <td>{record.social_security_tax || 'N/A'}</td><td>{record.medicare_tax || 'N/A'}</td>
-                      <td>{record.retirement_payment || 'N/A'}</td><td>{record.roth_retirement_payment || 'N/A'}</td>
-                      <td>{record.total_deductions || 'N/A'}</td><td>{record.total_additions || 'N/A'}</td>
-                      {customColumns.map((column) => (
-                        <td key={column.id}>{record.custom_columns_data?.[column.name] || 'N/A'}</td>
-                      ))}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+              <table className="record-table">
+                <thead>
+                  <tr>
+                    <th>First Name</th><th>Last Name</th><th>Filing Status</th><th>Department</th><th>Pay Rate</th>
+                    <th>Retirement Rate</th><th>Roth 401K Rate</th><th>Hours Worked</th><th>Overtime Hours</th>
+                    <th>Reported Tips</th><th>Loan Payment</th><th>Insurance Payment</th><th>Gross Pay</th><th>Net Pay</th>
+                    <th>Withholding Tax</th><th>Social Security Tax</th><th>Medicare Tax</th><th>Retirement Payment</th>
+                    <th>Roth 401K Payment</th><th>Total Deductions</th><th>Total Additions</th><th>Bonus</th>
+                    {customColumns.map((column) => (
+                      <th key={column.id}>{column.name}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {records.map((record, index) => {
+                    const employee = record.employee || {};
+                    return (
+                      <tr key={index}>
+                        <td>{employee.first_name || 'Unknown'}</td><td>{employee.last_name || 'Unknown'}</td>
+                        <td>{employee.filing_status || 'N/A'}</td><td>{getDepartmentName(employee.department_id)}</td>
+                        <td>{employee.pay_rate || 'N/A'}</td><td>{employee.retirement_rate ? `${employee.retirement_rate}%` : 'N/A'}</td>
+                        <td>{employee.roth_retirement_rate ? `${employee.roth_retirement_rate}%` : 'N/A'}</td>
+                        <td>{record.hours_worked || 'N/A'}</td><td>{record.overtime_hours_worked || 'N/A'}</td>
+                        <td>{record.reported_tips || 'N/A'}</td><td>{record.loan_payment || 'N/A'}</td>
+                        <td>{record.insurance_payment || 'N/A'}</td><td>{record.gross_pay || 'N/A'}</td>
+                        <td>{record.net_pay || 'N/A'}</td><td>{record.withholding_tax || 'N/A'}</td>
+                        <td>{record.social_security_tax || 'N/A'}</td><td>{record.medicare_tax || 'N/A'}</td>
+                        <td>{record.retirement_payment || 'N/A'}</td><td>{record.roth_retirement_payment || 'N/A'}</td>
+                        <td>{record.total_deductions || 'N/A'}</td><td>{record.total_additions || 'N/A'}</td>
+                        <td>{record.bonus || 'N/A'}</td>
+                        {customColumns.map((column) => (
+                          <td key={column.id}>{record.custom_columns_data?.[column.name] || 'N/A'}</td>
+                        ))}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           ) : (
             <p className="no-records-message">No payroll records found for the selected date.</p>
           )}
