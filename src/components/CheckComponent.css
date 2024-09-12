@@ -1,33 +1,160 @@
 .check-container {
   padding: 20px;
+  font-family: Arial, sans-serif;
 }
 
 .check-section {
   border: 1px solid #000;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   padding: 10px;
 }
 
-.company-info, .employee-info, .pay-period-info {
-  margin-bottom: 10px;
+.check-layout {
+  border: 1px solid #000;
+  padding: 10px;
 }
 
-.earnings-table, .deductions-table {
-  width: 100%;
+.check {
+  padding: 10px;
+}
+
+.check-header {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #000;
+}
+
+.check-header p {
+  margin: 0;
+}
+
+.check-amount-box {
+  border: 1px solid #000;
+  padding: 5px;
+  width: 150px;
+  text-align: right;
+}
+
+.check-amount-text {
+  padding-top: 10px;
+}
+
+.check-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #000;
+}
+
+.paystub-mirror {
+  margin-top: 20px;
+}
+
+.employee-details, .pay-details-section {
+  margin-bottom: 15px;
+}
+
+.pay-table, .other-pay-table {
+  display: flex;
+  justify-content: space-between;
+}
+
+.earnings-table, .taxes-table, .other-pay, .deductions-table {
+  width: 48%;
   margin-bottom: 20px;
   border-collapse: collapse;
 }
 
-.earnings-table th, .deductions-table th, .earnings-table td, .deductions-table td {
+.earnings-table th, .taxes-table th, .other-pay th, .deductions-table th, 
+.earnings-table td, .taxes-table td, .other-pay td, .deductions-table td {
   border: 1px solid #000;
-  padding: 8px;
+  padding: 5px;
   text-align: left;
 }
 
+.earnings-table th, .taxes-table th, .other-pay th, .deductions-table th {
+  background-color: #f2f2f2;
+}
+
+.summary-footer {
+  margin-top: 10px;
+  border-top: 1px solid #000;
+}
+
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.summary-table th, .summary-table td {
+  border: 1px solid #000;
+  padding: 5px;
+}
+
+.summary-table td strong {
+  font-size: 1.1em;
+}
+
 .print-button {
-  padding: 8px 16px;
+  padding: 10px 20px;
   background-color: #4CAF50;
   color: white;
   border: none;
   cursor: pointer;
+  margin-top: 20px;
+  align-self: flex-end;
+}
+
+.print-button:hover {
+  background-color: #45a049;
+}
+
+/* Ensure everything fits on the page during printing */
+@media print {
+  .print-button {
+    display: none;
+  }
+
+  /* Ensure the check section is displayed properly on a single page */
+  .check-section {
+    page-break-after: always;
+    padding: 10px;
+  }
+
+  .check-layout {
+    border: none; /* Removes unnecessary borders on print */
+    padding: 0;
+    margin: 0;
+  }
+
+  .check-container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .check-header, .check-footer {
+    font-size: 12pt; /* Adjust font size for printing */
+  }
+
+  .earnings-table, .taxes-table, .other-pay, .deductions-table {
+    font-size: 10pt; /* Reduce font size to fit more content on the page */
+  }
+
+  .summary-footer {
+    font-size: 10pt;
+  }
+
+  /* Ensure the printout matches the layout you see on the screen */
+  @page {
+    margin: 20mm; /* Ensure there's margin for printed page */
+  }
+
+  /* Reduce margin/padding in print */
+  .check, .paystub-mirror, .check-section {
+    margin: 0;
+    padding: 0;
+  }
 }

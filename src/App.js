@@ -143,7 +143,6 @@ const App = () => (
         }
       />
 
-      {/* New route for creating checks */}
       <Route
         path="/companies/:companyId/create-checks"
         element={
