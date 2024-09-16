@@ -8,10 +8,9 @@ const CheckComponent = () => {
   const location = useLocation();
   const records = location.state?.records || [];
   const [checksData, setChecksData] = useState([]);
-  const checkRefs = useRef([]); // Array to hold references to each check layout
+  const checkRefs = useRef([]); 
 
   useEffect(() => {
-    // Fetch the data for all checks
     const fetchData = async () => {
       const dataPromises = records.map(async (record) => {
         const employeeResponse = await axios.get(`/companies/${companyId}/employees/${record.employee_id}`);
@@ -36,21 +35,37 @@ const CheckComponent = () => {
     return !isNaN(parsedAmount) ? `$${parsedAmount.toFixed(2)}` : 'N/A';
   };
 
-  // Function to print a specific check layout
+  const formatAmountInWords = (amount) => {
+    const units = Math.floor(amount);
+    const cents = Math.round((amount - units) * 100);
+    return `${convertToWords(units)} and ${cents}/100 dollars`;
+  };
+
+  const convertToWords = (num) => {
+    // Implement a basic number-to-words conversion logic.
+    const words = [
+      "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten",
+      "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", 
+      "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"
+    ];
+    
+    if (num <= 20) return words[num];
+    const tens = Math.floor(num / 10);
+    const remainder = num % 10;
+    return `${words[tens + 18]}${remainder ? " " + words[remainder] : ""}`;
+  };
+
   const printCheck = (index) => {
-    const checkContent = checkRefs.current[index]; // Get the specific check layout by index
-  
+    const checkContent = checkRefs.current[index]; 
     if (checkContent) {
       const printWindow = window.open('', '', 'width=800,height=600');
       printWindow.document.write('<html><head><title>Print Check</title>');
       printWindow.document.write('<link rel="stylesheet" type="text/css" href="CheckComponent.css" />');
       printWindow.document.write('</head><body>');
-      printWindow.document.write(checkContent.outerHTML); // Insert the check layout HTML
+      printWindow.document.write(checkContent.outerHTML); 
       printWindow.document.write('</body></html>');
       printWindow.document.close();
       printWindow.focus();
-      
-      // Print the content without closing the window
       printWindow.print();
     } else {
       console.error('Failed to print: No content available for printing.');
@@ -66,14 +81,13 @@ const CheckComponent = () => {
       {checksData.map((data, index) => (
         <div key={index} className="check-section">
           <div ref={(el) => (checkRefs.current[index] = el)} className="check-layout">
-            {/* First Third - Check Layout */}
             <div className="check">
               <div className="check-header">
                 <p><strong>Pay to the Order of:</strong> {data.employee.first_name} {data.employee.last_name}</p>
                 <p className="check-amount-box">{formatCurrency(data.payroll.net_pay)}</p>
               </div>
               <div className="check-amount-text">
-                <p>{/* Amount in words here */}</p>
+                <p>{formatAmountInWords(data.payroll.net_pay)}</p>
               </div>
               <div className="check-footer">
                 <p><strong>Date:</strong> {data.payroll.pay_date}</p>
@@ -81,7 +95,6 @@ const CheckComponent = () => {
               </div>
             </div>
 
-            {/* Second and Third Thirds - Mirror Layout */}
             <div className="paystub-mirror">
               <div className="employee-details">
                 <h3>Employee: {data.employee.first_name} {data.employee.last_name}</h3>
@@ -89,7 +102,6 @@ const CheckComponent = () => {
               </div>
 
               <div className="pay-details-section">
-                {/* PAY and TAXES tables */}
                 <div className="pay-table">
                   <table className="earnings-table">
                     <thead>
@@ -147,7 +159,6 @@ const CheckComponent = () => {
                   </table>
                 </div>
 
-                {/* OTHER PAY and DEDUCTIONS tables */}
                 <div className="other-pay-table">
                   <table className="other-pay">
                     <thead>
@@ -194,7 +205,6 @@ const CheckComponent = () => {
                   </table>
                 </div>
 
-                {/* Summary and Footer */}
                 <div className="summary-footer">
                   <div className="summary-table">
                     <table>
